@@ -33,9 +33,9 @@ const App: React.FC = () => {
       MAX_TANGENTIAL_SPEED: 150,
       
       PARTICLE_COLORS: [
-        '#9333EA', '#A855F7', '#F5F3FF', '#8B5CF6',
-        '#C4B5FD', '#DDD6FE', '#EDE9FE'
+        '#6B21A8', '#9333EA', '#A855F7', '#C084FC', '#D8B4FE', '#F3E8FF'
       ],
+
     };
 
     const createStar = () => {

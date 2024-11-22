@@ -133,7 +133,7 @@ const Nodes = {
 	
 			// Start loading the data and animate the starting blackhole effect
 			setTimeout(() => {
-				this.loadData(image || 'https://i.imgur.com/cN8KlIt.png');
+				this.loadData(image || 'https://i.imgur.com/gFVigiC.png');
 				
 				// Trigger initial animation
 				this.isAnimating = true;
@@ -217,19 +217,17 @@ const Nodes = {
     preparePoints: function() {
         this.points = [];
         const colors = this.bgContextPixelData.data;
-
+    
         for (let i = 0; i < this.siteHeight; i += this.density) {
             for (let j = 0; j < this.siteWidth; j += this.density) {
                 const pixelPosition = (j + i * this.bgContextPixelData.width) * 4;
-
-                // Skip whiteish/transparent pixels
-                if (colors[pixelPosition] > 200 && 
-                    colors[pixelPosition + 1] > 200 && 
-                    colors[pixelPosition + 2] > 200 || 
-                    colors[pixelPosition + 3] === 0) {
+    
+                // Skip white pixels
+                const threshold = 10;
+                if (Math.abs(colors[pixelPosition] - 255) < threshold && Math.abs(colors[pixelPosition + 1] - 255) < threshold && Math.abs(colors[pixelPosition + 2] - 255) < threshold || colors[pixelPosition + 3] === 0) {
                     continue;
                 }
-
+    
                 const color = `rgba(${colors[pixelPosition]},${colors[pixelPosition + 1]},${colors[pixelPosition + 2]},1)`;
                     
                 this.points.push({
@@ -242,6 +240,7 @@ const Nodes = {
             }
         }
     },
+    
 
     updatePoints: function() {
         if (!this.isAnimating) {
@@ -333,28 +332,41 @@ const Nodes = {
     },
 
     onWindowResize: function() {
-        this.stage.removeChildren();
-        cancelAnimationFrame(this.animation);
         this.renderer.resize(
-            this.siteWidth + (this.canvasPadding * 2), 
+            this.siteWidth + (this.canvasPadding * 2),
             this.siteHeight + (this.canvasPadding * 2)
         );
+
+        // Update canvas dimensions
+        this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
+        this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
+
+        // Redraw background image and points
         this.drawImageToBackground();
+
+        // Adjust positions for the new dimensions
+        this.stage.children.forEach((dot, index) => {
+            const originalPoint = this.points[index];
+            dot.position.x = originalPoint.x;
+            dot.position.y = originalPoint.y;
+        });
+
+        console.log("Window resized, renderer and points updated.");
     }
 };
 
 // Initialize with default values
 Nodes.init(
-    'https://i.imgur.com/cN8KlIt.png', // image URL
-    2,                                 // particle density
-    0.5,                              // particle width
-    0.5,                              // particle height
-    '#ffffff',                        // dot color (white)
-    800,                              // width in pixels
-    600,                              // height in pixels
-    300,                              // positionX
-    -60,                              // positionY
-    200,                              // canvasPadding
-    50,                               // mouseRadius (in pixels)
-    3000                              // startDelay (in milliseconds)
+    'https://i.imgur.com/gFVigiC.png', // image URL
+    1,                                 // particle density
+    0.3,                              // particle width
+    0.3,                              // particle height
+    '#7A5B8C',                        // dot color (white)
+    1500,                              // width in pixels
+    750,                              // height in pixels
+    0,                              // positionX
+    0,                              // positionY
+    100,                              // canvasPadding
+    70,                               // mouseRadius (in pixels)
+    2000                              // startDelay (in milliseconds)
 );

@@ -56,8 +56,9 @@ def generate_image():
     bg_color = bg_color_input.get()
     text_color = text_color_input.get()
     padding = int(padding_input.get())
+    resolution = int(resolution_input.get())
 
-    if not text or not selected_font_name or not bg_color or not text_color:
+    if not text or not selected_font_name or not bg_color or not text_color or not resolution:
         messagebox.showerror("Error", "Please fill in all fields!")
         return
 
@@ -87,12 +88,24 @@ def generate_image():
         # Create a tightly fitted image with padding
         image_width = text_width + 2 * padding
         image_height = text_height + 2 * padding
-        global generated_image
-        generated_image = Image.new("RGB", (image_width, image_height), bg_color_rgb)
-        draw = ImageDraw.Draw(generated_image)
 
-        # Draw the text with padding applied
-        draw.text((padding, padding - text_bbox[1]), text, font=font, fill=text_color_rgb)
+        # Oversample the image by a factor of 4
+        oversample_factor = 4
+        oversampled_image_width = image_width * oversample_factor
+        oversampled_image_height = image_height * oversample_factor
+
+        # Create the oversampled image
+        oversampled_image = Image.new("RGB", (oversampled_image_width, oversampled_image_height), bg_color_rgb)
+        oversampled_draw = ImageDraw.Draw(oversampled_image)
+        oversampled_font = ImageFont.truetype(font_path, 40 * oversample_factor)
+        oversampled_draw.text((padding * oversample_factor, (padding - text_bbox[1]) * oversample_factor), text, font=oversampled_font, fill=text_color_rgb)
+
+        # Scale the oversampled image down to the desired size
+        scale_factor = resolution / max(oversampled_image_width, oversampled_image_height)
+        scaled_image = oversampled_image.resize((int(oversampled_image_width * scale_factor), int(oversampled_image_height * scale_factor)), Image.LANCZOS)
+
+        global generated_image
+        generated_image = scaled_image
 
         # Convert to a format suitable for Tkinter
         tk_image = ImageTk.PhotoImage(generated_image)
@@ -184,9 +197,15 @@ padding_input = tk.Entry(input_frame, width=30)
 padding_input.insert(0, "10")  # Default padding
 padding_input.grid(row=5, column=1, padx=10, pady=5)
 
+# Resolution Input
+tk.Label(input_frame, text="Resolution (max dimension):").grid(row=6, column=0, padx=10, pady=5, sticky="e")
+resolution_input = tk.Entry(input_frame, width=30)
+resolution_input.insert(0, "500")  # Default resolution
+resolution_input.grid(row=6, column=1, padx=10, pady=5)
+
 # Generate Button
 generate_button = tk.Button(input_frame, text="Generate Image", command=generate_image)
-generate_button.grid(row=6, column=0, columnspan=2, pady=10)
+generate_button.grid(row=7, column=0, columnspan=2, pady=10)
 
 # Preview frame
 preview_frame = tk.Frame(app)

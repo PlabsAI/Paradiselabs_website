@@ -55,12 +55,12 @@ interface StyleProps {
 // Animation keyframes
 const breatheEffect = keyframes`
   0% { 
-    transform: scale(1) rotate(-5deg);
-    filter: sepia(0.5) brightness(1);
+    transform: scale(1.1) rotate(-5deg);
+    filter: sepia(0.5) brightness(1.1);
   }
   50% { 
     transform: scale(0.60) rotate(-5deg);
-    filter: sepia(0.8) brightness(1.1);
+    filter: sepia(0.8) brightness(0.6);
   }
   100% { 
     transform: scale(0.60) rotate(-5deg);
@@ -69,9 +69,9 @@ const breatheEffect = keyframes`
 `;
 
 const glowPulse = keyframes`
-  0% { filter: brightness(1) blur(1px); }
-  50% { filter: brightness(1.4) blur(3px); }
-  100% { filter: brightness(1) blur(1px); }
+  0% { filter: brightness(1.3) blur(3px); }
+  50% { filter: brightness(1) blur(1px); }
+  100% { filter: brightness(1.3) blur(3px); }
 `;
 
 const diskFlow = keyframes`
@@ -84,6 +84,10 @@ const disappearAnimation = keyframes`
   0% { 
     opacity: 1;
     transform: scale(0.6) rotate(-5deg);
+  }
+  50% { 
+    opacity: 0.5;
+    transform: scale(0.3) rotate(-5deg);
   }
   100% { 
     opacity: 0;
@@ -123,7 +127,7 @@ export const Loader: React.FC<LoaderProps> = memo(({
   primaryColor = '#ffffff',
   glowColor = '#f1edb6',
   spaceColor = '#010006',
-  disappearDelay = 5
+  disappearDelay = 4
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
