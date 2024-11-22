@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React App</title>
+    
+    <!-- Particle system styles -->
+    <link rel="stylesheet" href="/src/particles/particles.css">
+
+    <!-- Original React styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- jQuery dependency (required for particle system) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- PIXI.js for particle rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Particle system script -->
+    <script src="/src/particles/particles.js" defer></script>
+
+    <!-- React app entry point -->
+    <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

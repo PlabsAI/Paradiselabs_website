@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #010006;
+    overflow: hidden;
+}
+
+#root {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gradient-bg {
+    position: absolute;
+    inset: 0;
+    height: 580px;
+    background: #010006;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Black Hole Container */
+.hero-black-hole {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stars Container */
+.hero-black-hole-stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Base particle styles */
+.hero-black-hole-stars div {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* Spiral particles */
+.spiral-particle {
+    animation: spiralToCenter var(--animation-duration, 15s) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    box-shadow: 
+        0 0 4px rgba(255, 255, 255, 0.8),
+        0 0 8px rgba(255, 255, 255, 0.4),
+        0 0 12px rgba(163, 51, 255, 0.2);
+    transform-origin: center center;
+}
+
+/* Instant removal when touching photon ring */
+.spiral-particle[data-removing="true"] {
+    animation: none !important;
+    opacity: 0 !important;
+    transition: opacity 0.01s linear;
+}
+
+@keyframes spiralToCenter {
+    0% {
+        transform: translate(var(--start-x), var(--start-y)) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.8;
+    }
+    25% {
+        transform: 
+            translate(
+                calc(var(--start-x) * 0.75 + var(--tangential-x)), 
+                calc(var(--start-y) * 0.75 + var(--tangential-y))
+            ) 
+            rotate(-180deg) scale(0.9);
+        opacity: 0.8;
+    }
+    50% {
+        transform: 
+            translate(
+                calc(var(--start-x) * 0.5 + var(--tangential-x) * 1.5), 
+                calc(var(--start-y) * 0.5 + var(--tangential-y) * 1.5)
+            ) 
+            rotate(-360deg) scale(0.8);
+        opacity: 0.7;
+    }
+    75% {
+        transform: 
+            translate(
+                calc(var(--start-x) * 0.25 + var(--tangential-x) * 1.25), 
+                calc(var(--start-y) * 0.25 + var(--tangential-y) * 1.25)
+            ) 
+            rotate(-540deg) scale(0.6);
+        opacity: 0.5;
+    }
+    100% {
+        transform: 
+            translate(
+                calc(var(--tangential-x) * 0.5), 
+                calc(var(--tangential-y) * 0.5)
+            ) 
+            rotate(-720deg) scale(0.2);
+        opacity: 0;
+    }
+}
