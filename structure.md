@@ -91,6 +91,10 @@
 - Configures React plugin
 - Purpose: Sets up the build tool and development server
 
+### Text_maker.py
+- Python script for text processing
+- Purpose: Utility script for text manipulation and generation
+
 ## Source Directory (src/)
 
 ### main.tsx

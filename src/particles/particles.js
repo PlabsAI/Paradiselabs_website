@@ -16,6 +16,7 @@ const Nodes = {
     mouseRadius: 100,      // Default mouse interaction radius in pixels
     startDelay: 0,        // Delay before animation starts in milliseconds
     isAnimating: false,   // Flag to track if animation should be running
+    isStartupPhase: true, // New flag to track initial animation phase
 
     points: [],
     mouse: {
@@ -39,7 +40,8 @@ const Nodes = {
     newmouse: null,
     theta: null,
     blackhole: false,
-    mouseDisabled: false,
+    mouseDisabled: true,  // Start with mouse disabled
+    startupMousePos: { x: 0, y: 0 }, // Store startup mouse position
 
     siteWidth: window.innerWidth,
     siteHeight: window.innerHeight,
@@ -60,6 +62,8 @@ const Nodes = {
 		this.mouseRadius = mouseRadius || 100;
 		this.startDelay = startDelay || 0;
 		this.isAnimating = false;
+		this.mouseDisabled = true;
+		this.isStartupPhase = true;
 	
 		// Renderer setup with transparent background
 		const rendererOptions = {
@@ -118,11 +122,11 @@ const Nodes = {
 			});
 	
 			this.renderer.view.addEventListener('mousedown', () => {
-				if (this.isAnimating) this.blackhole = true;
+				if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = true;
 			});
 			
 			this.renderer.view.addEventListener('mouseup', () => {
-				if (this.isAnimating) this.blackhole = false;
+				if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = false;
 			});
 	
 			this.stage.interactive = true;
@@ -135,23 +139,32 @@ const Nodes = {
 			setTimeout(() => {
 				this.loadData(image || 'https://i.imgur.com/gFVigiC.png');
 				
+				// Set startup mouse position
+				this.startupMousePos = {
+					x: (this.siteWidth / 2) + this.canvasPadding,
+					y: (this.siteHeight / 2) + this.canvasPadding
+				};
+				
 				// Trigger initial animation
 				this.isAnimating = true;
-				this.newmouse.global.x = (this.siteWidth / 2) + this.canvasPadding;
-				this.newmouse.global.y = (this.siteHeight / 2) + this.canvasPadding;
 				this.blackhole = true;
-				this.reactionSensitivity = -500;
+				this.reactionSensitivity = -10;  // Restored to original value
 	
+				// Schedule the end of initial animation
 				setTimeout(() => {
-					// Gradually transition to normal state
-					this.mouseDisabled = true;
+					this.isStartupPhase = false;
+					this.blackhole = false;
+					this.reactionSensitivity = 4;  // Restored to original value
 					this.newmouse.global.x = -1000;
 					this.newmouse.global.y = -1000;
-					this.blackhole = false;
-					this.reactionSensitivity = 6;
+					
+					// Enable mouse interactions after initial animation
+					setTimeout(() => {
+						this.mouseDisabled = false;
+					}, 500);
 				}, 1000);
 			}, this.startDelay);
-		}, this.startDelay);
+		}, 0);
 	},
 	
     loadData: function(data) {
@@ -241,16 +254,19 @@ const Nodes = {
         }
     },
     
-
     updatePoints: function() {
         if (!this.isAnimating) {
             return;
         }
 
+        // Use startup position during startup phase
+        const mouseX = this.isStartupPhase ? this.startupMousePos.x : this.newmouse.global.x;
+        const mouseY = this.isStartupPhase ? this.startupMousePos.y : this.newmouse.global.y;
+
         if (this.blackhole) {
-            this.reactionSensitivity = -10;
+            this.reactionSensitivity = this.isStartupPhase ? -10 : -10;  // Consistent force for blackhole effect
         } else {
-            this.reactionSensitivity = this.isNear() ? 6 : 0;
+            this.reactionSensitivity = this.isNear() ? 4 : 0;  // Restored to original value
         }
 
         for (let i = 0; i < this.stage.children.length; i++) {
@@ -258,8 +274,8 @@ const Nodes = {
             const currentPoint = this.stage.children[i];
 
             // Calculate distance from mouse to point
-            const dx = currentPoint.position.x - this.newmouse.global.x;
-            const dy = currentPoint.position.y - this.newmouse.global.y;
+            const dx = currentPoint.position.x - mouseX;
+            const dy = currentPoint.position.y - mouseY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             // Only affect points within mouseRadius
@@ -286,7 +302,7 @@ const Nodes = {
     },
 
     isNear: function() {
-        const x = this.newmouse.global.x;
+        const x = this.isStartupPhase ? this.startupMousePos.x : this.newmouse.global.x;
         const imageWidth = this.bgImage.width;
         const left = ((this.siteWidth/2) - (imageWidth/2)) - (this.siteWidth/10);
         const right = ((this.siteWidth/2) + (imageWidth/2)) + (this.siteWidth/10);
@@ -320,12 +336,14 @@ const Nodes = {
     },
 
     onTouchEnd: function() {
-        Nodes.newmouse.global.x = -1000;
-        Nodes.newmouse.global.y = -1000;
+        if (!Nodes.mouseDisabled && !Nodes.isStartupPhase) {
+            Nodes.newmouse.global.x = -1000;
+            Nodes.newmouse.global.y = -1000;
+        }
     },
 
     onTouchMove: function(event) {
-        if (this.mouseDisabled) {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
             this.newmouse.global.x = event.data.global.x;
             this.newmouse.global.y = event.data.global.y;
         }
@@ -351,6 +369,14 @@ const Nodes = {
             dot.position.y = originalPoint.y;
         });
 
+        // Update startup mouse position if in startup phase
+        if (this.isStartupPhase) {
+            this.startupMousePos = {
+                x: (this.siteWidth / 2) + this.canvasPadding,
+                y: (this.siteHeight / 2) + this.canvasPadding
+            };
+        }
+
         console.log("Window resized, renderer and points updated.");
     }
 };
@@ -368,5 +394,5 @@ Nodes.init(
     0,                              // positionY
     100,                              // canvasPadding
     70,                               // mouseRadius (in pixels)
-    2000                              // startDelay (in milliseconds)
+    3900                              // startDelay (in milliseconds)
 );
