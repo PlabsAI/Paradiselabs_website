@@ -264,7 +264,7 @@ const Nodes = {
         const mouseY = this.isStartupPhase ? this.startupMousePos.y : this.newmouse.global.y;
 
         if (this.blackhole) {
-            this.reactionSensitivity = this.isStartupPhase ? -10 : -10;  // Consistent force for blackhole effect
+            this.reactionSensitivity = this.isStartupPhase ? -25 : -25;  // Consistent force for blackhole effect
         } else {
             this.reactionSensitivity = this.isNear() ? 4 : 0;  // Restored to original value
         }
@@ -387,7 +387,7 @@ Nodes.init(
     1,                                 // particle density
     0.3,                              // particle width
     0.3,                              // particle height
-    '#7A5B8C',                        // dot color (white)
+    '#713168',                        // dot color (white)
     1500,                              // width in pixels
     750,                              // height in pixels
     0,                              // positionX

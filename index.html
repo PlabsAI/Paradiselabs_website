@@ -18,6 +18,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container-lg">
+        <!-- Logo -->
+        <a href="/" class="logo-with-name header-logo">
+          <img src="logo.png" alt="Logo" class="logo-with-name-logo">
+          <div class="logo-with-name-name">Logo</div>
+        </a>
+
+        <!-- Navigation -->
+        <ul class="header-nav">
+          <li><a href="#product" class="header-nav-link">Product</a></li>
+          <li><a href="#pricing" class="header-nav-link">Pricing</a></li>
+          <li><a href="#company" class="header-nav-link">Company</a></li>
+          <li><a href="#blog" class="header-nav-link">Blog</a></li>
+          <li><a href="#changelog" class="header-nav-link">Changelog</a></li>
+        </ul>
+
+        <!-- Action Buttons -->
+        <div class="header-actions">
+          <a href="/login" class="header-actions-login">Login</a>
+          <a href="/signup" class="button button-primary header-actions-trial">
+            Start free trial
+            <div class="button-border"></div>
+          </a>
+          <!-- Mobile Menu Toggle -->
+          <div class="header-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <div id="root"></div>
 
     <!-- Particle system script -->

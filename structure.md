@@ -4,14 +4,21 @@
 
 ### index.html
 - Entry point HTML file
-- Contains root div for React mounting
-- Links to:
-  - styles.css
-  - particles.css
-  - jQuery (3.6.0)
-  - PIXI.js (4.5.1)
-  - main.tsx
-  - particles.js
+- Contains:
+  - Header with navigation and action buttons
+  - Root div for React mounting
+  - Links to:
+    - styles.css
+    - particles.css
+    - jQuery (3.6.0)
+    - PIXI.js (4.5.1)
+    - main.tsx
+    - particles.js
+- Header Structure:
+  - Logo section with image and text
+  - Navigation menu with links (Product, Pricing, Company, Blog, Changelog)
+  - Action buttons (Login, Start free trial)
+  - Mobile-responsive menu toggle
 - Additional Dependencies:
   1. jQuery Integration
      - Version: 3.6.0
@@ -44,11 +51,23 @@
 ### styles.css
 - Global stylesheet
 - Contains:
+  - Header styles:
+    - Fixed positioning with blur backdrop
+    - Responsive navigation menu
+    - Logo and action buttons styling
+    - Mobile menu toggle animations
+    - Media queries for responsive design
   - Black background setup
   - Gradient background effect with purple/pink hues
   - Star animation styles
   - Layout positioning for content
-- Purpose: Handles global styling, gradient background effect, and star animations
+- Header Features:
+  - Blur backdrop filter for modern glass effect
+  - Gradient border bottom
+  - Responsive navigation with mobile menu
+  - Custom button styles with border effects
+  - Smooth transitions and animations
+- Purpose: Handles global styling, header layout, gradient background effect, and star animations
 
 ### package.json
 - Project configuration and dependencies
@@ -235,6 +254,14 @@ New directory for interactive particle visualization
 
 ## Visual Effects
 
+### Header Effects
+- Glass morphism effect with blur backdrop
+- Gradient border bottom
+- Smooth hover transitions
+- Mobile menu animations
+- Responsive design adaptations
+- Custom button styles with border effects
+
 ### Black Hole Effect
 - Implemented through the Loader component
 - Features:
@@ -280,10 +307,12 @@ Two separate particle implementations:
 
 ### Layer Management
 - Z-index Structure:
-  1. Base layer: React application background
-  2. Middle layer: Particle system canvas
-  3. Top layer: Black hole visualization
+  1. Header layer: Fixed position with blur backdrop
+  2. Base layer: React application background
+  3. Middle layer: Particle system canvas
+  4. Top layer: Black hole visualization
 - Positioning System:
+  - Fixed positioning for header
   - Absolute positioning for overlays
   - Responsive scaling for all layers
   - Proper stacking context maintenance
