@@ -33,7 +33,7 @@ const App: React.FC = () => {
       MAX_TANGENTIAL_SPEED: 150,
       
       PARTICLE_COLORS: [
-        '#6B21A8', '#9333EA', '#A855F7', '#C084FC', '#D8B4FE', '#F3E8FF'
+          '#DE8479', '#F4D8C4'
       ],
 
     };

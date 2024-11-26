@@ -387,7 +387,7 @@ Nodes.init(
     1,                                 // particle density
     0.3,                              // particle width
     0.3,                              // particle height
-    '#7A5B8C',                        // dot color (white)
+    '#452A45',                        // dot color (white)
     1500,                              // width in pixels
     750,                              // height in pixels
     0,                              // positionX
