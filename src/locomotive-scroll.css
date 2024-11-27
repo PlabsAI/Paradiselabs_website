@@ -1,0 +1,31 @@
+/* Locomotive Scroll styles */
+html.has-scroll-smooth {
+    overflow: hidden;
+}
+
+[data-scroll-container] {
+    min-height: 100vh;
+}
+
+[data-scroll-section] {
+    position: relative;
+}
+
+/* Scroll animations */
+[data-scroll] {
+    transition: transform 1s cubic-bezier(0.6, 0.6, 0, 1);
+    will-change: transform;
+}
+
+/* Scroll speed variations */
+[data-scroll-speed="1"] {
+    transform: translateY(var(--scroll-offset));
+}
+
+[data-scroll-speed="2"] {
+    transform: translateY(calc(var(--scroll-offset) * 2));
+}
+
+[data-scroll-speed="3"] {
+    transform: translateY(calc(var(--scroll-offset) * 3));
+}

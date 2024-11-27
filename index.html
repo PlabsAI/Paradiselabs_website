@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join the Waitlist</title>
     
+    <!-- Locomotive Scroll -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="/src/locomotive-scroll.css">
+    
     <!-- Particle system styles -->
     <link rel="stylesheet" href="/src/particles/particles.css">
 
@@ -16,46 +20,199 @@
     
     <!-- PIXI.js for particle rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+
+    <style>
+        .section {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #f4f0ff;
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+        .section p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-      <div class="container-lg">
-        <!-- Logo -->
-        <a href="home/index.html" class="logo-with-name header-logo">
-          <img src="home/build/q-7110c4a0.png" alt="Logo" class="logo-with-name-logo">
-          <div class="logo-with-name-name"></div>
+  <!-- Header -->
+  <header class="header" data-scroll-section>
+    <div class="container-lg">
+      <!-- Logo -->
+      <a href="home/index.html" class="logo-with-name header-logo" data-scroll data-scroll-speed="1">
+        <img src="home/build/q-7110c4a0.png" alt="Logo" class="logo-with-name-logo">
+        <div class="logo-with-name-name"></div>
+      </a>
+
+      <!-- Navigation -->
+      <ul class="header-nav" data-scroll data-scroll-speed="1">
+        <li><a href="#overview" class="header-nav-link">Overview</a></li>
+        <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
+        <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
+        <li><a href="#features" class="header-nav-link">Features</a></li>
+        <li><a href="#tiers" class="header-nav-link">Tiers</a></li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="header-actions" data-scroll data-scroll-speed="1">
+        <a href="#waitlist" class="button button-primary header-actions-waitlist pulse-effect">
+          Join Waitlist
+          <div class="button-border"></div>
         </a>
-
-        <!-- Navigation -->
-        <ul class="header-nav">
-          <li><a href="#about" class="header-nav-link">About</a></li>
-          <li><a href="#features" class="header-nav-link">Features</a></li>
-          <li><a href="#vision" class="header-nav-link">Vision</a></li>
-          <li><a href="blog.html" class="header-nav-link">Blog</a></li>
-        </ul>
-
-        <!-- Actions -->
-        <div class="header-actions">
-          <a href="#waitlist" class="button button-primary header-actions-waitlist pulse-effect">
-            Join Waitlist
-            <div class="button-border"></div>
-          </a>
-          <div class="header-toggle">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+        <div class="header-toggle">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
+  <!-- Particle system script -->
+  <script src="/src/particles/particles.js" defer></script>
 
-    <div id="root"></div>
+  <!-- React app entry point -->
+  <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Particle system script -->
-    <script src="/src/particles/particles.js" defer></script>
+    <main data-scroll-container>
+        <div id="root" data-scroll-section></div>
 
-    <!-- React app entry point -->
-    <script type="module" src="/src/main.tsx"></script>
+        <!-- Technical Overview Section -->
+        <section id="overview" class="section" data-scroll-section>
+            <h2 data-scroll data-scroll-speed="1">Technical Overview</h2>
+            <p data-scroll data-scroll-speed="2">
+                Veyron is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. 
+                It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
+            </p>
+        </section>
+
+        <!-- Core Architecture Section -->
+        <section id="architecture" class="section" data-scroll-section>
+            <h2 data-scroll data-scroll-speed="1">Core Architecture</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2">
+                <div class="feature-card">
+                    <h3>Frontend Stack</h3>
+                    <p>Next.js 13+ with App Router, TypeScript, and Tailwind CSS</p>
+                </div>
+                <div class="feature-card">
+                    <h3>AI Agent System</h3>
+                    <p>Specialized AI agents for different aspects of development</p>
+                </div>
+                <div class="feature-card">
+                    <h3>State Management</h3>
+                    <p>Context-based state handling with real-time updates</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Five Core Laws Section -->
+        <section id="laws" class="section" data-scroll-section>
+            <h2 data-scroll data-scroll-speed="1">The Five Core Laws</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2">
+                <div class="feature-card">
+                    <h3>Revenue Generation</h3>
+                    <p>Automated monetization strategy implementation</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Design Excellence</h3>
+                    <p>Component-based architecture with modern UI/UX patterns</p>
+                </div>
+                <div class="feature-card">
+                    <h3>SEO Optimization</h3>
+                    <p>Automated meta-data and schema markup implementation</p>
+                </div>
+                <div class="feature-card">
+                    <h3>User Engagement</h3>
+                    <p>Interactive elements and content personalization</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Analytics Integration</h3>
+                    <p>Comprehensive data collection and monitoring</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Features Section -->
+        <section id="features" class="section" data-scroll-section>
+            <h2 data-scroll data-scroll-speed="1">Technical Features</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2">
+                <div class="feature-card">
+                    <h3>Adjustable AI Autonomy</h3>
+                    <p>Fine-grained control over AI decision-making</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Development Interface</h3>
+                    <p>Live preview environment with real-time code generation</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Component System</h3>
+                    <p>Reusable UI components with theme-aware styling</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Tiers Section -->
+        <section id="tiers" class="section" data-scroll-section>
+            <h2 data-scroll data-scroll-speed="1">Implementation Tiers</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2">
+                <div class="feature-card">
+                    <h3>Developer Tier</h3>
+                    <p>Full API access with custom component integration</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Business Tier</h3>
+                    <p>Simplified agent controls with template customization</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Starter Tier</h3>
+                    <p>Essential agent functionality with pre-built templates</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Locomotive Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+
+    <!-- Initialize Locomotive Scroll -->
+    <script>
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true
+        });
+
+        // Navigation scroll behavior
+        document.querySelectorAll('.header-nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    scroller.scrollTo(targetSection);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
