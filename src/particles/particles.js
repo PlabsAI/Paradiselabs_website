@@ -137,7 +137,7 @@ const Nodes = {
 	
 			// Start loading the data and animate the starting blackhole effect
 			setTimeout(() => {
-				this.loadData(image || 'https://i.imgur.com/gFVigiC.png');
+				this.loadData(image || 'https://i.imgur.com/wTz7QCr.png');
 				
 				// Set startup mouse position
 				this.startupMousePos = {
@@ -383,7 +383,7 @@ const Nodes = {
 
 // Initialize with default values
 Nodes.init(
-    'https://i.imgur.com/gFVigiC.png', // image URL
+    'https://i.imgur.com/wTz7QCr.png', // image URL
     1,                                 // particle density
     0.3,                              // particle width
     0.3,                              // particle height
