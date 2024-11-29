@@ -223,202 +223,306 @@ body {
 }
 
 .section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.02) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulseGradient 8s ease-in-out infinite;
+}
+
+@keyframes pulseGradient {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .section h2 {
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    font-weight: 800;
-    background: linear-gradient(45deg, #fff, #d000ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-    letter-spacing: -0.02em;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #fff, #d000ff, #9000ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  letter-spacing: -0.02em;
+  position: relative;
+  text-shadow: 0 0 30px rgba(208, 0, 255, 0.3);
+}
+
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(208, 0, 255, 0.5), transparent);
 }
 
 .section p {
-    font-size: 1.25rem;
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9);
-    text-align: center;
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Features Grid */
 .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  perspective: 1000px;
 }
 
 .feature-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(208, 0, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+              0 0 20px rgba(208, 0, 255, 0.2);
+  border-color: rgba(208, 0, 255, 0.3);
+}
+
+.feature-card:hover::before {
+  transform: translateX(100%);
 }
 
 .feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #fff;
-    font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(45deg, #fff, #d000ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.feature-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #d000ff, transparent);
+  transition: width 0.3s ease;
+}
+
+.feature-card:hover h3::after {
+  width: 100%;
 }
 
 .feature-card p {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-align: left;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: left;
+  line-height: 1.7;
+  margin-top: 1rem;
 }
 
 /* Animated Logo Styles */
 .animated-logo-button {
-    margin: 0;
-    height: auto;
-    background: transparent;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    font-weight: 800;
-    position: relative;
-    text-decoration: none;
-    display: inline-block;
+  margin: 0;
+  height: auto;
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 800;
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.animated-logo-button:hover {
+  transform: scale(1.05);
 }
 
 .actual-text {
-    display: inline-block;
-    color: var(--header-text);
-    font-family: inherit;
+  display: inline-block;
+  color: var(--header-text);
+  font-family: inherit;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .hover-text {
-    position: absolute;
-    box-sizing: border-box;
-    color: var(--logoAnimation);
-    width: 0;
-    inset: 0;
-    overflow: hidden;
-    transition: width 0.5s ease;
-    font-family: inherit;
+  position: absolute;
+  box-sizing: border-box;
+  color: var(--logoAnimation);
+  width: 0;
+  inset: 0;
+  overflow: hidden;
+  transition: width 0.5s ease;
+  font-family: inherit;
 }
 
 .animated-logo-button:hover .hover-text {
-    width: 100%;
-    filter: drop-shadow(0 0 23px var(--logoAnimation));
-    animation: shimmer 1.5s ease-in-out infinite alternate;
+  width: 100%;
+  filter: drop-shadow(0 0 25px var(--logoAnimation));
+  animation: shimmer 1.5s ease-in-out infinite alternate;
 }
 
 /* Hero Section */
 .hero-section {
-    text-align: center;
-    padding-top: 8rem;
-    position: relative;
+  text-align: center;
+  padding-top: 8rem;
+  position: relative;
 }
 
 .hero-section h1 {
-    font-size: 4.5rem;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(45deg, #fff, #d000ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    animation: titleReveal 1s ease-out forwards;
+  font-size: 4rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(45deg, #fff, #d000ff, #9000ff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  animation: titleReveal 1s ease-out forwards,
+             gradientFlow 8s linear infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Waitlist Form */
 .waitlist-form {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 3rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    transform: perspective(1000px) rotateX(0deg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
+              0 0 30px rgba(208, 0, 255, 0.1);
+  transform: perspective(1000px) rotateX(0deg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .waitlist-form:hover {
-    transform: perspective(1000px) rotateX(2deg);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+  transform: perspective(1000px) rotateX(2deg) translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3),
+              0 0 40px rgba(208, 0, 255, 0.2);
+  border-color: rgba(208, 0, 255, 0.3);
 }
 
 .waitlist-form input {
-    width: 100%;
-    padding: 1.2rem;
-    margin: 0.8rem 0;
-    border: 2px solid rgba(208, 0, 255, 0.3);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+  width: 100%;
+  padding: 1.2rem;
+  margin: 0.8rem 0;
+  border: 2px solid rgba(208, 0, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .waitlist-form input:focus {
-    outline: none;
-    border-color: var(--logoAnimation);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(208, 0, 255, 0.2);
+  outline: none;
+  border-color: var(--logoAnimation);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(208, 0, 255, 0.2),
+              inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .waitlist-form button {
-    width: 100%;
-    padding: 1.2rem;
-    margin-top: 1.5rem;
-    background: linear-gradient(45deg, #d000ff, #9000ff);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  width: 100%;
+  padding: 1.2rem;
+  margin-top: 1.5rem;
+  background: linear-gradient(45deg, #d000ff, #9000ff);
+  background-size: 200% auto;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.waitlist-form button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
 }
 
 .waitlist-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(208, 0, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(208, 0, 255, 0.4);
+  background-position: right center;
+}
+
+.waitlist-form button:hover::before {
+  left: 100%;
 }
 
 /* Early Access Badge */
 .early-access-badge {
-    background: linear-gradient(45deg, rgba(208, 0, 255, 0.2), rgba(144, 0, 255, 0.2));
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    display: inline-block;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    animation: float 3s ease-in-out infinite;
+  background: linear-gradient(45deg, rgba(208, 0, 255, 0.2), rgba(144, 0, 255, 0.2));
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  display: inline-block;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+              0 0 15px rgba(208, 0, 255, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Background Animation */
