@@ -13,7 +13,7 @@
     - particles.css
     - styles.css
   - Header section:
-    - Logo with image
+    - Animated logo
     - Navigation menu (About, Features, Vision, Blog)
     - Waitlist button with pulse effect
     - Mobile menu toggle
