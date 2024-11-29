@@ -381,18 +381,3 @@ const Nodes = {
     }
 };
 
-// Initialize with default values
-Nodes.init(
-    'https://i.imgur.com/wTz7QCr.png', // image URL
-    1,                                 // particle density
-    0.3,                              // particle width
-    0.3,                              // particle height
-    '#713168',                        // dot color (white)
-    1500,                              // width in pixels
-    750,                              // height in pixels
-    0,                              // positionX
-    0,                              // positionY
-    100,                              // canvasPadding
-    70,                               // mouseRadius (in pixels)
-    3900                              // startDelay (in milliseconds)
-);

@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join the Waitlist</title>
+    <title>Join the Waitlist - Veyron AI Web Development Framework</title>
     
     <!-- Locomotive Scroll -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="/src/locomotive-scroll.css">
     
-
     <!-- Original React styles -->
     <link rel="stylesheet" href="styles.css">
     
@@ -23,39 +22,95 @@
         :root {
             --logoAnimation: #d000ff;
             --header-text: #d0d4d7;
+            --gradient-start: #2a0845;
+            --gradient-end: #6441A5;
         }
+
+        body {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
         .section {
             min-height: 100vh;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             color: #f4f0ff;
+            position: relative;
+            overflow: hidden;
         }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
         .section h2 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 2rem;
-            font-weight: bold;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #d000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: -0.02em;
         }
+
         .section p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
         }
+
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             max-width: 1200px;
-            margin: 2rem auto;
+            margin: 3rem auto;
+            padding: 0 1rem;
         }
+
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 2rem;
+            border-radius: 16px;
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+        }
+
         /* Animated Logo Styles */
         .animated-logo-button {
             margin: 0;
@@ -64,17 +119,19 @@
             padding: 0;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 800;
             position: relative;
             text-decoration: none;
             display: inline-block;
         }
+
         .actual-text {
             display: inline-block;
             color: var(--header-text);
             font-family: inherit;
         }
+
         .hover-text {
             position: absolute;
             box-sizing: border-box;
@@ -85,6 +142,7 @@
             transition: width 0.5s ease;
             font-family: inherit;
         }
+
         .animated-logo-button:hover .hover-text {
             width: 100%;
             filter: drop-shadow(0 0 23px var(--logoAnimation));
@@ -102,9 +160,181 @@
                 filter: drop-shadow(0 0 23px var(--logoAnimation)) brightness(1);
             }
         }
+
+        /* Waitlist Form Styles */
+        .waitlist-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .waitlist-form:hover {
+            transform: perspective(1000px) rotateX(2deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .waitlist-form input {
+            width: 100%;
+            padding: 1.2rem;
+            margin: 0.8rem 0;
+            border: 2px solid rgba(208, 0, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .waitlist-form input:focus {
+            outline: none;
+            border-color: var(--logoAnimation);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(208, 0, 255, 0.2);
+        }
+
+        .waitlist-form button {
+            width: 100%;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            background: linear-gradient(45deg, #d000ff, #9000ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .waitlist-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(208, 0, 255, 0.4);
+        }
+
+        .early-access-badge {
+            background: linear-gradient(45deg, rgba(208, 0, 255, 0.2), rgba(144, 0, 255, 0.2));
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-section {
+            text-align: center;
+            padding-top: 8rem;
+            position: relative;
+        }
+
+        .hero-section h1 {
+            font-size: 4.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #fff, #d000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            animation: titleReveal 1s ease-out forwards;
+        }
+
+        @keyframes titleReveal {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Navigation Styles */
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            padding: 0;
+        }
+
+        .header-nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--logoAnimation);
+            transition: width 0.3s ease;
+        }
+
+        .header-nav-link:hover {
+            color: #fff;
+        }
+
+        .header-nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Glowing dots background effect */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glow-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--logoAnimation);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: glowPulse 3s infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.5); }
+        }
     </style>
 </head>
 <body>
+  <!-- Background Animation -->
+  <div class="background-animation"></div>
+
   <!-- Header -->
   <header class="header" data-scroll-section>
     <div class="container-lg">
@@ -116,11 +346,11 @@
 
       <!-- Navigation -->
       <ul class="header-nav" data-scroll data-scroll-speed="1">
+        <li><a href="#waitlist" class="header-nav-link">Join Waitlist</a></li>
         <li><a href="#overview" class="header-nav-link">Overview</a></li>
         <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
         <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
         <li><a href="#features" class="header-nav-link">Features</a></li>
-        <li><a href="#tiers" class="header-nav-link">Tiers</a></li>
       </ul>
 
       <!-- Actions -->
@@ -137,6 +367,7 @@
       </div>
     </div>
   </header>
+
   <!-- Particle system script -->
   <script src="src/InteractiveTitle.js" defer></script>
 
@@ -145,6 +376,21 @@
 
     <main data-scroll-container>
         <div id="root" data-scroll-section></div>
+
+        <!-- Hero Section with Waitlist -->
+        <section id="waitlist" class="section hero-section" data-scroll-section>
+            <span class="early-access-badge">🚀 Coming Soon - Join the Waitlist</span>
+            <h1 data-scroll data-scroll-speed="1">The Future of AI-Powered<br>Web Development</h1>
+            <p data-scroll data-scroll-speed="2">
+                Be among the first to experience Veyron - the revolutionary AI-driven web development framework. 
+                Sign up now for early access and exclusive updates.
+            </p>
+            <form class="waitlist-form" data-scroll data-scroll-speed="3">
+                <input type="email" placeholder="Enter your email address" required>
+                <input type="text" placeholder="Your role (e.g., Developer, Business Owner)" required>
+                <button type="submit">Join the Waitlist</button>
+            </form>
+        </section>
 
         <!-- Technical Overview Section -->
         <section id="overview" class="section" data-scroll-section>
@@ -219,32 +465,14 @@
                 </div>
             </div>
         </section>
-
-        <!-- Implementation Tiers Section -->
-        <section id="tiers" class="section" data-scroll-section>
-            <h2 data-scroll data-scroll-speed="1">Implementation Tiers</h2>
-            <div class="features-grid" data-scroll data-scroll-speed="2">
-                <div class="feature-card">
-                    <h3>Developer Tier</h3>
-                    <p>Full API access with custom component integration</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Business Tier</h3>
-                    <p>Simplified agent controls with template customization</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Starter Tier</h3>
-                    <p>Essential agent functionality with pre-built templates</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Locomotive Scroll -->
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
 
-    <!-- Initialize Locomotive Scroll -->
+    <!-- Initialize Locomotive Scroll and Background Animation -->
     <script>
+        // Locomotive Scroll initialization
         const scroller = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]'),
             smooth: true
@@ -261,6 +489,37 @@
                 }
             });
         });
+
+        // Waitlist form submission
+        document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const role = this.querySelector('input[type="text"]').value;
+            
+            // Here you would typically send this data to your backend
+            alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
+            
+            // Clear the form
+            this.reset();
+        });
+
+        // Background animation
+        function createGlowingDots() {
+            const container = document.querySelector('.background-animation');
+            const numberOfDots = 50;
+
+            for (let i = 0; i < numberOfDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'glow-dot';
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                dot.style.animationDelay = `${Math.random() * 3}s`;
+                container.appendChild(dot);
+            }
+        }
+
+        // Initialize background animation
+        createGlowingDots();
     </script>
 </body>
 </html>
