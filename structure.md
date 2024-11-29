@@ -10,7 +10,6 @@
     - jQuery 3.6.0 (required for particle system)
     - PIXI.js 4.5.1 (particle rendering)
   - Stylesheet links:
-    - particles.css
     - styles.css
   - Header section:
     - Animated logo

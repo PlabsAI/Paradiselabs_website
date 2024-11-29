@@ -1,9 +1,0 @@
-canvas {
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  z-index: 2;  /* High z-index to ensure it's above everything */
-  pointer-events: none;  /* This allows clicking through the canvas if needed */
-  width: 100%;  /* Ensure it covers the full width */
-  height: 100%;  /* Ensure it covers the full height */
-}
