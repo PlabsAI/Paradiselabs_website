@@ -110,7 +110,7 @@ export const Loader: React.FC<LoaderProps> = memo(({
   size = 0.5,
   primaryColor = '#ffffff',
   glowColor = '#f1edb6',
-  spaceColor = '#020C10'
+  spaceColor = '#060C14'
 }) => {
   return (
     <LoaderErrorBoundary>
