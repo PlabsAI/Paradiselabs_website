@@ -23,7 +23,7 @@
  * - Complex gradient patterns for realistic light distortion
  */
 
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 /**
@@ -35,7 +35,6 @@ interface LoaderProps {
   primaryColor?: string;  // Primary color for light effects and rings
   glowColor?: string;     // Color for the glow/energy effects
   spaceColor?: string;    // Background space color
-  disappearDelay?: number; // Time in seconds before disappearing animation starts
 }
 
 /**
@@ -55,16 +54,16 @@ interface StyleProps {
 // Animation keyframes
 const breatheEffect = keyframes`
   0% { 
-    transform: scale(1.1) rotate(-5deg);
+    transform: scale(1) rotate(-5deg);
     filter: sepia(0.5) brightness(1.1);
   }
   50% { 
-    transform: scale(0.60) rotate(-5deg);
-    filter: sepia(0.8) brightness(0.6);
+    transform: scale(0.80) rotate(-5deg);
+    filter: sepia(0.8) brightness(0.85);
   }
   100% { 
-    transform: scale(0.60) rotate(-5deg);
-    filter: sepia(0.5) brightness(1);
+    transform: scale(1) rotate(-5deg);
+    filter: sepia(0.5) brightness(1.1);
   }
 `;
 
@@ -78,21 +77,6 @@ const diskFlow = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-`;
-
-const disappearAnimation = keyframes`
-  0% { 
-    opacity: 1;
-    transform: scale(0.6) rotate(-5deg);
-  }
-  50% { 
-    opacity: 0.5;
-    transform: scale(0.3) rotate(-5deg);
-  }
-  100% { 
-    opacity: 0;
-    transform: scale(0.3) rotate(-5deg);
-  }
 `;
 
 /**
@@ -126,19 +110,8 @@ export const Loader: React.FC<LoaderProps> = memo(({
   size = 0.5,
   primaryColor = '#ffffff',
   glowColor = '#f1edb6',
-  spaceColor = '#020C10',
-  disappearDelay = 4
+  spaceColor = '#020C10'
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, disappearDelay * 1000);
-
-    return () => clearTimeout(timer);
-  }, [disappearDelay]);
-
   return (
     <LoaderErrorBoundary>
       <BlackHoleContainer
@@ -148,7 +121,7 @@ export const Loader: React.FC<LoaderProps> = memo(({
           glow: glowColor,
           space: spaceColor
         }}
-        isVisible={isVisible}
+        isVisible={true}
       >
         <div className="black-hole">
           <div className="lower-photon-ring" />
@@ -206,9 +179,7 @@ const BlackHoleContainer = styled.div<StyleProps>`
     position: relative;
     transform-origin: center center;
     filter: sepia(0.5);
-    animation: ${props => props.isVisible ? breatheEffect : disappearAnimation} 
-              ${props => props.isVisible ? '10s' : '0.5s'} 
-              ${props => props.isVisible ? 'ease-in-out infinite' : 'ease-out forwards'};
+    animation: ${breatheEffect} 10s ease-in-out infinite;
     transform-style: preserve-3d;
 
     > div {
