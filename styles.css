@@ -31,13 +31,20 @@
   --text-primary: hsl(0, 0%, 100%); /* White */
   --text-secondary: hsl(0, 0%, 90%); /* Light gray */
   --text-tertiary: hsl(0, 0%, 70%); /* Darker gray */
+
+  /* New Enhanced Variables */
+  --neon-primary: #d000ff;
+  --neon-secondary: #9000ff;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-shine: rgba(255, 255, 255, 0.1);
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: #020C10;
+  background: #050C14;
   overflow: hidden;
   color: var(--text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -258,9 +265,9 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.05) 0%, transparent 70%);
   pointer-events: none;
-  animation: pulseGradient 8s ease-in-out infinite;
+  animation: pulseGradient 3s ease-in-out infinite;
 }
 
 @keyframes pulseGradient {
@@ -279,6 +286,21 @@ body {
   letter-spacing: -0.02em;
   position: relative;
   text-shadow: 0 0 30px rgba(208, 0, 255, 0.3);
+  z-index: 1;
+}
+
+.section h2::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(208, 0, 255, 0.1);
+  z-index: -1;
+  filter: blur(8px);
+  letter-spacing: 8px;
+  opacity: 0.5;
 }
 
 .section h2::after {
@@ -314,14 +336,20 @@ body {
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
   padding: 2rem;
   border-radius: 16px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.8s ease-out;
   position: relative;
   overflow: hidden;
+  background-size: 200% 200%;
+  background-position: 0% 0%;
 }
 
 .feature-card::before {
@@ -336,15 +364,33 @@ body {
   transition: transform 0.6s ease;
 }
 
+.feature-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+              rgba(208, 0, 255, 0.1) 0%, 
+              transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
 .feature-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
-              0 0 20px rgba(208, 0, 255, 0.2);
-  border-color: rgba(208, 0, 255, 0.3);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(208, 0, 255, 0.2);
+  border-color: rgba(208, 0, 255, 0.4);
+  background-position: 100% 100%;
 }
 
 .feature-card:hover::before {
   transform: translateX(100%);
+}
+
+.feature-card:hover::after {
+  opacity: 1;
 }
 
 .feature-card h3 {
@@ -456,60 +502,83 @@ body {
 /* Waitlist Form */
 .waitlist-form {
   max-width: 600px;
-  margin: 3rem auto;
-  padding: 3rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 24px;
-  backdrop-filter: blur(10px);
+  margin: 4rem auto;
+  padding: 3.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 32px;
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
-              0 0 30px rgba(208, 0, 255, 0.1);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.2),
+    0 0 40px rgba(208, 0, 255, 0.1);
   transform: perspective(1000px) rotateX(0deg);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  z-index: 2; /* Ensure form is above background effects */
+}
+
+.waitlist-form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+              rgba(255, 255, 255, 0.05) 0%, 
+              transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .waitlist-form:hover {
-  transform: perspective(1000px) rotateX(2deg) translateY(-5px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3),
-              0 0 40px rgba(208, 0, 255, 0.2);
-  border-color: rgba(208, 0, 255, 0.3);
+  transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+  box-shadow: 
+    0 35px 70px rgba(0, 0, 0, 0.3),
+    0 0 50px rgba(208, 0, 255, 0.2);
+  border-color: rgba(208, 0, 255, 0.4);
+}
+
+.waitlist-form:hover::before {
+  opacity: 1;
 }
 
 .waitlist-form input {
   width: 100%;
   padding: 1.2rem;
-  margin: 0.8rem 0;
+  margin: 1rem 0;
   border: 2px solid rgba(208, 0, 255, 0.3);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
   font-size: var(--text-sm);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; 
+  z-index: 3; 
 }
 
 .waitlist-form input:focus {
   outline: none;
-  border-color: var(--logoAnimation);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(208, 0, 255, 0.2),
-              inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  border-color: var(--neon-primary);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 0 20px rgba(208, 0, 255, 0.2),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .waitlist-form button {
   width: 100%;
-  padding: 1.2rem;
-  margin-top: 1.5rem;
-  background: linear-gradient(45deg, #d000ff, #9000ff);
+  padding: 1.4rem;
+  margin-top: 2rem;
+  background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
   background-size: 200% auto;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   color: var(--text-primary);
   font-size: var(--text-md);
   font-weight: var(--font-semibold);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
@@ -523,14 +592,20 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: 0.5s;
+  background: linear-gradient(90deg, 
+              transparent, 
+              rgba(255, 255, 255, 0.2), 
+              transparent);
+  transition: 0.6s;
 }
 
 .waitlist-form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(208, 0, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 20px 40px rgba(208, 0, 255, 0.4),
+    0 0 30px rgba(208, 0, 255, 0.3);
   background-position: right center;
+  letter-spacing: 3px;
 }
 
 .waitlist-form button:hover::before {
@@ -539,20 +614,56 @@ body {
 
 /* Early Access Badge */
 .early-access-badge {
-  background: linear-gradient(45deg, rgba(208, 0, 255, 0.2), rgba(144, 0, 255, 0.2));
+  background: linear-gradient(45deg, 
+              rgba(208, 0, 255, 0.15), 
+              rgba(144, 0, 255, 0.15));
   color: var(--text-primary);
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 2rem;
   border-radius: 30px;
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   display: inline-block;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  animation: float 3s ease-in-out infinite;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
-            0 0 15px rgba(208, 0, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(208, 0, 255, 0.2);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.early-access-badge::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, 
+              rgba(255, 255, 255, 0.1) 0%, 
+              transparent 70%);
+  animation: rotate 10s linear infinite;
+}
+
+.early-access-badge::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    rgba(208, 0, 255, 0.5),
+    rgba(144, 0, 255, 0.5)
+  );
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.early-access-badge:hover::after {
+  opacity: 0.2;
 }
 
 /* Background Animation */
@@ -620,7 +731,7 @@ body {
     position: absolute;
     inset: 0;
     height: 580px;
-    background: #020C10;
+    background: #050C14;
     filter: blur(8px);
     -webkit-filter: blur(8px);
 }
@@ -690,7 +801,7 @@ body {
     transition: opacity 0.01s linear;
 }
 
-/* Animations */
+/* Enhanced Animations */
 @keyframes shimmer {
     0% {
         filter: drop-shadow(0 0 23px var(--logoAnimation)) brightness(1);
@@ -768,71 +879,4 @@ body {
             rotate(-720deg) scale(0.2);
         opacity: 0;
     }
-}
-
-/* Responsive styles */
-@media (max-width: 1248px) {
-  .header-open {
-    background-color: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  .header:not(.header-open) .header-nav {
-    visibility: hidden;
-    transform: translate(100%);
-  }
-
-  .header-nav {
-    width: 100vw;
-    height: 100vh;
-    border: 0;
-    border-radius: 0;
-    display: block;
-    left: 0;
-    margin: unset;
-    padding: 77px 0 0;
-    transition: transform 0.45s ease;
-    transform: none;
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    background: rgba(3, 0, 20, 0.9);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-  }
-
-  .header-nav li {
-    margin: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .header-nav li:last-child {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .header-nav-link {
-    padding: 20px 40px;
-    font-weight: var(--font-medium);
-    font-size: var(--text-xl);
-    line-height: var(--leading-normal);
-  }
-
-  .header-toggle {
-    display: block;
-  }
-
-  .header .container-lg {
-    padding: 20px 0;
-  }
-
-  .header .container-lg:before {
-    content: unset;
-  }
-}
-
-@media (min-width: 1248px) {
-  .header-toggle {
-    display: none;
-  }
 }

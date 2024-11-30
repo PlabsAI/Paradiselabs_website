@@ -5,27 +5,88 @@ html.has-scroll-smooth {
 
 [data-scroll-container] {
     min-height: 100vh;
+    perspective: 1000px;
 }
 
 [data-scroll-section] {
     position: relative;
+    transform-style: preserve-3d;
 }
 
-/* Scroll animations */
+/* Enhanced Scroll animations with better performance */
 [data-scroll] {
-    transition: transform 1s cubic-bezier(0.6, 0.6, 0, 1);
-    will-change: transform;
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
+    will-change: transform, opacity;
+    transform-origin: center center;
 }
 
-/* Scroll speed variations */
+/* Improved scroll speed variations with opacity and scale */
 [data-scroll-speed="1"] {
-    transform: translateY(var(--scroll-offset));
+    transform: translateY(var(--scroll-offset)) scale(0.98);
+    opacity: calc(1 - abs(var(--scroll-offset)) / 1000);
 }
 
 [data-scroll-speed="2"] {
-    transform: translateY(calc(var(--scroll-offset) * 2));
+    transform: translateY(calc(var(--scroll-offset) * 1.5)) scale(0.96);
+    opacity: calc(1 - abs(var(--scroll-offset)) / 800);
 }
 
 [data-scroll-speed="3"] {
-    transform: translateY(calc(var(--scroll-offset) * 3));
+    transform: translateY(calc(var(--scroll-offset) * 2)) scale(0.94);
+    opacity: calc(1 - abs(var(--scroll-offset)) / 600);
+}
+
+/* Add parallax effect for background elements */
+[data-scroll-parallax] {
+    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform;
+    transform: translateZ(calc(var(--scroll-offset) * -0.2px));
+}
+
+/* Add fade-in effect for elements entering viewport */
+[data-scroll-fade] {
+    opacity: 0;
+    transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateY(30px);
+}
+
+[data-scroll-fade].is-inview {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Add scale effect for elements entering viewport */
+[data-scroll-scale] {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
+}
+
+[data-scroll-scale].is-inview {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Add rotation effect for elements entering viewport */
+[data-scroll-rotate] {
+    transform: rotate(-5deg);
+    opacity: 0;
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
+}
+
+[data-scroll-rotate].is-inview {
+    transform: rotate(0);
+    opacity: 1;
+}
+
+/* Add blur effect for elements leaving viewport */
+[data-scroll-blur] {
+    filter: blur(10px);
+    opacity: 0;
+    transition: filter 1.2s ease-out, opacity 1s ease;
+}
+
+[data-scroll-blur].is-inview {
+    filter: blur(0);
+    opacity: 1;
 }

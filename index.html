@@ -20,10 +20,10 @@
 </head>
 <body>
   <!-- Background Animation -->
-  <div class="background-animation"></div>
+  <div class="background-animation" data-scroll-parallax></div>
 
   <!-- Header -->
-  <header class="header" data-scroll-section>
+  <header class="header">
     <div class="container-lg">
       <!-- Animated Logo -->
       <a href="#" class="animated-logo-button" data-scroll data-scroll-speed="1">
@@ -32,31 +32,23 @@
       </a>
 
       <!-- Navigation -->
-      <ul class="header-nav" data-scroll data-scroll-speed="1">
-        <li><a href="#waitlist" class="header-nav-link">Join Waitlist</a></li>
-        <li><a href="#overview" class="header-nav-link">Overview</a></li>
-        <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
-        <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
-        <li><a href="#features" class="header-nav-link">Features</a></li>
-      </ul>
+        <ul class="header-nav">
+          <li><a href="#waitlist" class="header-nav-link">Join Waitlist</a></li>
+          <li><a href="#overview" class="header-nav-link">Overview</a></li>
+          <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
+          <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
+          <li><a href="#features" class="header-nav-link">Features</a></li>
+        </ul>
 
       <!-- Actions -->
-      <div class="header-actions" data-scroll data-scroll-speed="1">
-        <a href="#waitlist" class="button button-primary header-actions-waitlist pulse-effect">
+      <div class="header-actions">
+        <a href="#waitlist" class="button button-primary pulse-effect">
           Join Waitlist
           <div class="button-border"></div>
         </a>
-        <div class="header-toggle">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
       </div>
     </div>
   </header>
-
-  <!-- Particle system script -->
-  <script src="src/InteractiveTitle.js" defer></script>
 
   <!-- React app entry point -->
   <script type="module" src="/src/main.tsx"></script>
@@ -66,13 +58,13 @@
 
         <!-- Hero Section with Waitlist -->
         <section id="waitlist" class="section hero-section" data-scroll-section>
-            <span class="early-access-badge">🚀 Coming Soon - Join the Waitlist</span>
-            <h1 data-scroll data-scroll-speed="1">The Future of AI-Powered<br>Web Development</h1>
-            <p data-scroll data-scroll-speed="2">
+            <span class="early-access-badge" data-scroll data-scroll-speed="2" data-scroll-fade>🚀 Coming Soon - Join the Waitlist</span>
+            <h1 data-scroll data-scroll-speed="2" data-scroll-rotate>The Future of AI-Powered<br>Web Development</h1>
+            <p data-scroll data-scroll-speed="3" data-scroll-fade>
                 Be among the first to experience Veyron - the revolutionary AI-driven web development framework. 
                 Sign up now for early access and exclusive updates.
             </p>
-            <form class="waitlist-form" data-scroll data-scroll-speed="3">
+            <form class="waitlist-form" data-scroll data-scroll-speed="2" data-scroll-scale>
                 <input type="email" placeholder="Enter your email address" required>
                 <input type="text" placeholder="Your role (e.g., Developer, Business Owner)" required>
                 <button type="submit">Join the Waitlist</button>
@@ -81,8 +73,8 @@
 
         <!-- Technical Overview Section -->
         <section id="overview" class="section" data-scroll-section>
-            <h2 data-scroll data-scroll-speed="1">Technical Overview</h2>
-            <p data-scroll data-scroll-speed="2">
+            <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Technical Overview</h2>
+            <p data-scroll data-scroll-speed="3" data-scroll-fade>
                 Veyron is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. 
                 It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
             </p>
@@ -90,17 +82,17 @@
 
         <!-- Core Architecture Section -->
         <section id="architecture" class="section" data-scroll-section>
-            <h2 data-scroll data-scroll-speed="1">Core Architecture</h2>
-            <div class="features-grid" data-scroll data-scroll-speed="2">
-                <div class="feature-card">
+            <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Core Architecture</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2" data-scroll-fade>
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Frontend Stack</h3>
                     <p>Next.js 13+ with App Router, TypeScript, and Tailwind CSS</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>AI Agent System</h3>
                     <p>Specialized AI agents for different aspects of development</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>State Management</h3>
                     <p>Context-based state handling with real-time updates</p>
                 </div>
@@ -109,25 +101,25 @@
 
         <!-- Five Core Laws Section -->
         <section id="laws" class="section" data-scroll-section>
-            <h2 data-scroll data-scroll-speed="1">The Five Core Laws</h2>
-            <div class="features-grid" data-scroll data-scroll-speed="2">
-                <div class="feature-card">
+            <h2 data-scroll data-scroll-speed="2" data-scroll-blur>The Five Core Laws</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2" data-scroll-fade>
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Revenue Generation</h3>
                     <p>Automated monetization strategy implementation</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Design Excellence</h3>
                     <p>Component-based architecture with modern UI/UX patterns</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>SEO Optimization</h3>
                     <p>Automated meta-data and schema markup implementation</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>User Engagement</h3>
                     <p>Interactive elements and content personalization</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Analytics Integration</h3>
                     <p>Comprehensive data collection and monitoring</p>
                 </div>
@@ -136,17 +128,17 @@
 
         <!-- Technical Features Section -->
         <section id="features" class="section" data-scroll-section>
-            <h2 data-scroll data-scroll-speed="1">Technical Features</h2>
-            <div class="features-grid" data-scroll data-scroll-speed="2">
-                <div class="feature-card">
+            <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Technical Features</h2>
+            <div class="features-grid" data-scroll data-scroll-speed="2" data-scroll-fade>
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Adjustable AI Autonomy</h3>
                     <p>Fine-grained control over AI decision-making</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Development Interface</h3>
                     <p>Live preview environment with real-time code generation</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-scroll data-scroll-scale>
                     <h3>Component System</h3>
                     <p>Reusable UI components with theme-aware styling</p>
                 </div>
@@ -164,18 +156,22 @@
             history.scrollRestoration = 'manual';
         }
 
-        // Initialize Locomotive Scroll
+        // Initialize Locomotive Scroll with enhanced options
         const scroller = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]'),
-            smooth: true
+            smooth: true,
+            smoothMobile: true,
+            multiplier: 1,
+            lerp: 0.1,
+            getDirection: true,
+            getSpeed: true,
+            class: 'is-inview'
         });
 
         // Handle initial hash navigation after Locomotive Scroll is ready
         window.addEventListener('load', () => {
-            // Get the hash without the '#' symbol
             const hash = window.location.hash.replace('#', '');
             if (hash) {
-                // Small delay to ensure Locomotive Scroll is fully initialized
                 setTimeout(() => {
                     const targetSection = document.getElementById(hash);
                     if (targetSection) {
@@ -185,34 +181,39 @@
             }
         });
 
-        // Navigation scroll behavior
+        // Enhanced navigation scroll behavior
         document.querySelectorAll('.header-nav-link, .header-actions-waitlist').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
-                    scroller.scrollTo(targetSection);
-                    // Update URL without triggering scroll
+                    scroller.scrollTo(targetSection, {
+                        offset: -100,
+                        duration: 1500,
+                        easing: [0.25, 0.00, 0.35, 1.00]
+                    });
                     history.pushState(null, null, `#${targetId}`);
                 }
             });
         });
 
-        // Waitlist form submission
+        // Enhanced waitlist form submission with animation
         document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.querySelector('input[type="email"]').value;
             const role = this.querySelector('input[type="text"]').value;
             
-            // Here you would typically send this data to your backend
-            alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
-            
-            // Clear the form
-            this.reset();
+            // Animate form submission
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
+                this.reset();
+            }, 200);
         });
 
-        // Background animation
+        // Enhanced background animation
         function createGlowingDots() {
             const container = document.querySelector('.background-animation');
             const numberOfDots = 50;
@@ -223,12 +224,18 @@
                 dot.style.left = `${Math.random() * 100}%`;
                 dot.style.top = `${Math.random() * 100}%`;
                 dot.style.animationDelay = `${Math.random() * 3}s`;
+                dot.style.animationDuration = `${3 + Math.random() * 2}s`;
                 container.appendChild(dot);
             }
         }
 
-        // Initialize background animation
+        // Initialize enhanced background animation
         createGlowingDots();
+
+        // Update scroll animations on resize
+        window.addEventListener('resize', () => {
+            scroller.update();
+        });
     </script>
 </body>
 </html>
