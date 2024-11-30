@@ -1,19 +1,48 @@
 :root {
-    --logoAnimation: #d000ff;
-    --header-text: #d0d4d7;
-    --gradient-start: #2a0845;
-    --gradient-end: #6441A5;
+  /* Original Variables */
+  --logoAnimation: #d000ff;
+  --header-text: #d0d4d7;
+  --gradient-start: #2a0845;
+  --gradient-end: #6441A5;
+
+  /* Typography System */
+  --base-size: 1rem; /* 16px */
+  --text-xs: 0.875rem; /* 14px */
+  --text-sm: 1rem; /* 16px */
+  --text-md: 1.125rem; /* 18px */
+  --text-lg: 1.25rem; /* 20px */
+  --text-xl: 1.5rem; /* 24px */
+  --text-2xl: 2rem; /* 32px */
+  --text-3xl: 3rem; /* 48px */
+
+  /* Font Weights */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+
+  /* Colors (HSL) */
+  --text-primary: hsl(0, 0%, 100%); /* White */
+  --text-secondary: hsl(0, 0%, 90%); /* Light gray */
+  --text-tertiary: hsl(0, 0%, 70%); /* Darker gray */
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: #020C10;
-    overflow: hidden;
-    color: #fff;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #020C10;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--base-size);
+  line-height: var(--leading-normal);
 }
 
 /* Base styles and font settings */
@@ -55,9 +84,9 @@ body {
 
 .logo-with-name-name {
   font-feature-settings: "ss01" on, "cv10" on, "calt" off, "liga" off;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-medium);
 }
 
 /* Container */
@@ -70,7 +99,7 @@ body {
 }
 
 .header .container-lg:before {
-  background: radial-gradient(62.87% 100% at 50% 100%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+  background: radial-gradient(62.87% 100% at 50% 100%, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0) 100%);
   bottom: 0;
   content: "";
   height: 1px;
@@ -99,10 +128,10 @@ body {
 }
 
 .header-nav-link {
-  color: rgba(255, 255, 255, 0.8);
+  color: hsla(0, 0%, 100%, 0.8);
   text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
   transition: all 0.3s ease;
   position: relative;
 }
@@ -139,15 +168,15 @@ body {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border-radius: 8px;
-  color: #f4f0ff;
+  color: var(--text-primary);
   display: block;
   padding: 8px 16px;
   position: relative;
   width: max-content;
   font-feature-settings: "ss01" on, "cv10" on, "calt" off, "liga" off;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-medium);
   text-decoration: none;
 }
 
@@ -240,9 +269,9 @@ body {
 }
 
 .section h2 {
-  font-size: 3rem;
+  font-size: var(--text-3xl);
   margin-bottom: 2rem;
-  font-weight: 800;
+  font-weight: var(--font-extrabold);
   background: linear-gradient(45deg, #fff, #d000ff, #9000ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -264,11 +293,11 @@ body {
 }
 
 .section p {
-  font-size: 1.25rem;
+  font-size: var(--text-md);
   max-width: 800px;
   margin: 0 auto;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -319,10 +348,10 @@ body {
 }
 
 .feature-card h3 {
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   margin-bottom: 1.2rem;
-  color: #fff;
-  font-weight: 700;
+  color: var(--text-primary);
+  font-weight: var(--font-bold);
   background: linear-gradient(45deg, #fff, #d000ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -345,10 +374,10 @@ body {
 }
 
 .feature-card p {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
   text-align: left;
-  line-height: 1.7;
+  line-height: var(--leading-relaxed);
   margin-top: 1rem;
 }
 
@@ -360,8 +389,8 @@ body {
   padding: 0;
   border: none;
   cursor: pointer;
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: var(--text-xl);
+  font-weight: var(--font-extrabold);
   position: relative;
   text-decoration: none;
   display: inline-block;
@@ -403,18 +432,19 @@ body {
   position: relative;
 }
 
+
 .hero-section h1 {
-  font-size: 4rem;
-  line-height: 1.2;
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
   margin-bottom: 1.5rem;
   background: linear-gradient(45deg, #fff, #d000ff, #9000ff);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 900;
+  font-weight: var(--font-extrabold);
   letter-spacing: -0.03em;
   animation: titleReveal 1s ease-out forwards,
-             gradientFlow 8s linear infinite;
+           gradientFlow 8s linear infinite;
 }
 
 @keyframes gradientFlow {
@@ -452,8 +482,8 @@ body {
   border: 2px solid rgba(208, 0, 255, 0.3);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
-  color: #fff;
-  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
   transition: all 0.3s ease;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -475,9 +505,9 @@ body {
   background-size: 200% auto;
   border: none;
   border-radius: 12px;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
@@ -510,18 +540,18 @@ body {
 /* Early Access Badge */
 .early-access-badge {
   background: linear-gradient(45deg, rgba(208, 0, 255, 0.2), rgba(144, 0, 255, 0.2));
-  color: #fff;
+  color: var(--text-primary);
   padding: 0.8rem 1.5rem;
   border-radius: 30px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   margin-bottom: 2rem;
   display: inline-block;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   animation: float 3s ease-in-out infinite;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
-              0 0 15px rgba(208, 0, 255, 0.2);
+            0 0 15px rgba(208, 0, 255, 0.2);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -783,9 +813,9 @@ body {
 
   .header-nav-link {
     padding: 20px 40px;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 32px;
+    font-weight: var(--font-medium);
+    font-size: var(--text-xl);
+    line-height: var(--leading-normal);
   }
 
   .header-toggle {
