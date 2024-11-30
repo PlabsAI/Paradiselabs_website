@@ -23,7 +23,7 @@
   <div class="background-animation" data-scroll-parallax></div>
 
   <!-- Header -->
-  <header class="header">
+  <header class="header" data-scroll-section>
     <div class="container-lg">
       <!-- Animated Logo -->
       <a href="#" class="animated-logo-button" data-scroll data-scroll-speed="1">
@@ -32,7 +32,7 @@
       </a>
 
       <!-- Navigation -->
-        <ul class="header-nav">
+        <ul class="header-nav" data-scroll data-scroll-speed="1">
           <li><a href="#waitlist" class="header-nav-link">Join Waitlist</a></li>
           <li><a href="#overview" class="header-nav-link">Overview</a></li>
           <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
@@ -41,8 +41,8 @@
         </ul>
 
       <!-- Actions -->
-      <div class="header-actions">
-        <a href="#waitlist" class="button button-primary pulse-effect">
+      <div class="header-actions" data-scroll data-scroll-speed="1">
+        <a href="#waitlist" class="button button-primary header-actions-waitlist pulse-effect">
           Join Waitlist
           <div class="button-border"></div>
         </a>
@@ -156,16 +156,11 @@
             history.scrollRestoration = 'manual';
         }
 
-        // Initialize Locomotive Scroll with enhanced options
+        // Initialize Locomotive Scroll
         const scroller = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]'),
             smooth: true,
-            smoothMobile: true,
-            multiplier: 1,
-            lerp: 0.1,
-            getDirection: true,
-            getSpeed: true,
-            class: 'is-inview'
+            multiplier: 1
         });
 
         // Handle initial hash navigation after Locomotive Scroll is ready
@@ -181,39 +176,30 @@
             }
         });
 
-        // Enhanced navigation scroll behavior
+        // Navigation scroll behavior
         document.querySelectorAll('.header-nav-link, .header-actions-waitlist').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
-                    scroller.scrollTo(targetSection, {
-                        offset: -100,
-                        duration: 1500,
-                        easing: [0.25, 0.00, 0.35, 1.00]
-                    });
+                    scroller.scrollTo(targetSection);
                     history.pushState(null, null, `#${targetId}`);
                 }
             });
         });
 
-        // Enhanced waitlist form submission with animation
+        // Waitlist form submission
         document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = this.querySelector('input[type="email"]').value;
             const role = this.querySelector('input[type="text"]').value;
             
-            // Animate form submission
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-                alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
-                this.reset();
-            }, 200);
+            alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
+            this.reset();
         });
 
-        // Enhanced background animation
+        // Background animation
         function createGlowingDots() {
             const container = document.querySelector('.background-animation');
             const numberOfDots = 50;
@@ -224,12 +210,11 @@
                 dot.style.left = `${Math.random() * 100}%`;
                 dot.style.top = `${Math.random() * 100}%`;
                 dot.style.animationDelay = `${Math.random() * 3}s`;
-                dot.style.animationDuration = `${3 + Math.random() * 2}s`;
                 container.appendChild(dot);
             }
         }
 
-        // Initialize enhanced background animation
+        // Initialize background animation
         createGlowingDots();
 
         // Update scroll animations on resize
