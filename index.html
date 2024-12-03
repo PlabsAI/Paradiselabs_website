@@ -11,7 +11,7 @@
     
     <!-- Original React styles -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="glassmorphic-shiny-button.css">
+    <link rel="stylesheet" href="src\glassmorphic-shiny-button.css">
     
     <!-- jQuery dependency (required for particle system) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -51,9 +51,10 @@
 
       <!-- Actions -->
       <div class="header-actions" data-scroll data-scroll-speed="1">
-        <button class="glassmorphic-shiny-button">
-            <span>Join Waitlist</span>
-        </button>
+        <a href="#waitlist" class="glassmorphic-shiny-button">
+            Join Waitlist
+            <div class="button-border"></div>
+          </a>
       </div>
     </div>
   </header>
@@ -167,7 +168,7 @@
         });
 
         // Navigation scroll behavior
-        document.querySelectorAll('.header-nav-link, .header-actions-waitlist').forEach(anchor => {
+        document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
