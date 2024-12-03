@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="src/components/styles.css">
     <link rel="stylesheet" href="src/components/glassmorphic-shiny-button.css">
     
+    <!-- Workflow styles -->
+    <link rel="stylesheet" href="src/components/workflow.css">
+    
     <!-- jQuery dependency (required for particle system) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
@@ -87,6 +90,65 @@
                 Veyron is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. 
                 It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
             </p>
+            
+            <!-- Updated Workflow Diagram -->
+            <div class="workflow-container workflow-active" data-scroll data-scroll-speed="1">
+                <div class="workflow-grid">
+                    <!-- Frontend Technology Node -->
+                    <div class="workflow-node node-frontend" data-scroll data-scroll-scale>
+                        Frontend Layer
+                        <div class="tech-details">Next.js 13+ / React</div>
+                    </div>
+
+                    <!-- Backend Technology Node -->
+                    <div class="workflow-node node-backend" data-scroll data-scroll-scale>
+                        Backend Layer
+                        <div class="tech-details">Node.js / TypeScript</div>
+                    </div>
+
+                    <!-- Database Technology Node -->
+                    <div class="workflow-node node-database" data-scroll data-scroll-scale>
+                        Database Layer
+                        <div class="tech-details">PostgreSQL / Redis</div>
+                    </div>
+
+                    <!-- API Technology Node -->
+                    <div class="workflow-node node-api" data-scroll data-scroll-scale>
+                        API Gateway
+                        <div class="tech-details">REST / GraphQL</div>
+                    </div>
+
+                    <!-- Services Technology Node -->
+                    <div class="workflow-node node-services" data-scroll data-scroll-scale>
+                        AI Services
+                        <div class="tech-details">ML Models / Agents</div>
+                    </div>
+
+                    <!-- Infrastructure Technology Node -->
+                    <div class="workflow-node node-infrastructure" data-scroll data-scroll-scale>
+                        Infrastructure
+                        <div class="tech-details">Cloud / DevOps</div>
+                    </div>
+                </div>
+
+                <!-- Technology Connection Lines -->
+                <div class="architecture-connections">
+                    <!-- Vertical Connections -->
+                    <div class="connection connection-vertical"></div>
+                    
+                    <!-- Horizontal Connections -->
+                    <div class="connection connection-horizontal"></div>
+                    
+                    <!-- Pulse Effect -->
+                    <div class="tech-pulse">
+                        <div class="pulse-line pulse-horizontal"></div>
+                        <div class="pulse-line pulse-vertical"></div>
+                    </div>
+                    
+                    <!-- Data Flow Particles -->
+                    <div class="data-particle"></div>
+                </div>
+            </div>
         </section>
 
         <!-- Core Architecture Section -->
@@ -211,6 +273,17 @@
         // Update scroll animations on resize
         window.addEventListener('resize', () => {
             scroller.update();
+        });
+
+        // Enhanced mouse movement effect for workflow nodes
+        document.querySelectorAll('.workflow-node').forEach(node => {
+            node.addEventListener('mousemove', (e) => {
+                const rect = node.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / node.offsetWidth) * 100;
+                const y = ((e.clientY - rect.top) / node.offsetHeight) * 100;
+                node.style.setProperty('--mouse-x', `${x}%`);
+                node.style.setProperty('--mouse-y', `${y}%`);
+            });
         });
     </script>
 </body>
