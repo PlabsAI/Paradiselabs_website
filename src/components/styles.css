@@ -242,42 +242,6 @@ body {
   opacity: 1;
 }
 
-/* Primary button specific styles */
-.waitlist-button {
-  background: hsla(0, 0%, 100%, 0.023);
-  border: 1px solid hsla(0, 0%, 100%, 0.07);
-  border-radius: 980px;
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  transition: all 0.3s ease;
-  padding: 12px 24px;
-  font-family: var(--font-primary);
-  font-size: var(--text-xs);
-  font-weight: var(--font-medium);
-  color: hsla(0, 0%, 100%, 0.9);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05);
-}
-
-.waitlist-button:hover {
-  background: hsla(0, 0%, 100%, 0.06);
-  border-color: hsl(285, 100%, 45%);
-  color: hsl(0, 0%, 100%);
-  box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.1);
-}
-
-.waitlist-button:active {
-  background: hsla(0, 0%, 100%, 0.07);
-  transform: scale(0.98);
-  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1);
-}
-
 /* Section Styles */
 .section {
     min-height: 100vh;
