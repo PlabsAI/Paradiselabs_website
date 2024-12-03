@@ -32,38 +32,38 @@
     </script>
 </head>
 <body>
-  <!-- Background Animation -->
-  <div class="background-animation" data-scroll-parallax></div>
+    <!-- Background Animation -->
+    <div class="background-animation" data-scroll-parallax></div>
 
-  <!-- Header -->
-  <header class="header" data-scroll-section>
-    <div class="container-lg">
-      <!-- Animated Logo -->
-      <a href="#" class="animated-logo-button" data-scroll data-scroll-speed="1">
-        <span class="actual-text">Veyron</span>
-        <span class="hover-text" aria-hidden="true">Veyron</span>
-      </a>
+    <!-- Header -->
+    <header class="header" data-scroll-section>
+        <div class="container-lg">
+            <!-- Animated Logo -->
+            <a href="#" class="animated-logo-button" data-scroll data-scroll-speed="1">
+                <span class="actual-text">Veyron</span>
+                <span class="hover-text" aria-hidden="true">Veyron</span>
+            </a>
 
-      <!-- Navigation -->
-        <ul class="header-nav" data-scroll data-scroll-speed="1">
-          <li><a href="#overview" class="header-nav-link">Overview</a></li>
-          <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
-          <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
-          <li><a href="#features" class="header-nav-link">Features</a></li>
-        </ul>
+            <!-- Navigation -->
+            <ul class="header-nav" data-scroll data-scroll-speed="1">
+                <li><a href="#overview" class="header-nav-link">Overview</a></li>
+                <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
+                <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
+                <li><a href="#features" class="header-nav-link">Features</a></li>
+            </ul>
 
-      <!-- Actions -->
-      <div class="header-actions" data-scroll data-scroll-speed="1">
-        <a href="#waitlist" class="glassmorphic-shiny-button">
-            Join Waitlist
-            <div class="button-border"></div>
-          </a>
-      </div>
-    </div>
-  </header>
+            <!-- Actions -->
+            <div class="header-actions" data-scroll data-scroll-speed="1">
+                <a href="#waitlist" class="glassmorphic-shiny-button">
+                    Join Waitlist
+                    <div class="button-border"></div>
+                </a>
+            </div>
+        </div>
+    </header>
 
-  <!-- React app entry point -->
-  <script type="module" src="/src/main.tsx"></script>
+    <!-- React app entry point -->
+    <script type="module" src="/src/main.tsx"></script>
 
     <main data-scroll-container>
         <div id="root" data-scroll-section></div>
@@ -91,62 +91,49 @@
                 It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
             </p>
             
-            <!-- Updated Workflow Diagram -->
-            <div class="workflow-container workflow-active" data-scroll data-scroll-speed="1">
-                <div class="workflow-grid">
-                    <!-- Frontend Technology Node -->
-                    <div class="workflow-node node-frontend" data-scroll data-scroll-scale>
-                        Frontend Layer
-                        <div class="tech-details">Next.js 13+ / React</div>
+            <div class="workflow-container" data-scroll data-scroll-speed="1">
+                <div class="workflow-grid mermaid-style">
+                    <!-- User Interaction Node -->
+                    <div class="workflow-node node-user" data-scroll data-scroll-scale>
+                        User Interaction
+                        <div class="tech-details">Inputs Request</div>
+                    </div>
+                    <div class="connection-line">
+                        <div class="data-particle"></div>
                     </div>
 
-                    <!-- Backend Technology Node -->
-                    <div class="workflow-node node-backend" data-scroll data-scroll-scale>
-                        Backend Layer
-                        <div class="tech-details">Node.js / TypeScript</div>
+                    <!-- Veyron Interface Node -->
+                    <div class="workflow-node node-interface" data-scroll data-scroll-scale>
+                        Veyron Interface
+                        <div class="tech-details">Processes Request</div>
+                    </div>
+                    <div class="connection-line">
+                        <div class="data-particle"></div>
                     </div>
 
-                    <!-- Database Technology Node -->
-                    <div class="workflow-node node-database" data-scroll data-scroll-scale>
-                        Database Layer
-                        <div class="tech-details">PostgreSQL / Redis</div>
+                    <!-- AI Processing Node -->
+                    <div class="workflow-node node-processing" data-scroll data-scroll-scale>
+                        AI Processing
+                        <div class="tech-details">Delegates Tasks</div>
+                    </div>
+                    <div class="connection-line">
+                        <div class="data-particle"></div>
                     </div>
 
-                    <!-- API Technology Node -->
-                    <div class="workflow-node node-api" data-scroll data-scroll-scale>
-                        API Gateway
-                        <div class="tech-details">REST / GraphQL</div>
+                    <!-- Specialized Agents Node -->
+                    <div class="workflow-node node-agents" data-scroll data-scroll-scale>
+                        Specialized Agents
+                        <div class="tech-details">Generates Output</div>
+                    </div>
+                    <div class="connection-line">
+                        <div class="data-particle"></div>
                     </div>
 
-                    <!-- Services Technology Node -->
-                    <div class="workflow-node node-services" data-scroll data-scroll-scale>
-                        AI Services
-                        <div class="tech-details">ML Models / Agents</div>
+                    <!-- Results Compilation Node -->
+                    <div class="workflow-node node-results" data-scroll data-scroll-scale>
+                        Results Compilation
+                        <div class="tech-details">Displays Output</div>
                     </div>
-
-                    <!-- Infrastructure Technology Node -->
-                    <div class="workflow-node node-infrastructure" data-scroll data-scroll-scale>
-                        Infrastructure
-                        <div class="tech-details">Cloud / DevOps</div>
-                    </div>
-                </div>
-
-                <!-- Technology Connection Lines -->
-                <div class="architecture-connections">
-                    <!-- Vertical Connections -->
-                    <div class="connection connection-vertical"></div>
-                    
-                    <!-- Horizontal Connections -->
-                    <div class="connection connection-horizontal"></div>
-                    
-                    <!-- Pulse Effect -->
-                    <div class="tech-pulse">
-                        <div class="pulse-line pulse-horizontal"></div>
-                        <div class="pulse-line pulse-vertical"></div>
-                    </div>
-                    
-                    <!-- Data Flow Particles -->
-                    <div class="data-particle"></div>
                 </div>
             </div>
         </section>
@@ -273,17 +260,6 @@
         // Update scroll animations on resize
         window.addEventListener('resize', () => {
             scroller.update();
-        });
-
-        // Enhanced mouse movement effect for workflow nodes
-        document.querySelectorAll('.workflow-node').forEach(node => {
-            node.addEventListener('mousemove', (e) => {
-                const rect = node.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / node.offsetWidth) * 100;
-                const y = ((e.clientY - rect.top) / node.offsetHeight) * 100;
-                node.style.setProperty('--mouse-x', `${x}%`);
-                node.style.setProperty('--mouse-y', `${y}%`);
-            });
         });
     </script>
 </body>

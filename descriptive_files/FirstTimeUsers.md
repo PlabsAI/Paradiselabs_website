@@ -1,5 +1,6 @@
 # Veyron MVP Workflow
 
+## Frontend Workflow
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px', 'fontFamily': 'Arial', 'primaryColor': '#ff9900', 'primaryTextColor': '#1a1a1a' }}}%%

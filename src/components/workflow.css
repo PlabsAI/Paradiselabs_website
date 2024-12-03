@@ -67,7 +67,7 @@ body {
 
 .workflow-container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 800px;
   margin: 2rem auto;
   position: relative;
   min-height: 800px;
@@ -117,6 +117,15 @@ body {
   will-change: transform;
 }
 
+/* Adding Mermaid-style vertical layout option */
+.workflow-grid.mermaid-style {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rem;
+  position: relative;
+}
+
 .workflow-node {
   padding: var(--spacing-lg);
   background: var(--node-bg);
@@ -126,6 +135,7 @@ body {
   font-weight: 500;
   text-align: center;
   position: relative;
+  width: 200px;
   overflow: visible;
   box-shadow: 
     0 0 20px rgba(208, 0, 255, 0.1),
@@ -137,6 +147,7 @@ body {
   animation: neonPulse 4s ease-in-out infinite;
   will-change: transform, box-shadow;
   cursor: pointer;
+  z-index: var(--z-nodes);
 }
 
 .workflow-node::before {
@@ -197,88 +208,77 @@ body {
     0 0 30px rgba(208, 0, 255, 0.3);
 }
 
-/* Technology Node Positioning */
-.node-frontend { grid-column: 2/3; grid-row: 1; }
-.node-backend { grid-column: 4/5; grid-row: 1; }
-.node-database { grid-column: 3/4; grid-row: 2; }
-.node-api { grid-column: 2/3; grid-row: 3; }
-.node-services { grid-column: 4/5; grid-row: 3; }
-.node-infrastructure { grid-column: 3/4; grid-row: 4; }
+/* Node specific styles with improved vertical flow */
+.node-user { order: 1; }
+.node-interface { order: 2; }
+.node-processing { order: 3; }
+.node-agents { order: 4; }
+.node-results { order: 5; }
 
 /* Enhanced Connection Lines */
-.architecture-connections {
+.connection-line {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  transform-style: preserve-3d;
+  width: 2px;
+  height: 5rem;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--connection-primary) 20%,
+    var(--connection-primary) 80%,
+    transparent
+  );
+  left: 50%;
+  transform: translateX(-50%);
   z-index: var(--z-connections);
 }
 
-.connection {
-  position: absolute;
-  background: linear-gradient(90deg, 
-    transparent,
-    var(--neon-primary),
-    var(--neon-highlight),
-    var(--neon-secondary),
-    transparent
-  );
-  opacity: 0.3;
-  filter: blur(1px);
-  animation: connectionPulse 4s ease-in-out infinite;
-  will-change: opacity, transform;
-}
-
-.connection::before {
+/* Animated Arrow */
+.connection-line::after {
   content: '';
   position: absolute;
-  inset: -1px;
-  background: inherit;
-  filter: blur(4px);
-  opacity: 0.5;
-}
-
-.connection-vertical {
-  width: 2px;
-  height: 120px;
+  bottom: -10px;
   left: 50%;
-  transform: translateX(-50%) translateZ(10px);
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid var(--connection-primary);
+  animation: arrowPulse 2s infinite;
 }
 
-.connection-horizontal {
-  height: 2px;
-  width: 180px;
-  top: 50%;
-  transform: translateY(-50%) translateZ(10px);
-}
-
-/* Enhanced Particle System */
-.particles {
+/* Data Flow Animation */
+.data-particle {
+  width: 8px;
+  height: 8px;
+  background: var(--neon-primary);
+  border-radius: 50%;
   position: absolute;
-  inset: 0;
-  pointer-events: none;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flowDown 2s infinite;
+  opacity: 0;
   z-index: var(--z-particles);
 }
 
-.particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
+/* Multiple data particles with different delays */
+.workflow-grid.mermaid-style::before,
+.workflow-grid.mermaid-style::after {
+  content: '';
+  width: 6px;
+  height: 6px;
   background: var(--neon-primary);
   border-radius: 50%;
-  filter: blur(1px);
-  animation: particleFloat 10s infinite linear;
-  will-change: transform, opacity;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flowDown 2s infinite;
+  opacity: 0;
+  z-index: var(--z-particles);
 }
 
-.particle::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: inherit;
-  border-radius: inherit;
-  filter: blur(2px);
-  opacity: 0.5;
+.workflow-grid.mermaid-style::after {
+  animation-delay: 1s;
 }
 
 /* Enhanced Animations */
@@ -303,16 +303,31 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-@keyframes connectionPulse {
+@keyframes arrowPulse {
   0%, 100% {
-    opacity: 0.2;
-    filter: blur(1px);
-    transform: translateZ(10px) scale(1);
+    opacity: 0.3;
+    transform: translateX(-50%) scale(0.8);
   }
   50% {
-    opacity: 0.4;
-    filter: blur(2px);
-    transform: translateZ(20px) scale(1.05);
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@keyframes flowDown {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
   }
 }
 
@@ -388,8 +403,8 @@ body {
     padding: var(--spacing-md);
   }
 
-  .connection {
-    display: none;
+  .workflow-grid.mermaid-style {
+    gap: 4rem;
   }
 }
 
