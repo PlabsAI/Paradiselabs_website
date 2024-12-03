@@ -17,6 +17,15 @@
     
     <!-- PIXI.js for particle rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+    
+    <!-- Clear hash on page load -->
+    <script>
+        window.onload = function() {
+            if (window.location.hash) {
+                history.replaceState(null, '', window.location.pathname);
+            }
+        }
+    </script>
 </head>
 <body>
   <!-- Background Animation -->
@@ -33,7 +42,6 @@
 
       <!-- Navigation -->
         <ul class="header-nav" data-scroll data-scroll-speed="1">
-          <li><a href="#waitlist" class="header-nav-link">Join Waitlist</a></li>
           <li><a href="#overview" class="header-nav-link">Overview</a></li>
           <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
           <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
@@ -42,7 +50,7 @@
 
       <!-- Actions -->
       <div class="header-actions" data-scroll data-scroll-speed="1">
-        <a href="#waitlist" class="button button-primary header-actions-waitlist pulse-effect">
+        <a href="#waitlist" class="button waitlist-button header-actions-waitlist pulse-effect">
           Join Waitlist
           <div class="button-border"></div>
         </a>
@@ -60,7 +68,7 @@
         <section id="waitlist" class="section hero-section" data-scroll-section>
             <span class="early-access-badge" data-scroll data-scroll-speed="2" data-scroll-fade>🚀 Coming Soon - Join the Waitlist</span>
             <h1 data-scroll data-scroll-speed="2" data-scroll-rotate>The Future of AI-Powered<br>Web Development</h1>
-            <p data-scroll data-scroll-speed="3" data-scroll-fade>
+            <p data-scroll data-scroll-speed="1" data-scroll-fade>
                 Be among the first to experience Veyron - the revolutionary AI-driven web development framework. 
                 Sign up now for early access and exclusive updates.
             </p>
@@ -151,29 +159,11 @@
 
     <!-- Initialize Locomotive Scroll and Background Animation -->
     <script>
-        // Prevent default scroll restoration
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-
         // Initialize Locomotive Scroll
         const scroller = new LocomotiveScroll({
             el: document.querySelector('[data-scroll-container]'),
             smooth: true,
             multiplier: 1
-        });
-
-        // Handle initial hash navigation after Locomotive Scroll is ready
-        window.addEventListener('load', () => {
-            const hash = window.location.hash.replace('#', '');
-            if (hash) {
-                setTimeout(() => {
-                    const targetSection = document.getElementById(hash);
-                    if (targetSection) {
-                        scroller.scrollTo(targetSection);
-                    }
-                }, 100);
-            }
         });
 
         // Navigation scroll behavior
