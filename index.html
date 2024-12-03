@@ -98,8 +98,10 @@
                         User Interaction
                         <div class="tech-details">Inputs Request</div>
                     </div>
-                    <div class="connection-line">
-                        <div class="data-particle"></div>
+                    
+                    <!-- User to Interface Connection -->
+                    <div class="connection-line user-interface">
+                        <div class="data-particle data-particle-1"></div>
                     </div>
 
                     <!-- Veyron Interface Node -->
@@ -107,8 +109,15 @@
                         Veyron Interface
                         <div class="tech-details">Processes Request</div>
                     </div>
-                    <div class="connection-line">
-                        <div class="data-particle"></div>
+                    
+                    <!-- Interface to Processing Connection -->
+                    <div class="connection-line interface-processing">
+                        <div class="data-particle data-particle-2"></div>
+                    </div>
+
+                    <!-- Interface to Agents Connection -->
+                    <div class="connection-line interface-agents">
+                        <div class="data-particle data-particle-2"></div>
                     </div>
 
                     <!-- AI Processing Node -->
@@ -116,8 +125,10 @@
                         AI Processing
                         <div class="tech-details">Delegates Tasks</div>
                     </div>
-                    <div class="connection-line">
-                        <div class="data-particle"></div>
+                    
+                    <!-- Processing to Results Connection -->
+                    <div class="connection-line processing-results">
+                        <div class="data-particle data-particle-1"></div>
                     </div>
 
                     <!-- Specialized Agents Node -->
@@ -125,14 +136,21 @@
                         Specialized Agents
                         <div class="tech-details">Generates Output</div>
                     </div>
-                    <div class="connection-line">
-                        <div class="data-particle"></div>
+                    
+                    <!-- Agents to Results Connection -->
+                    <div class="connection-line agents-results">
+                        <div class="data-particle data-particle-1"></div>
                     </div>
 
                     <!-- Results Compilation Node -->
                     <div class="workflow-node node-results" data-scroll data-scroll-scale>
                         Results Compilation
                         <div class="tech-details">Displays Output</div>
+                    </div>
+                    
+                    <!-- Results to Interface Feedback Loop -->
+                    <div class="connection-line results-interface">
+                        <div class="data-particle data-particle-3"></div>
                     </div>
                 </div>
             </div>

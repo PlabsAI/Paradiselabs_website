@@ -1,57 +1,57 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
 :root {
-  /* Core Colors */
+  /* Enhanced Color System */
   --neon-primary: #d000ff;
   --neon-secondary: #9000ff;
   --neon-highlight: #ff00ff;
+  --neon-accent: #00ffff;
   --node-bg: rgba(0, 0, 0, 0.85);
   --node-border: rgba(255, 255, 255, 0.08);
   --text-color: #ffffff;
   --bg-color: #000000;
   
-  /* Enhanced Color System */
-  --pulse-color: var(--neon-primary);
-  --connection-primary: rgba(208, 0, 255, 0.4);
-  --tech-border: rgba(208, 0, 255, 0.2);
-  --node-shadow: 0 8px 32px rgba(208, 0, 255, 0.15);
-  --hover-shadow: 0 12px 40px rgba(208, 0, 255, 0.3);
+  /* Gradient Colors */
+  --gradient-start: rgba(208, 0, 255, 0.15);
+  --gradient-mid: rgba(144, 0, 255, 0.1);
+  --gradient-end: rgba(0, 255, 255, 0.05);
   
-  /* Animation Timings */
-  --transition-fast: 0.3s;
-  --transition-medium: 0.5s;
-  --transition-slow: 0.8s;
-  
-  /* Spacing System */
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
+  /* Enhanced Shadows */
+  --node-shadow: 
+    0 8px 32px rgba(208, 0, 255, 0.15),
+    0 4px 16px rgba(0, 255, 255, 0.1);
+  --hover-shadow: 
+    0 12px 40px rgba(208, 0, 255, 0.3),
+    0 8px 24px rgba(0, 255, 255, 0.2);
   
   /* Z-index Layers */
   --z-background: -1;
   --z-connections: 1;
   --z-nodes: 2;
   --z-particles: 3;
+  --z-interface: 4;
 }
 
 /* Light Theme Support */
 @media (prefers-color-scheme: light) {
   :root {
-    --node-bg: rgba(255, 255, 255, 0.85);
+    --node-bg: rgba(255, 255, 255, 0.9);
     --text-color: #000000;
     --bg-color: #ffffff;
     --node-border: rgba(208, 0, 255, 0.15);
-    --tech-border: rgba(208, 0, 255, 0.3);
+    --gradient-start: rgba(208, 0, 255, 0.1);
+    --gradient-mid: rgba(144, 0, 255, 0.07);
+    --gradient-end: rgba(0, 255, 255, 0.03);
   }
 }
 
 body {
   background-color: var(--bg-color);
   background: 
-    radial-gradient(circle at 20% 20%, rgba(208, 0, 255, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(144, 0, 255, 0.1) 0%, transparent 40%),
-    linear-gradient(to bottom right, var(--bg-color), #1a0122);
+    radial-gradient(circle at 20% 20%, var(--gradient-start) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, var(--gradient-mid) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--gradient-end) 0%, transparent 60%),
+    linear-gradient(135deg, var(--bg-color), #1a0122);
   color: var(--text-color);
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -67,23 +67,22 @@ body {
 
 .workflow-container {
   width: 100%;
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
-  min-height: 800px;
+  height: 800px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-xl);
-  perspective: 2000px;
+  padding: 2rem;
+  perspective: 2500px;
   transform-style: preserve-3d;
-  will-change: transform, opacity;
 }
 
 .workflow-container::before {
   content: '';
   position: absolute;
-  inset: -100px;
+  inset: -150px;
   background: 
     repeating-linear-gradient(
       90deg,
@@ -94,229 +93,208 @@ body {
     ),
     repeating-linear-gradient(
       0deg,
-      rgba(144, 0, 255, 0.03) 0px,
-      rgba(144, 0, 255, 0.03) 1px,
+      rgba(0, 255, 255, 0.02) 0px,
+      rgba(0, 255, 255, 0.02) 1px,
       transparent 1px,
       transparent 30px
     );
-  transform: perspective(1000px) rotateX(45deg);
+  transform: perspective(1500px) rotateX(45deg) scale(1.5);
   pointer-events: none;
-  animation: gridMove 20s linear infinite;
+  animation: gridMove 25s linear infinite;
   z-index: var(--z-background);
+  opacity: 0.7;
 }
 
-.workflow-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, auto);
-  gap: var(--spacing-xl);
-  width: 100%;
-  position: relative;
-  animation: floatGrid 15s ease-in-out infinite;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-/* Adding Mermaid-style vertical layout option */
 .workflow-grid.mermaid-style {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6rem;
   position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  animation: floatGrid 20s ease-in-out infinite;
 }
 
+/* Base Node Styles */
 .workflow-node {
-  padding: var(--spacing-lg);
+  padding: 1.5rem;
   background: var(--node-bg);
-  border: 1px solid var(--tech-border);
-  border-radius: 12px;
+  border: 1px solid var(--node-border);
+  border-radius: 16px;
   color: var(--text-color);
   font-weight: 500;
   text-align: center;
-  position: relative;
   width: 200px;
-  overflow: visible;
-  box-shadow: 
-    0 0 20px rgba(208, 0, 255, 0.1),
-    0 0 40px rgba(208, 0, 255, 0.05),
-    inset 0 0 15px rgba(208, 0, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all var(--transition-medium) cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  box-shadow: var(--node-shadow);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-style: preserve-3d;
-  animation: neonPulse 4s ease-in-out infinite;
-  will-change: transform, box-shadow;
+  animation: neonPulse 6s ease-in-out infinite;
   cursor: pointer;
   z-index: var(--z-nodes);
 }
 
-.workflow-node::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(
-    45deg,
-    var(--neon-primary),
-    var(--neon-secondary),
-    var(--neon-highlight)
-  );
-  border-radius: inherit;
-  z-index: var(--z-background);
-  opacity: 0;
-  transition: all var(--transition-fast) ease;
-  filter: blur(8px);
-  animation: gradientFlow 8s linear infinite;
-}
-
-.workflow-node::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--node-bg);
-  border-radius: inherit;
-  z-index: var(--z-background);
-  transition: opacity var(--transition-fast) ease;
-}
-
-.workflow-node:hover {
-  transform: translateY(-8px) translateZ(30px) scale(1.05);
-  box-shadow: 
-    0 0 30px rgba(208, 0, 255, 0.3),
-    0 0 60px rgba(208, 0, 255, 0.2),
-    inset 0 0 20px rgba(208, 0, 255, 0.2);
-}
-
-.workflow-node:hover::before {
-  opacity: 1;
-  filter: blur(12px);
-}
-
-.workflow-node:hover::after {
-  opacity: 0.9;
-}
-
-.workflow-node:active {
-  transform: translateY(-4px) translateZ(15px) scale(1.02);
-  transition: all 0.1s ease;
-}
-
-/* Enhanced Focus States */
-.workflow-node:focus-visible {
-  outline: none;
-  box-shadow: 
-    0 0 0 3px var(--neon-primary),
-    0 0 30px rgba(208, 0, 255, 0.3);
-}
-
-/* Node specific styles with improved vertical flow */
-.node-user { order: 1; }
-.node-interface { order: 2; }
-.node-processing { order: 3; }
-.node-agents { order: 4; }
-.node-results { order: 5; }
-
-/* Enhanced Connection Lines */
-.connection-line {
-  position: absolute;
-  width: 2px;
-  height: 5rem;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--connection-primary) 20%,
-    var(--connection-primary) 80%,
-    transparent
-  );
+/* Specific Node Positioning */
+.node-user {
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.node-interface {
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    135deg,
+    rgba(208, 0, 255, 0.95),
+    rgba(0, 0, 0, 0.95)
+  );
+  box-shadow: 
+    0 0 40px rgba(208, 0, 255, 0.2),
+    0 0 80px rgba(208, 0, 255, 0.1);
+}
+
+.node-processing {
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.node-agents {
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+}
+
+.node-results {
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Connection Lines */
+.connection-line {
+  position: absolute;
+  background: none;
+  pointer-events: none;
   z-index: var(--z-connections);
 }
 
-/* Animated Arrow */
-.connection-line::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
+/* User to Interface Connection */
+.connection-line.user-interface {
+  width: 3px;
+  height: 15%;
+  top: 18%;
   left: 50%;
   transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 12px solid var(--connection-primary);
-  animation: arrowPulse 2s infinite;
+  background: linear-gradient(
+    to bottom,
+    var(--neon-primary),
+    var(--neon-accent)
+  );
 }
 
-/* Data Flow Animation */
+/* Interface to Processing & Agents */
+.connection-line.interface-processing,
+.connection-line.interface-agents {
+  width: 3px;
+  height: 25%;
+  top: 35%;
+  background: linear-gradient(
+    to bottom,
+    var(--neon-accent),
+    var(--neon-primary)
+  );
+}
+
+.connection-line.interface-processing {
+  left: 35%;
+  transform: rotate(45deg);
+}
+
+.connection-line.interface-agents {
+  left: 65%;
+  transform: rotate(-45deg);
+}
+
+/* Processing & Agents to Results */
+.connection-line.processing-results,
+.connection-line.agents-results {
+  width: 3px;
+  height: 25%;
+  bottom: 25%;
+  background: linear-gradient(
+    to bottom,
+    var(--neon-primary),
+    var(--neon-accent)
+  );
+}
+
+.connection-line.processing-results {
+  left: 35%;
+  transform: rotate(-45deg);
+}
+
+.connection-line.agents-results {
+  left: 65%;
+  transform: rotate(45deg);
+}
+
+/* Results to Interface Feedback Loop */
+.connection-line.results-interface {
+  width: 300px;
+  height: 300px;
+  top: 40%;
+  left: 70%;
+  border: none;
+  border-right: 3px solid transparent;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  background: none;
+  border-image: linear-gradient(
+    180deg,
+    transparent 25%,
+    var(--neon-accent) 25%,
+    var(--neon-primary) 50%,
+    var(--neon-accent) 75%,
+    transparent 75%
+  ) 1;
+}
+
+/* Data Flow Particles */
 .data-particle {
   width: 8px;
   height: 8px;
-  background: var(--neon-primary);
+  background: var(--neon-accent);
   border-radius: 50%;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: flowDown 2s infinite;
+  filter: blur(1px);
+  box-shadow: 0 0 15px var(--neon-accent);
   opacity: 0;
   z-index: var(--z-particles);
 }
 
-/* Multiple data particles with different delays */
-.workflow-grid.mermaid-style::before,
-.workflow-grid.mermaid-style::after {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--neon-primary);
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: flowDown 2s infinite;
-  opacity: 0;
-  z-index: var(--z-particles);
+.data-particle-1 {
+  animation: flowDown 3s infinite;
 }
 
-.workflow-grid.mermaid-style::after {
+.data-particle-2 {
+  animation: flowCircular 4s infinite;
   animation-delay: 1s;
 }
 
-/* Enhanced Animations */
-@keyframes neonPulse {
-  0%, 100% {
-    box-shadow: 
-      0 0 20px rgba(208, 0, 255, 0.1),
-      0 0 40px rgba(208, 0, 255, 0.05),
-      inset 0 0 15px rgba(208, 0, 255, 0.1);
-  }
-  50% {
-    box-shadow: 
-      0 0 25px rgba(208, 0, 255, 0.2),
-      0 0 50px rgba(208, 0, 255, 0.1),
-      inset 0 0 20px rgba(208, 0, 255, 0.2);
-  }
-}
-
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes arrowPulse {
-  0%, 100% {
-    opacity: 0.3;
-    transform: translateX(-50%) scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
+.data-particle-3 {
+  animation: flowUp 3s infinite;
+  animation-delay: 2s;
 }
 
 @keyframes flowDown {
   0% {
-    top: 0%;
+    top: 15%;
+    left: 50%;
     opacity: 0;
   }
   20% {
@@ -326,9 +304,69 @@ body {
     opacity: 1;
   }
   100% {
-    top: 100%;
+    top: 70%;
+    left: 50%;
     opacity: 0;
   }
+}
+
+@keyframes flowCircular {
+  0% {
+    top: 65%;
+    left: 50%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  60% {
+    top: 45%;
+    left: 80%;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 25%;
+    left: 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes flowUp {
+  0% {
+    top: 65%;
+    left: 50%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 25%;
+    left: 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: var(--node-shadow);
+  }
+  50% {
+    box-shadow: 
+      0 10px 40px rgba(208, 0, 255, 0.2),
+      0 6px 20px rgba(0, 255, 255, 0.15);
+  }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 200% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @keyframes floatGrid {
@@ -341,79 +379,32 @@ body {
 }
 
 @keyframes gridMove {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 30px 30px;
-  }
+  0% { background-position: 0 0; }
+  100% { background-position: 30px 30px; }
 }
 
-@keyframes particleFloat {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-    opacity: 0;
-  }
-  25% {
-    transform: translate(100px, -50px) scale(2) rotate(90deg);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translate(200px, 0) scale(1.5) rotate(180deg);
-    opacity: 0.4;
-  }
-  75% {
-    transform: translate(100px, 50px) scale(2) rotate(270deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(0, 0) scale(1) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-/* Enhanced Responsive Design */
+/* Responsive Design */
 @media (max-width: 1200px) {
-  .workflow-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-lg);
-    padding: var(--spacing-md);
-  }
-
-  .workflow-node {
-    grid-column: auto !important;
-    padding: calc(var(--spacing-lg) - 0.2rem);
+  .workflow-container {
+    transform: scale(0.8);
+    padding: 1rem;
   }
 }
 
 @media (max-width: 768px) {
-  .workflow-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
-
   .workflow-container {
-    padding: var(--spacing-md);
-  }
-
-  .workflow-node {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
-    padding: var(--spacing-md);
-  }
-
-  .workflow-grid.mermaid-style {
-    gap: 4rem;
+    transform: scale(0.6);
+    padding: 0.5rem;
   }
 }
 
-/* Enhanced Accessibility */
+/* Accessibility */
 @media (prefers-contrast: high) {
   :root {
     --neon-primary: #ffffff;
     --neon-secondary: #d000ff;
     --neon-highlight: #ff00ff;
+    --neon-accent: #00ffff;
     --text-color: #ffffff;
     --node-border: rgba(255, 255, 255, 0.3);
   }
@@ -426,8 +417,8 @@ body {
 /* Print Styles */
 @media print {
   .workflow-container::before,
-  .particles,
-  .connection {
+  .data-particle,
+  .connection-line {
     display: none;
   }
 
@@ -438,15 +429,14 @@ body {
   }
 }
 
-/* Enhanced Reduced Motion Support */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .workflow-grid,
   .workflow-node,
-  .connection,
-  .particle {
+  .connection-line,
+  .data-particle {
     animation: none;
     transition: none;
-    transform: none !important;
   }
   
   .workflow-container::before {
@@ -454,7 +444,7 @@ body {
   }
 
   .workflow-node:hover {
-    transform: none !important;
+    transform: none;
     box-shadow: 0 0 0 2px var(--neon-primary);
   }
 }
