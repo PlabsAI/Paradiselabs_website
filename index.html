@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join the Waitlist - Veyron AI Web Development Framework</title>
     
-    <!-- Locomotive Scroll -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <!-- Locomotive Scroll - Using only our optimized version -->
     <link rel="stylesheet" href="src/components/locomotive-scroll.css">
     
     <!-- Original React styles -->
@@ -192,41 +191,187 @@
 
     <!-- Initialize Locomotive Scroll and Background Animation -->
     <script>
-        // Initialize Locomotive Scroll
-        const scroller = new LocomotiveScroll({
-            el: document.querySelector('[data-scroll-container]'),
-            smooth: true,
-            multiplier: 1
-        });
+        // Browser detection
+        const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+        let scroller;
+        let scrollRAF;
+        let resizeRAF;
+        let lastScrollTop = 0;
+        
+        // Get browser-specific scroll options while maintaining original Chrome behavior
+        const getScrollOptions = () => {
+            // Base options (original Chrome settings)
+            const baseOptions = {
+                el: document.querySelector('[data-scroll-container]'),
+                smooth: true,
+                multiplier: 1,
+                lerp: 0.1,
+                getDirection: true,
+                getSpeed: true,
+                class: 'is-inview',
+                initPosition: { x: 0, y: 0 },
+                reloadOnContextChange: true,
+                touchMultiplier: 2,
+                smoothMobile: true,
+                smartphone: {
+                    smooth: true,
+                    multiplier: 1,
+                    lerp: 0.1
+                },
+                tablet: {
+                    smooth: true,
+                    multiplier: 1,
+                    lerp: 0.1
+                }
+            };
 
-        // Navigation scroll behavior
-        document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    scroller.scrollTo(targetSection);
-                    history.pushState(null, null, `#${targetId}`);
+            // Only modify for Firefox
+            if (isFirefox) {
+                return {
+                    ...baseOptions,
+                    multiplier: 0.45,    // Reduced multiplier for Firefox
+                    lerp: 0.08,          // Slightly reduced lerp for smoother Firefox scrolling
+                    firefoxMultiplier: 35, // Firefox-specific speed adjustment
+                    smoothMobile: true,
+                    smartphone: {
+                        smooth: true,
+                        multiplier: 0.45,
+                        lerp: 0.08
+                    },
+                    tablet: {
+                        smooth: true,
+                        multiplier: 0.45,
+                        lerp: 0.08
+                    }
+                };
+            }
+
+            return baseOptions;
+        };
+
+        // Normalize scroll speed only for Firefox
+        function normalizeScrollSpeed(speed, delta) {
+            if (!isFirefox) return speed;
+
+            // Firefox-specific speed normalization
+            let normalizedSpeed = speed * 0.45;
+            
+            // Additional adjustments for scroll direction in Firefox
+            if (delta > 0) {
+                normalizedSpeed *= 0.8; // Slower downward scroll
+            }
+            
+            return normalizedSpeed;
+        }
+
+        // Initialize scroll with error handling
+        function initScroll() {
+            try {
+                if (scroller) {
+                    scroller.destroy();
+                }
+                
+                scroller = new LocomotiveScroll(getScrollOptions());
+                
+                // Enhanced scroll handler
+                scroller.on('scroll', (args) => {
+                    cancelAnimationFrame(scrollRAF);
+                    scrollRAF = requestAnimationFrame(() => {
+                        const scrollY = args.scroll.y;
+                        const delta = scrollY - lastScrollTop;
+                        
+                        // Apply scroll transform with browser-specific handling
+                        if (isFirefox) {
+                            const normalizedY = normalizeScrollSpeed(scrollY, delta);
+                            document.documentElement.style.setProperty('--scroll-offset', `${normalizedY}px`);
+                        } else {
+                            document.documentElement.style.setProperty('--scroll-offset', `${scrollY}px`);
+                        }
+                        
+                        lastScrollTop = scrollY;
+                    });
+                });
+
+                // Error recovery
+                scroller.on('scroll:error', (error) => {
+                    console.error('Scroll error:', error);
+                    initScroll();
+                });
+
+                return true;
+            } catch (error) {
+                console.error('Scroll initialization error:', error);
+                return false;
+            }
+        }
+
+        // Enhanced scroll to section with browser-specific timing
+        function scrollToSection(targetId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            const targetSection = document.getElementById(targetId);
+            if (!targetSection || !scroller) return;
+
+            try {
+                scroller.scrollTo(targetSection, {
+                    offset: 0,
+                    duration: isFirefox ? 1200 : 1000, // Slightly longer duration for Firefox
+                    easing: [0.23, 1, 0.32, 1],
+                    disableLerp: false
+                });
+                
+                history.pushState(null, null, `#${targetId}`);
+            } catch (error) {
+                console.error('Scroll to section error:', error);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Optimized resize handler
+        function handleResize() {
+            cancelAnimationFrame(resizeRAF);
+            resizeRAF = requestAnimationFrame(() => {
+                if (scroller) {
+                    scroller.update();
                 }
             });
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            if (initScroll()) {
+                // Setup navigation
+                document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        const targetId = anchor.getAttribute('href').substring(1);
+                        scrollToSection(targetId, e);
+                    });
+                });
+
+                // Setup resize handler
+                window.addEventListener('resize', handleResize, { passive: true });
+
+                // Setup form handler
+                document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
+                    this.reset();
+                });
+
+                // Create background animation
+                createGlowingDots();
+            }
         });
 
-        // Waitlist form submission
-        document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            const role = this.querySelector('input[type="text"]').value;
-            
-            alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
-            this.reset();
-        });
-
-        // Background animation
+        // Background animation with browser-specific optimizations
         function createGlowingDots() {
             const container = document.querySelector('.background-animation');
-            const numberOfDots = 50;
+            if (!container) return;
 
+            const numberOfDots = isFirefox ? 30 : 50; // Reduced number for Firefox
+            
             for (let i = 0; i < numberOfDots; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'glow-dot';
@@ -237,12 +382,13 @@
             }
         }
 
-        // Initialize background animation
-        createGlowingDots();
-
-        // Update scroll animations on resize
-        window.addEventListener('resize', () => {
-            scroller.update();
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            if (scroller) {
+                scroller.destroy();
+            }
+            cancelAnimationFrame(scrollRAF);
+            cancelAnimationFrame(resizeRAF);
         });
     </script>
 </body>
