@@ -6,254 +6,277 @@
     --shiny-cta-fg: #ffffff;
     --shiny-cta-highlight: #d000ff;
     --shiny-cta-highlight-subtle: #9000ff;
+    /* Default values for browsers that don't support @property */
     --gradient-angle: 0deg;
     --gradient-angle-offset: 0deg;
     --gradient-percent: 5%;
     --gradient-shine: white;
 }
 
-/* Fallback for browsers that don't support @property */
-@supports not (background: paint(something)) {
-  :root {
-    --gradient-angle: 0deg;
-    --gradient-angle-offset: 0deg;
-    --gradient-percent: 5%;
-    --gradient-shine: white;
-  }
-}
-
-/* For browsers that do support @property */
-@supports (background: paint(something)) {
-  @property --gradient-angle {
-      syntax: "<angle>";
-      initial-value: 0deg;
-      inherits: false;
-  }
-    
-  @property --gradient-angle-offset {
-      syntax: "<angle>";
-      initial-value: 0deg;
-      inherits: false;
-  }
-    
-  @property --gradient-percent {
-      syntax: "<percentage>";
-      initial-value: 5%;
-      inherits: false;
-  }
-    
-  @property --gradient-shine {
-      syntax: "<color>";
-      initial-value: white;
-      inherits: false;
-  }
-}
-
+/* Unified base styles for all browsers */
 .glassmorphic-shiny-button {
-  --animation: gradient-angle linear infinite;
-  --duration: 3s;
-  --shadow-size: 2px;
-  isolation: isolate;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  outline-offset: 4px;
-  padding: 12px 24px;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  line-height: 1.2;
-  border: 1px solid transparent;
-  border-radius: 980px;
-  color: var(--shiny-cta-fg);
-  background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg))
-      padding-box,
-    conic-gradient(
-        from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
-        transparent,
-        var(--shiny-cta-highlight) var(--gradient-percent),
-        var(--gradient-shine) calc(var(--gradient-percent) * 2),
-        var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
-        transparent calc(var(--gradient-percent) * 4)
-      )
-      border-box;
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-tap-highlight-color: transparent;
+    --animation: gradient-angle linear infinite;
+    --duration: 3s;
+    --shadow-size: 2px;
+    isolation: isolate;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    outline-offset: 4px;
+    padding: 12px 24px;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.2;
+    border: 1px solid transparent;
+    border-radius: 980px;
+    color: var(--shiny-cta-fg);
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+    box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    will-change: transform, opacity, background-position;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
-/* Dots pattern */
+/* Firefox-specific enhancements with improved performance */
+@-moz-document url-prefix() {
+    .glassmorphic-shiny-button {
+        background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+                  linear-gradient(
+                      115deg,
+                      transparent 0%,
+                      var(--shiny-cta-highlight) 10%,
+                      var(--gradient-shine) 20%,
+                      var(--shiny-cta-highlight) 30%,
+                      transparent 40%
+                  ) border-box;
+        background-size: 100% 100%, 300% 100%;
+        animation: firefox-shimmer 3s linear infinite;
+        transform: translate3d(0,0,0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    @keyframes firefox-shimmer {
+        to {
+            background-position: 0 0, -300% 0;
+        }
+    }
+
+    .glassmorphic-shiny-button::before {
+        animation: firefox-dots 3s ease-in-out infinite;
+        transform: translate3d(-50%, -50%, 0);
+    }
+
+    @keyframes firefox-dots {
+        0%, 100% {
+            opacity: 0.4;
+            transform: translate3d(-50%, -50%, 0) scale(1);
+        }
+        50% {
+            opacity: 0.6;
+            transform: translate3d(-50%, -50%, 0) scale(1.05);
+        }
+    }
+
+    .glassmorphic-shiny-button::after {
+        animation: firefox-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes firefox-glow {
+        0%, 100% {
+            opacity: 0.5;
+            transform: translate3d(-50%, -50%, 0) scale(1);
+        }
+        50% {
+            opacity: 0.7;
+            transform: translate3d(-50%, -50%, 0) scale(1.1);
+        }
+    }
+}
+
+/* Chrome and other modern browsers */
+@supports (background: paint(something)) {
+    @property --gradient-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+    }
+        
+    @property --gradient-angle-offset {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+    }
+        
+    @property --gradient-percent {
+        syntax: "<percentage>";
+        initial-value: 5%;
+        inherits: false;
+    }
+        
+    @property --gradient-shine {
+        syntax: "<color>";
+        initial-value: white;
+        inherits: false;
+    }
+
+    .glassmorphic-shiny-button {
+        background: linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+                  conic-gradient(
+                      from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+                      transparent,
+                      var(--shiny-cta-highlight) var(--gradient-percent),
+                      var(--gradient-shine) calc(var(--gradient-percent) * 2),
+                      var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+                      transparent calc(var(--gradient-percent) * 4)
+                  ) border-box;
+    }
+}
+
+/* Enhanced dots pattern with unified browser support */
 .glassmorphic-shiny-button::before {
-  --size: calc(100% - var(--shadow-size) * 3);
-  --position: 2px;
-  --space: calc(var(--position) * 2);
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: var(--size);
-  height: var(--size);
-  background: radial-gradient(
-      circle at var(--position) var(--position),
-      white calc(var(--position) / 4),
-      transparent 0
-    )
-    padding-box;
-  background-size: var(--space) var(--space);
-  background-repeat: space;
-  -webkit-mask-image: conic-gradient(
-    from calc(var(--gradient-angle) + 45deg),
-    black,
-    transparent 10% 90%,
-    black
-  );
-  mask-image: conic-gradient(
-    from calc(var(--gradient-angle) + 45deg),
-    black,
-    transparent 10% 90%,
-    black
-  );
-  border-radius: inherit;
-  opacity: 0.4;
-  z-index: -1;
+    --size: calc(100% - var(--shadow-size) * 3);
+    --position: 2px;
+    --space: calc(var(--position) * 2);
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    width: var(--size);
+    height: var(--size);
+    background: radial-gradient(
+        circle at var(--position) var(--position),
+        white calc(var(--position) / 4),
+        transparent 0
+    ) padding-box;
+    background-size: var(--space) var(--space);
+    background-repeat: space;
+    -webkit-mask-image: conic-gradient(
+        from calc(var(--gradient-angle) + 45deg),
+        black,
+        transparent 10% 90%,
+        black
+    );
+    mask-image: conic-gradient(
+        from calc(var(--gradient-angle) + 45deg),
+        black,
+        transparent 10% 90%,
+        black
+    );
+    border-radius: inherit;
+    opacity: 0.4;
+    z-index: -1;
+    will-change: transform, mask-image;
 }
 
-/* Inner shimmer */
+/* Enhanced inner shimmer with unified browser support */
 .glassmorphic-shiny-button::after {
-  --animation: shimmer linear infinite;
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  aspect-ratio: 1;
-  background: linear-gradient(
-    -50deg,
-    transparent,
-    var(--shiny-cta-highlight-subtle),
-    transparent
-  );
-  -webkit-mask-image: radial-gradient(circle at bottom, transparent 10%, black);
-  mask-image: radial-gradient(circle at bottom, transparent 10%, black);
-  opacity: 0.5;
-  z-index: -1;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(
+        -50deg,
+        transparent,
+        var(--shiny-cta-highlight-subtle),
+        transparent
+    );
+    -webkit-mask-image: radial-gradient(circle at bottom, transparent 10%, black);
+    mask-image: radial-gradient(circle at bottom, transparent 10%, black);
+    opacity: 0.5;
+    z-index: -1;
+    will-change: transform;
 }
 
 .shiny-cta span {
-  z-index: 1;
+    z-index: 1;
+    position: relative;
 }
 
 .shiny-cta span::before {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  --size: calc(100% + 1rem);
-  width: var(--size);
-  height: var(--size);
-  box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
-  opacity: 0;
-  z-index: -1;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    --size: calc(100% + 1rem);
+    width: var(--size);
+    height: var(--size);
+    box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+    opacity: 0;
+    z-index: -1;
+    will-change: transform, opacity;
 }
 
-/* Animate */
-.glassmorphic-shiny-button {
-  --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
-  transition: var(--transition);
-  transition-property: background, border-color, color, box-shadow, transform;
+/* Unified animations for modern browsers */
+@supports (background: paint(something)) {
+    .glassmorphic-shiny-button,
+    .glassmorphic-shiny-button::before,
+    .glassmorphic-shiny-button::after {
+        animation: var(--animation) var(--duration);
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes gradient-angle {
+        to {
+            --gradient-angle: 360deg;
+        }
+    }
 }
 
-.glassmorphic-shiny-button,
-.glassmorphic-shiny-button::before,
-.glassmorphic-shiny-button::after {
-  animation: var(--animation) var(--duration),
-    var(--animation) calc(var(--duration) / 0.4) reverse paused;
-  animation-composition: add;
-}
-
-.glassmorphic-shiny-button span::before {
-  transition: opacity var(--transition);
-  animation: calc(var(--duration) * 1.5) breathe linear infinite;
+/* Enhanced hover states with unified browser support */
+.glassmorphic-shiny-button:hover,
+.glassmorphic-shiny-button:focus-visible {
+    --gradient-percent: 20%;
+    --gradient-angle-offset: 95deg;
+    --gradient-shine: var(--shiny-cta-highlight-subtle);
+    background-color: var(--shiny-cta-bg-subtle);
+    border-color: var(--shiny-cta-highlight);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateZ(0) scale(1.02);
+    -webkit-transform: translateZ(0) scale(1.02);
 }
 
 .glassmorphic-shiny-button:active {
-  transform: scale(0.98);
-  -webkit-transform: scale(0.98);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transform: translateZ(0) scale(0.98);
+    -webkit-transform: translateZ(0) scale(0.98);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover states */
-.glassmorphic-shiny-button:hover,
-.glassmorphic-shiny-button:focus-visible {
-  --gradient-percent: 20%;
-  --gradient-angle-offset: 95deg;
-  --gradient-shine: var(--shiny-cta-highlight-subtle);
-  background: var(--shiny-cta-bg-subtle);
-  border-color: var(--shiny-cta-highlight);
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.glassmorphic-shiny-button:hover,
-.glassmorphic-shiny-button:focus-visible,
-.glassmorphic-shiny-button:hover::before,
-.glassmorphic-shiny-button:focus-visible::before,
-.glassmorphic-shiny-button:hover::after,
-.glassmorphic-shiny-button:focus-visible::after {
-  animation-play-state: running;
-}
-
-.glassmorphic-shiny-button:hover span::before,
-.glassmorphic-shiny-button:focus-visible span::before {
-  opacity: 1;
-}
-
-@keyframes gradient-angle {
-  to {
-    --gradient-angle: 360deg;
-  }
-}
-
-@keyframes shimmer {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-@keyframes breathe {
-  from,
-  to {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-}
-
+/* Base styling */
 body {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background: #02040c;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #02040c;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }

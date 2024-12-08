@@ -35,7 +35,7 @@
     <div class="background-animation"></div>
 
     <!-- Header -->
-    <header class="header" >
+    <header class="header">
         <div class="container-lg">
             <!-- Animated Logo -->
             <a href="#" class="animated-logo-button">
@@ -51,12 +51,14 @@
                 <li><a href="#features" class="header-nav-link">Features</a></li>
             </ul>
 
-            <!-- Actions -->
+            <!-- Actions with enhanced button structure -->
             <div class="header-actions">
-                <a href="#waitlist" class="glassmorphic-shiny-button">
-                    Join Waitlist
-                    <div class="button-border"></div>
-                </a>
+                <div class="button-wrapper" data-animation="enabled">
+                    <a href="#waitlist" class="glassmorphic-shiny-button" data-animation-role="button">
+                        <span class="button-content">Join Waitlist</span>
+                        <div class="button-border" data-animation-role="border"></div>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -191,13 +193,35 @@
 
     <!-- Initialize Locomotive Scroll and Background Animation -->
     <script>
-        // Browser detection
+        // Browser detection for both scroll and button animations
         const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+        const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
         let scroller;
         let scrollRAF;
         let resizeRAF;
         let lastScrollTop = 0;
         
+        // Initialize button animations with browser-specific handling
+        function initButtonAnimations() {
+            const buttons = document.querySelectorAll('[data-animation="enabled"]');
+            buttons.forEach(wrapper => {
+                const button = wrapper.querySelector('[data-animation-role="button"]');
+                if (button) {
+                    // Apply browser-specific optimizations
+                    if (isChrome) {
+                        button.style.willChange = 'transform';
+                        button.style.transform = 'translateZ(0)';
+                    }
+                    // Add event listeners with browser-specific behavior
+                    button.addEventListener('mouseenter', (e) => {
+                        if (isChrome) {
+                            e.target.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+                        }
+                    });
+                }
+            });
+        }
+
         // Get browser-specific scroll options while maintaining original Chrome behavior
         const getScrollOptions = () => {
             // Base options (original Chrome settings)
@@ -359,6 +383,9 @@
                     alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
                     this.reset();
                 });
+
+                // Initialize button animations
+                initButtonAnimations();
 
                 // Create background animation
                 createGlowingDots();
