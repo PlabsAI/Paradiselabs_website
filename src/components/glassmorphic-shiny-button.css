@@ -139,7 +139,7 @@
                       from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
                       transparent,
                       var(--shiny-cta-highlight) var(--gradient-percent),
-                      var(--gradient-shine) calc(var(--gradient-percent) * 2),
+                      var(--gradient-shine) calc(var(--gradient-percent) * 3),
                       var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
                       transparent calc(var(--gradient-percent) * 4)
                   ) border-box;
@@ -150,7 +150,7 @@
 .glassmorphic-shiny-button::before {
     --size: calc(100% - var(--shadow-size) * 3);
     --position: 2px;
-    --space: calc(var(--position) * 2);
+    --space: calc(var(--position) *2);
     content: "";
     pointer-events: none;
     position: absolute;

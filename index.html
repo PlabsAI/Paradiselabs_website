@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="src/components/styles.css">
     <link rel="stylesheet" href="src/components/glassmorphic-shiny-button.css">
     
-    <!-- Workflow styles -->
-    <link rel="stylesheet" href="src/components/workflow.css">
-    
     <!-- jQuery dependency (required for particle system) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
@@ -92,34 +89,7 @@
                 It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
             </p>
             
-            <div class="workflow-container" data-scroll data-scroll-speed="3" data-scroll-fade> 
-                <div class="workflow-grid">
-                    <div class="workflow-node node-user" data-scroll data-scroll-scale>
-                        <div>User Interaction</div>
-                        <div class="tech-details">Inputs Request</div>
-                    </div>
-
-                    <div class="workflow-node node-interface" data-scroll data-scroll-scale>
-                        <div>Veyron Interface</div>
-                        <div class="tech-details">Processes Request</div>
-                    </div>
-
-                    <div class="workflow-node node-processing" data-scroll data-scroll-scale>
-                        <div>AI Processing</div>
-                        <div class="tech-details">Delegates Tasks</div>
-                    </div>
-
-                    <div class="workflow-node node-agents" data-scroll data-scroll-scale>
-                        <div>Specialized Agents</div>
-                        <div class="tech-details">Executes Tasks</div>
-                    </div>
-
-                    <div class="workflow-node node-results" data-scroll data-scroll-scale>
-                        <div>Results Compilation</div>
-                        <div class="tech-details">Delivers Output</div>
-                    </div>
-                </div>
-            </div>
+            <div id="workflow-root" data-scroll data-scroll-speed="3" data-scroll-fade></div>
         </section>
 
         <!-- Core Architecture Section -->
