@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join the Waitlist - Veyron AI Web Development Framework</title>
     
-    <!-- Locomotive Scroll -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <!-- Locomotive Scroll - Using only our optimized version -->
     <link rel="stylesheet" href="src/components/locomotive-scroll.css">
-    
-    <!-- Original React styles -->
-    <link rel="stylesheet" href="src/components/styles.css">
-    <link rel="stylesheet" href="src/components/glassmorphic-shiny-button.css">
-    
-    <!-- Workflow styles -->
-    <link rel="stylesheet" href="src/components/workflow.css">
     
     <!-- jQuery dependency (required for particle system) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="src/components/glassmorphic-shiny-button.css">
     
     <!-- PIXI.js for particle rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
@@ -33,31 +27,33 @@
 </head>
 <body>
     <!-- Background Animation -->
-    <div class="background-animation" data-scroll-parallax></div>
+    <div class="background-animation"></div>
 
     <!-- Header -->
-    <header class="header" data-scroll-section>
+    <header class="header">
         <div class="container-lg">
             <!-- Animated Logo -->
-            <a href="#" class="animated-logo-button" data-scroll data-scroll-speed="1">
+            <a href="#" class="animated-logo-button">
                 <span class="actual-text">Veyron</span>
                 <span class="hover-text" aria-hidden="true">Veyron</span>
             </a>
 
             <!-- Navigation -->
-            <ul class="header-nav" data-scroll data-scroll-speed="1">
+            <ul class="header-nav">
                 <li><a href="#overview" class="header-nav-link">Overview</a></li>
                 <li><a href="#architecture" class="header-nav-link">Architecture</a></li>
                 <li><a href="#laws" class="header-nav-link">Core Laws</a></li>
                 <li><a href="#features" class="header-nav-link">Features</a></li>
             </ul>
 
-            <!-- Actions -->
-            <div class="header-actions" data-scroll data-scroll-speed="1">
-                <a href="#waitlist" class="glassmorphic-shiny-button">
-                    Join Waitlist
-                    <div class="button-border"></div>
-                </a>
+            <!-- Actions with enhanced button structure -->
+            <div class="header-actions">
+                <div class="button-wrapper" data-animation="enabled">
+                    <a href="#waitlist" class="glassmorphic-shiny-button" data-animation-role="button">
+                        <span class="button-content">Join Waitlist</span>
+                        <div class="button-border" data-animation-role="border"></div>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -91,34 +87,7 @@
                 It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
             </p>
             
-            <div class="workflow-container" data-scroll data-scroll-speed="3" data-scroll-fade> 
-                <div class="workflow-grid">
-                    <div class="workflow-node node-user" data-scroll data-scroll-scale>
-                        <div>User Interaction</div>
-                        <div class="tech-details">Inputs Request</div>
-                    </div>
-
-                    <div class="workflow-node node-interface" data-scroll data-scroll-scale>
-                        <div>Veyron Interface</div>
-                        <div class="tech-details">Processes Request</div>
-                    </div>
-
-                    <div class="workflow-node node-processing" data-scroll data-scroll-scale>
-                        <div>AI Processing</div>
-                        <div class="tech-details">Delegates Tasks</div>
-                    </div>
-
-                    <div class="workflow-node node-agents" data-scroll data-scroll-scale>
-                        <div>Specialized Agents</div>
-                        <div class="tech-details">Executes Tasks</div>
-                    </div>
-
-                    <div class="workflow-node node-results" data-scroll data-scroll-scale>
-                        <div>Results Compilation</div>
-                        <div class="tech-details">Delivers Output</div>
-                    </div>
-                </div>
-            </div>
+            <div id="workflow-root" data-scroll data-scroll-speed="3" data-scroll-fade></div>
         </section>
 
         <!-- Core Architecture Section -->
@@ -192,41 +161,212 @@
 
     <!-- Initialize Locomotive Scroll and Background Animation -->
     <script>
-        // Initialize Locomotive Scroll
-        const scroller = new LocomotiveScroll({
-            el: document.querySelector('[data-scroll-container]'),
-            smooth: true,
-            multiplier: 1
-        });
-
-        // Navigation scroll behavior
-        document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    scroller.scrollTo(targetSection);
-                    history.pushState(null, null, `#${targetId}`);
+        // Browser detection for both scroll and button animations
+        const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+        const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+        let scroller;
+        let scrollRAF;
+        let resizeRAF;
+        let lastScrollTop = 0;
+        
+        // Initialize button animations with browser-specific handling
+        function initButtonAnimations() {
+            const buttons = document.querySelectorAll('[data-animation="enabled"]');
+            buttons.forEach(wrapper => {
+                const button = wrapper.querySelector('[data-animation-role="button"]');
+                if (button) {
+                    // Apply browser-specific optimizations
+                    if (isChrome) {
+                        button.style.willChange = 'transform';
+                        button.style.transform = 'translateZ(0)';
+                    }
+                    // Add event listeners with browser-specific behavior
+                    button.addEventListener('mouseenter', (e) => {
+                        if (isChrome) {
+                            e.target.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+                        }
+                    });
                 }
             });
-        });
+        }
 
-        // Waitlist form submission
-        document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            const role = this.querySelector('input[type="text"]').value;
+        // Get browser-specific scroll options while maintaining original Chrome behavior
+        const getScrollOptions = () => {
+            // Base options (original Chrome settings)
+            const baseOptions = {
+                el: document.querySelector('[data-scroll-container]'),
+                smooth: true,
+                multiplier: 1,
+                lerp: 0.1,
+                getDirection: true,
+                getSpeed: true,
+                class: 'is-inview',
+                initPosition: { x: 0, y: 0 },
+                reloadOnContextChange: true,
+                touchMultiplier: 2,
+                smoothMobile: true,
+                smartphone: {
+                    smooth: true,
+                    multiplier: 1,
+                    lerp: 0.1
+                },
+                tablet: {
+                    smooth: true,
+                    multiplier: 1,
+                    lerp: 0.1
+                }
+            };
+
+            // Only modify for Firefox
+            if (isFirefox) {
+                return {
+                    ...baseOptions,
+                    multiplier: 0.45,    // Reduced multiplier for Firefox
+                    lerp: 0.08,          // Slightly reduced lerp for smoother Firefox scrolling
+                    firefoxMultiplier: 35, // Firefox-specific speed adjustment
+                    smoothMobile: true,
+                    smartphone: {
+                        smooth: true,
+                        multiplier: 0.45,
+                        lerp: 0.08
+                    },
+                    tablet: {
+                        smooth: true,
+                        multiplier: 0.45,
+                        lerp: 0.08
+                    }
+                };
+            }
+
+            return baseOptions;
+        };
+
+        // Normalize scroll speed only for Firefox
+        function normalizeScrollSpeed(speed, delta) {
+            if (!isFirefox) return speed;
+
+            // Firefox-specific speed normalization
+            let normalizedSpeed = speed * 0.45;
             
-            alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
-            this.reset();
+            // Additional adjustments for scroll direction in Firefox
+            if (delta > 0) {
+                normalizedSpeed *= 0.8; // Slower downward scroll
+            }
+            
+            return normalizedSpeed;
+        }
+
+        // Initialize scroll with error handling
+        function initScroll() {
+            try {
+                if (scroller) {
+                    scroller.destroy();
+                }
+                
+                scroller = new LocomotiveScroll(getScrollOptions());
+                
+                // Enhanced scroll handler
+                scroller.on('scroll', (args) => {
+                    cancelAnimationFrame(scrollRAF);
+                    scrollRAF = requestAnimationFrame(() => {
+                        const scrollY = args.scroll.y;
+                        const delta = scrollY - lastScrollTop;
+                        
+                        // Apply scroll transform with browser-specific handling
+                        if (isFirefox) {
+                            const normalizedY = normalizeScrollSpeed(scrollY, delta);
+                            document.documentElement.style.setProperty('--scroll-offset', `${normalizedY}px`);
+                        } else {
+                            document.documentElement.style.setProperty('--scroll-offset', `${scrollY}px`);
+                        }
+                        
+                        lastScrollTop = scrollY;
+                    });
+                });
+
+                // Error recovery
+                scroller.on('scroll:error', (error) => {
+                    console.error('Scroll error:', error);
+                    initScroll();
+                });
+
+                return true;
+            } catch (error) {
+                console.error('Scroll initialization error:', error);
+                return false;
+            }
+        }
+
+        // Enhanced scroll to section with browser-specific timing
+        function scrollToSection(targetId, event) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            const targetSection = document.getElementById(targetId);
+            if (!targetSection || !scroller) return;
+
+            try {
+                scroller.scrollTo(targetSection, {
+                    offset: 0,
+                    duration: isFirefox ? 1200 : 1000, // Slightly longer duration for Firefox
+                    easing: [0.23, 1, 0.32, 1],
+                    disableLerp: false
+                });
+                
+                history.pushState(null, null, `#${targetId}`);
+            } catch (error) {
+                console.error('Scroll to section error:', error);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Optimized resize handler
+        function handleResize() {
+            cancelAnimationFrame(resizeRAF);
+            resizeRAF = requestAnimationFrame(() => {
+                if (scroller) {
+                    scroller.update();
+                }
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            if (initScroll()) {
+                // Setup navigation
+                document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        const targetId = anchor.getAttribute('href').substring(1);
+                        scrollToSection(targetId, e);
+                    });
+                });
+
+                // Setup resize handler
+                window.addEventListener('resize', handleResize, { passive: true });
+
+                // Setup form handler
+                document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thanks for joining the waitlist! We\'ll keep you updated on our launch.');
+                    this.reset();
+                });
+
+                // Initialize button animations
+                initButtonAnimations();
+
+                // Create background animation
+                createGlowingDots();
+            }
         });
 
-        // Background animation
+        // Background animation with browser-specific optimizations
         function createGlowingDots() {
             const container = document.querySelector('.background-animation');
-            const numberOfDots = 50;
+            if (!container) return;
 
+            const numberOfDots = isFirefox ? 30 : 50; // Reduced number for Firefox
+            
             for (let i = 0; i < numberOfDots; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'glow-dot';
@@ -237,12 +377,13 @@
             }
         }
 
-        // Initialize background animation
-        createGlowingDots();
-
-        // Update scroll animations on resize
-        window.addEventListener('resize', () => {
-            scroller.update();
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            if (scroller) {
+                scroller.destroy();
+            }
+            cancelAnimationFrame(scrollRAF);
+            cancelAnimationFrame(resizeRAF);
         });
     </script>
 </body>
