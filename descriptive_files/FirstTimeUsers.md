@@ -1,4 +1,4 @@
-# Veyron MVP Workflow
+# Paradiselabs MVP Workflow
 
 ## Frontend Workflow
 
@@ -6,7 +6,7 @@
 %%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px', 'fontFamily': 'Arial', 'primaryColor': '#ff9900', 'primaryTextColor': '#1a1a1a' }}}%%
 
 graph TD
-    U[User Interaction] --> |Inputs Request| V[Veyron Interface]
+    U[User Interaction] --> |Inputs Request| V[Paradiselabs Interface]
     V --> |Processes Request| P[AI Processing]
     P --> |Delegates Tasks| A[Specialized Agents]
     A --> |Generates Output| R[Results Compilation]

@@ -1,7 +1,7 @@
-# Veyron - Advanced AI-Driven Web Development Framework
+# Paradiselabs - Advanced AI-Driven Web Development Framework
 
 ## Technical Overview
-Veyron is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
+Paradiselabs is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
 
 ## Core Architecture
 
@@ -57,7 +57,7 @@ Our framework features specialized AI agents:
    - Trend identification
 
 ## The Five Core Laws
-Every website built through Veyron adheres to these fundamental principles:
+Every website built through Paradiselabs adheres to these fundamental principles:
 
 1. **Revenue Generation**
    - Automated monetization strategy implementation
@@ -172,4 +172,4 @@ Every website built through Veyron adheres to these fundamental principles:
 - Additional revenue generation methods
 - Improved analytics capabilities
 
-Veyron represents the future of web development, where AI agents collaborate autonomously to create sophisticated, revenue-generating websites while maintaining high standards of design, performance, and user engagement.
+Paradiselabs represents the future of web development, where AI agents collaborate autonomously to create sophisticated, revenue-generating websites while maintaining high standards of design, performance, and user engagement.

@@ -1,4 +1,4 @@
-# Veyron MVP Workflow
+# Paradiselabs MVP Workflow
 
 ## Frontend Workflow
 
@@ -6,7 +6,7 @@
 %%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px', 'fontFamily': 'Arial', 'primaryColor': '#ff9900', 'primaryTextColor': '#1a1a1a' }}}%%
 
 graph TD
-    A[User] -->|Interacts with| B[Veyron Interface]
+    A[User] -->|Interacts with| B[Paradiselabs Interface]
     B -->|Displays results| A
     
     B --> C[Chat Interface]
@@ -93,7 +93,7 @@ graph TD
 
 ## Workflow Explanation
 
-1. The user interacts with the Veyron Interface, which includes a chat interface (connected to the Consultation Agent), progress view, strategy views, and a live preview.
+1. The user interacts with the Paradiselabs Interface, which includes a chat interface (connected to the Consultation Agent), progress view, strategy views, and a live preview.
 
 2. User requests are sent to the Backend Server.
 
@@ -117,9 +117,9 @@ graph TD
 
 8. The AI Agent System compiles results and sends them back to the Backend Server.
 
-9. The Backend Server sends the response to the Veyron Interface.
+9. The Backend Server sends the response to the Paradiselabs Interface.
 
-10. The Veyron Interface displays the results to the user in various views:
+10. The Paradiselabs Interface displays the results to the user in various views:
     - Chat Interface: Shows conversation with the AI (primarily the Consultation Agent)
     - Progress View: Displays project progress
     - Strategy Views: Shows specific strategies (e.g., monetization, SEO)

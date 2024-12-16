@@ -832,7 +832,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     border: none;
     cursor: pointer;
-    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-size: ${({ theme }) => theme.fontSizes.md};
     font-weight: ${({ theme }) => theme.fontWeights.extrabold};
     position: relative;
     text-decoration: none;
