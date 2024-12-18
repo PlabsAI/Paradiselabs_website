@@ -6,6 +6,7 @@
     <title>Join the Waitlist - Paradiselabs AI Web Development Framework</title>
     
     <!-- Locomotive Scroll - Using only our optimized version -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     <link rel="stylesheet" href="src/components/locomotive-scroll.css">
     
     <!-- jQuery dependency (required for particle system) -->
@@ -190,9 +191,8 @@
             });
         }
 
-        // Get browser-specific scroll options while maintaining original Chrome behavior
+        // Get browser-specific scroll options
         const getScrollOptions = () => {
-            // Base options (original Chrome settings)
             const baseOptions = {
                 el: document.querySelector('[data-scroll-container]'),
                 smooth: true,
@@ -217,13 +217,12 @@
                 }
             };
 
-            // Only modify for Firefox
             if (isFirefox) {
                 return {
                     ...baseOptions,
-                    multiplier: 0.45,    // Reduced multiplier for Firefox
-                    lerp: 0.08,          // Slightly reduced lerp for smoother Firefox scrolling
-                    firefoxMultiplier: 35, // Firefox-specific speed adjustment
+                    multiplier: 0.45,
+                    lerp: 0.08,
+                    firefoxMultiplier: 35,
                     smoothMobile: true,
                     smartphone: {
                         smooth: true,
@@ -241,21 +240,6 @@
             return baseOptions;
         };
 
-        // Normalize scroll speed only for Firefox
-        function normalizeScrollSpeed(speed, delta) {
-            if (!isFirefox) return speed;
-
-            // Firefox-specific speed normalization
-            let normalizedSpeed = speed * 0.45;
-            
-            // Additional adjustments for scroll direction in Firefox
-            if (delta > 0) {
-                normalizedSpeed *= 0.8; // Slower downward scroll
-            }
-            
-            return normalizedSpeed;
-        }
-
         // Initialize scroll with error handling
         function initScroll() {
             try {
@@ -265,6 +249,19 @@
                 
                 scroller = new LocomotiveScroll(getScrollOptions());
                 
+                // Navigation scroll behavior
+                document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetSection = document.getElementById(targetId);
+                        if (targetSection) {
+                            scroller.scrollTo(targetSection);
+                            history.pushState(null, null, `#${targetId}`);
+                        }
+                    });
+                });
+
                 // Enhanced scroll handler
                 scroller.on('scroll', (args) => {
                     cancelAnimationFrame(scrollRAF);
@@ -297,53 +294,28 @@
             }
         }
 
-        // Enhanced scroll to section with browser-specific timing
-        function scrollToSection(targetId, event) {
-            if (event) {
-                event.preventDefault();
+        // Normalize scroll speed only for Firefox
+        function normalizeScrollSpeed(speed, delta) {
+            if (!isFirefox) return speed;
+            let normalizedSpeed = speed * 0.45;
+            if (delta > 0) {
+                normalizedSpeed *= 0.8;
             }
-            
-            const targetSection = document.getElementById(targetId);
-            if (!targetSection || !scroller) return;
-
-            try {
-                scroller.scrollTo(targetSection, {
-                    offset: 0,
-                    duration: isFirefox ? 1200 : 1000, // Slightly longer duration for Firefox
-                    easing: [0.23, 1, 0.32, 1],
-                    disableLerp: false
-                });
-                
-                history.pushState(null, null, `#${targetId}`);
-            } catch (error) {
-                console.error('Scroll to section error:', error);
-                targetSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Optimized resize handler
-        function handleResize() {
-            cancelAnimationFrame(resizeRAF);
-            resizeRAF = requestAnimationFrame(() => {
-                if (scroller) {
-                    scroller.update();
-                }
-            });
+            return normalizedSpeed;
         }
 
         // Initialize on page load
         window.addEventListener('load', () => {
             if (initScroll()) {
-                // Setup navigation
-                document.querySelectorAll('.header-nav-link, .glassmorphic-shiny-button').forEach(anchor => {
-                    anchor.addEventListener('click', (e) => {
-                        const targetId = anchor.getAttribute('href').substring(1);
-                        scrollToSection(targetId, e);
+                // Setup resize handler
+                window.addEventListener('resize', () => {
+                    cancelAnimationFrame(resizeRAF);
+                    resizeRAF = requestAnimationFrame(() => {
+                        if (scroller) {
+                            scroller.update();
+                        }
                     });
                 });
-
-                // Setup resize handler
-                window.addEventListener('resize', handleResize, { passive: true });
 
                 // Setup form handler
                 document.querySelector('.waitlist-form').addEventListener('submit', function(e) {
@@ -365,7 +337,7 @@
             const container = document.querySelector('.background-animation');
             if (!container) return;
 
-            const numberOfDots = isFirefox ? 30 : 50; // Reduced number for Firefox
+            const numberOfDots = isFirefox ? 30 : 50;
             
             for (let i = 0; i < numberOfDots; i++) {
                 const dot = document.createElement('div');
