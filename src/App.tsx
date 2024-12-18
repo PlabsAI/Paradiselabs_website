@@ -35,7 +35,25 @@ const App: React.FC = () => {
       PARTICLE_COLORS: [
           '#DE8479', '#F4D8C4'
       ],
+    };
 
+    const getScrollOffset = () => ({
+      x: window.pageXOffset || document.documentElement.scrollLeft,
+      y: window.pageYOffset || document.documentElement.scrollTop
+    });
+
+    const getPhotonRingsCenter = () => {
+      const containerRect = starsContainer.getBoundingClientRect();
+      const topRect = topPhotonRing.getBoundingClientRect();
+      const bottomRect = bottomPhotonRing.getBoundingClientRect();
+      const scroll = getScrollOffset();
+      
+      return {
+        x: ((topRect.left + topRect.right) / 2) - containerRect.left + scroll.x,
+        y: ((topRect.top + bottomRect.bottom) / 2) - containerRect.top + scroll.y,
+        width: Math.max(topRect.width, bottomRect.width),
+        height: bottomRect.bottom - topRect.top
+      };
     };
 
     const createStar = () => {
@@ -104,41 +122,46 @@ const App: React.FC = () => {
       return star;
     };
 
-    const getPhotonRingsCenter = () => {
-      const topRect = topPhotonRing.getBoundingClientRect();
-      const bottomRect = bottomPhotonRing.getBoundingClientRect();
-      
-      return {
-        x: (topRect.left + topRect.right) / 2,
-        y: (topRect.top + bottomRect.bottom) / 2,
-        width: Math.max(topRect.width, bottomRect.width),
-        height: bottomRect.bottom - topRect.top
-      };
-    };
-
     const checkCollisionWithPhotonRings = (particleRect: DOMRect): boolean => {
+      const containerRect = starsContainer.getBoundingClientRect();
       const topRingRect = topPhotonRing.getBoundingClientRect();
       const bottomRingRect = bottomPhotonRing.getBoundingClientRect();
+      const scroll = getScrollOffset();
       
       const particleCenter = {
-        x: particleRect.left + particleRect.width / 2,
-        y: particleRect.top + particleRect.height / 2
+        x: (particleRect.left - containerRect.left + scroll.x) + particleRect.width / 2,
+        y: (particleRect.top - containerRect.top + scroll.y) + particleRect.height / 2
+      };
+      
+      // Convert ring positions to be relative to container
+      const topRingRelative = {
+        left: topRingRect.left - containerRect.left + scroll.x,
+        right: topRingRect.right - containerRect.left + scroll.x,
+        top: topRingRect.top - containerRect.top + scroll.y,
+        bottom: topRingRect.bottom - containerRect.top + scroll.y
+      };
+      
+      const bottomRingRelative = {
+        left: bottomRingRect.left - containerRect.left + scroll.x,
+        right: bottomRingRect.right - containerRect.left + scroll.x,
+        top: bottomRingRect.top - containerRect.top + scroll.y,
+        bottom: bottomRingRect.bottom - containerRect.top + scroll.y
       };
       
       // Improved collision detection with margin
       const margin = 5;
       const inTopRing = (
-        particleCenter.x >= topRingRect.left - margin &&
-        particleCenter.x <= topRingRect.right + margin &&
-        particleCenter.y >= topRingRect.top - margin &&
-        particleCenter.y <= topRingRect.bottom + margin
+        particleCenter.x >= topRingRelative.left - margin &&
+        particleCenter.x <= topRingRelative.right + margin &&
+        particleCenter.y >= topRingRelative.top - margin &&
+        particleCenter.y <= topRingRelative.bottom + margin
       );
       
       const inBottomRing = (
-        particleCenter.x >= bottomRingRect.left - margin &&
-        particleCenter.x <= bottomRingRect.right + margin &&
-        particleCenter.y >= bottomRingRect.top - margin &&
-        particleCenter.y <= bottomRingRect.bottom + margin
+        particleCenter.x >= bottomRingRelative.left - margin &&
+        particleCenter.x <= bottomRingRelative.right + margin &&
+        particleCenter.y >= bottomRingRelative.top - margin &&
+        particleCenter.y <= bottomRingRelative.bottom + margin
       );
       
       return inTopRing || inBottomRing;

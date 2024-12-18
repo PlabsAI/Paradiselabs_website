@@ -450,7 +450,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     min-height: 100vh;
     background: #050C14;
-    overflow: hidden;
+    overflow-x: hidden;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-family: ${({ theme }) => theme.fonts.primary};
     font-size: ${({ theme }) => theme.fontSizes.base};
@@ -1140,29 +1140,23 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
   }
 
-  #interactive-title-container {
-    position: absolute;
-    width: 800px;
-    height: 400px;
+  .hero-black-hole {
+    position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 3;
-
-    canvas {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: auto;
-    }
   }
 
   .hero-black-hole-stars {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 1;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    overflow: visible;
 
     div {
       position: absolute;
@@ -1172,6 +1166,7 @@ const GlobalStyles = createGlobalStyle`
       border-radius: 50%;
       opacity: 0;
       will-change: transform, opacity;
+      transform-style: preserve-3d;
     }
   }
 
@@ -1182,6 +1177,11 @@ const GlobalStyles = createGlobalStyle`
       0 0 8px rgba(255, 255, 255, 0.4),
       0 0 12px rgba(255, 51, 51, 0.2);
     transform-origin: center center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity;
+    contain: layout style paint;
 
     &[data-removing="true"] {
       animation: none !important;
@@ -1190,83 +1190,56 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 
-  @keyframes shimmer {
+  @keyframes spiralToCenter {
     0% {
-      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1);
+      transform: translate3d(var(--start-x), var(--start-y), 0) rotate(0deg) scale(1);
+      opacity: 0;
+    }
+    5% {
+      opacity: 0.8;
+      transform: translate3d(var(--start-x), var(--start-y), 0) rotate(-45deg) scale(0.98);
+    }
+    25% {
+      transform: 
+        translate3d(
+          calc(var(--start-x) * 0.75 + var(--tangential-x)), 
+          calc(var(--start-y) * 0.75 + var(--tangential-y)),
+          0
+        ) 
+        rotate(-180deg) scale(0.9);
+      opacity: 0.8;
     }
     50% {
-      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1.3);
+      transform: 
+        translate3d(
+          calc(var(--start-x) * 0.5 + var(--tangential-x) * 1.5), 
+          calc(var(--start-y) * 0.5 + var(--tangential-y) * 1.5),
+          0
+        ) 
+        rotate(-360deg) scale(0.8);
+      opacity: 0.7;
+    }
+    75% {
+      transform: 
+        translate3d(
+          calc(var(--start-x) * 0.25 + var(--tangential-x) * 1.25), 
+          calc(var(--start-y) * 0.25 + var(--tangential-y) * 1.25),
+          0
+        ) 
+        rotate(-540deg) scale(0.6);
+      opacity: 0.5;
     }
     100% {
-      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1);
+      transform: 
+        translate3d(
+          calc(var(--tangential-x) * 0.5), 
+          calc(var(--tangential-y) * 0.5),
+          0
+        ) 
+        rotate(-720deg) scale(0.2);
+      opacity: 0;
     }
   }
-
-  @keyframes titleReveal {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  @keyframes glowPulse {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.5); }
-  }
-
-  @keyframes spiralToCenter {
-  0% {
-      transform: translate(var(--start-x), var(--start-y)) rotate(0deg) scale(1);
-      opacity: 0;
-  }
-  5% {
-      opacity: 0.8;
-  }
-  25% {
-      transform: 
-          translate(
-              calc(var(--start-x) * 0.75 + var(--tangential-x)), 
-              calc(var(--start-y) * 0.75 + var(--tangential-y))
-          ) 
-          rotate(-180deg) scale(0.9);
-      opacity: 0.8;
-  }
-  50% {
-      transform: 
-          translate(
-              calc(var(--start-x) * 0.5 + var(--tangential-x) * 1.5), 
-              calc(var(--start-y) * 0.5 + var(--tangential-y) * 1.5)
-          ) 
-          rotate(-360deg) scale(0.8);
-      opacity: 0.7;
-  }
-  75% {
-      transform: 
-          translate(
-              calc(var(--start-x) * 0.25 + var(--tangential-x) * 1.25), 
-              calc(var(--start-y) * 0.25 + var(--tangential-y) * 1.25)
-          ) 
-          rotate(-540deg) scale(0.6);
-      opacity: 0.5;
-  }
-  100% {
-      transform: 
-          translate(
-              calc(var(--tangential-x) * 0.5), 
-              calc(var(--tangential-y) * 0.5)
-          ) 
-          rotate(-720deg) scale(0.2);
-      opacity: 0;
-  }
-}`;
+`;
 
 export default GlobalStyles
