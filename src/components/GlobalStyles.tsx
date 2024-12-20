@@ -90,12 +90,6 @@ const GlobalStyles = createGlobalStyle`
     contain: paint layout;
   }
 
-
-
-
-
-
-
   /* Enhanced gradient animations */
   .gradient-text,
 
@@ -850,6 +844,18 @@ const GlobalStyles = createGlobalStyle`
     font-family: inherit;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
+    
+    @keyframes shifting_glow {
+    0% {
+      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1);
+    }
+    50% {
+      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1.3);
+    }
+    100% {
+      filter: drop-shadow(0 0 23px ${({ theme }) => theme.colors.logoAnimation}) brightness(1);
+    }
+  }
 
   .hover-text {
     position: absolute;
@@ -865,7 +871,7 @@ const GlobalStyles = createGlobalStyle`
   .animated-logo-button:hover .hover-text {
     width: 100%;
     filter: drop-shadow(0 0 25px ${({ theme }) => theme.colors.logoAnimation});
-    animation: shimmer 1.5s ease-in-out infinite alternate;
+    animation: shifting_glow 1.5s ease-in-out infinite alternate;
   }
 
   .hero-section {
