@@ -9,7 +9,7 @@
 # Production
 /build
 /dist
-
+clines.md
 # Misc
 .DS_Store
 .env
@@ -57,3 +57,4 @@ $RECYCLE.BIN/
 *.userosscache
 *.sln.docstates
 *.userprefs
+.gitignore
