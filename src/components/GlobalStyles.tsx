@@ -445,11 +445,14 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 }
-  body {
+  html, body, #root {
     margin: 0;
     padding: 0;
     min-height: 100vh;
     background: #050C14;
+  }
+
+  body {
     overflow-x: hidden;
     color: ${({ theme }) => theme.colors.textPrimary};
     font-family: ${({ theme }) => theme.fonts.primary};

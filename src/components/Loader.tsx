@@ -42,13 +42,13 @@ interface LoaderProps {
  * Used by styled-components for dynamic styling
  */
 interface StyleProps {
-  readonly size: number;
-  readonly colors: {
+  readonly $size: number;
+  readonly $colors: {
     light: string;    // Primary light color
     glow: string;     // Glow effect color
     space: string;    // Space background color
   };
-  readonly isVisible: boolean;
+  readonly $isVisible: boolean;
 }
 
 // Animation keyframes
@@ -115,13 +115,13 @@ export const Loader: React.FC<LoaderProps> = memo(({
   return (
     <LoaderErrorBoundary>
       <BlackHoleContainer
-        size={size}
-        colors={{
+        $size={size}
+        $colors={{
           light: primaryColor,
           glow: glowColor,
           space: spaceColor
         }}
-        isVisible={true}
+        $isVisible={true}
       >
         <div className="black-hole">
           <div className="lower-photon-ring" />
@@ -143,16 +143,16 @@ Loader.displayName = 'Loader';
  */
 const BlackHoleContainer = styled.div<StyleProps>`
   // Dynamic CSS Variables for flexible styling
-  --light: ${props => props.colors.light};
-  --glow: ${props => props.colors.glow};
-  --space: ${props => props.colors.space};
-  --size-multiplier: ${props => props.size};
-  --visibility: ${props => props.isVisible ? 1 : 0};
+  --light: ${props => props.$colors.light};
+  --glow: ${props => props.$colors.glow};
+  --space: ${props => props.$colors.space};
+  --size-multiplier: ${props => props.$size};
+  --visibility: ${props => props.$isVisible ? 1 : 0};
 
   // Container optimization with hardware acceleration
   width: 100vw;
   height: 100vh;
-  background: var(--space);
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
