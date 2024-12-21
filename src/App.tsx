@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Navigation } from './components/Navigation/Navigation';
 import { ParticlesBackground } from './components/ParticlesBackground';
+import { GlowDotsBackground } from './components/GlowDotsBackground';
+import { useLocation } from 'react-router-dom';
 import { Footer } from './components/Footer';
 import { Home, Eden, GLUE, Projects, Blog, About } from './pages';
 import { Login, Dashboard, WaitlistPage } from './pages/admin';
@@ -15,10 +17,15 @@ const AppContainer = styled.div`
   padding-bottom: 4rem; // Space for footer
 `;
 
+const BackgroundSelector = () => {
+  const location = useLocation();
+  return location.pathname === '/' ? <ParticlesBackground /> : <GlowDotsBackground />;
+};
+
 const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <>
     <Navigation />
-    <ParticlesBackground />
+    <BackgroundSelector />
     {children}
     <Footer />
   </>
