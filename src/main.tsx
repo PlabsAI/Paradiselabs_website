@@ -4,11 +4,12 @@ import { ThemeProvider } from 'styled-components'
 import App from './App'
 import GlobalStyles, { theme } from './components/GlobalStyles'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(
+  React.createElement(React.Fragment, null,
+    React.createElement(ThemeProvider, { theme },
+      React.createElement(GlobalStyles, null),
+      React.createElement(App, null)
+    )
+  )
 )

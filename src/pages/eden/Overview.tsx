@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import LocomotiveScroll from 'locomotive-scroll';
+import '../../components/locomotive-scroll.css';
 import Workflow from '../../components/Workflow';
 
 const SuccessMessage = styled.div`
@@ -22,7 +24,7 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
-const OverviewContainer = styled.div`
+const OverviewContainer = styled.main`
   min-height: 100vh;
   background: rgba(5, 12, 20, 0.75);
   color: ${({ theme }) => theme.colors.textPrimary};
@@ -201,10 +203,89 @@ const WaitlistForm = styled.form`
   }
 `;
 
-const Overview: React.FC = () => {
+const Overview: React.FC<{}> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const containerRef = useRef<HTMLElement>(null);
+  const [scroller, setScroller] = useState<LocomotiveScroll | null>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Browser detection
+    const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+
+    // Get scroll options based on browser
+    const getScrollOptions = () => {
+      const baseOptions = {
+        el: containerRef.current!,
+        smooth: true,
+        multiplier: 1,
+        lerp: 0.1,
+        getDirection: true,
+        getSpeed: true,
+        class: 'is-inview',
+        initPosition: { x: 0, y: 0 },
+        reloadOnContextChange: true,
+        touchMultiplier: 2,
+        smoothMobile: true,
+        smartphone: {
+          smooth: true,
+          multiplier: 1,
+          lerp: 0.1
+        },
+        tablet: {
+          smooth: true,
+          multiplier: 1,
+          lerp: 0.1
+        }
+      };
+
+      if (isFirefox) {
+        return {
+          ...baseOptions,
+          multiplier: 0.45,
+          lerp: 0.08,
+          firefoxMultiplier: 35,
+          smoothMobile: true,
+          smartphone: {
+            smooth: true,
+            multiplier: 0.45,
+            lerp: 0.08
+          },
+          tablet: {
+            smooth: true,
+            multiplier: 0.45,
+            lerp: 0.08
+          }
+        };
+      }
+
+      return baseOptions;
+    };
+
+    // Initialize locomotive scroll
+    const locomotiveScroll = new LocomotiveScroll(getScrollOptions());
+    setScroller(locomotiveScroll);
+
+    // Add scroll class to html
+    document.documentElement.classList.add('has-scroll-smooth');
+
+    // Cleanup
+    return () => {
+      locomotiveScroll.destroy();
+      document.documentElement.classList.remove('has-scroll-smooth');
+      setScroller(null);
+    };
+  }, []);
+
+  // Update scroll on content change
+  useEffect(() => {
+    if (scroller) {
+      scroller.update();
+    }
+  }, [scroller, isSubmitting, submitSuccess, submitError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -242,15 +323,19 @@ const Overview: React.FC = () => {
   };
 
   return (
-    <OverviewContainer>
-      <Section id="overview">
-        <span className="early-access-badge">🚀 Coming Soon - Join the Waitlist</span>
-        <h2>The Future of AI-Powered Web Development</h2>
-        <p>
+    <OverviewContainer ref={containerRef} data-scroll-container>
+      <Section id="overview" data-scroll-section>
+        <span className="early-access-badge" data-scroll data-scroll-speed="2" data-scroll-fade>
+          🚀 Coming Soon - Join the Waitlist
+        </span>
+        <h2 data-scroll data-scroll-speed="2" data-scroll-rotate>
+          The Future of AI-Powered<br/>Web Development
+        </h2>
+        <p data-scroll data-scroll-speed="1" data-scroll-fade>
           Be among the first to experience Paradiselabs - the revolutionary AI-driven web development framework. 
           Sign up now for early access and exclusive updates.
         </p>
-        <WaitlistForm onSubmit={handleSubmit}>
+        <WaitlistForm onSubmit={handleSubmit} data-scroll data-scroll-speed="2" data-scroll-scale>
           <input 
             type="email"
             name="email"
@@ -277,71 +362,73 @@ const Overview: React.FC = () => {
         </WaitlistForm>
       </Section>
 
-      <Section id="technical-overview">
-        <h2>Technical Overview</h2>
-        <p>
+      <Section id="technical-overview" data-scroll-section>
+        <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Technical Overview</h2>
+        <p data-scroll data-scroll-speed="3" data-scroll-fade>
           Paradiselabs is a sophisticated web development framework powered by a multi-agent AI system, built on Next.js 13+ with TypeScript. 
           It leverages multiple AI models including O1, Claude, Vertex AI, Gemini, and Perplexity to create intelligent, autonomous web development workflows.
         </p>
-        <Workflow />
+        <div data-scroll data-scroll-speed="3" data-scroll-fade>
+          <Workflow />
+        </div>
       </Section>
 
-      <Section id="architecture">
-        <h2>Core Architecture</h2>
-        <FeaturesGrid>
-          <FeatureCard>
+      <Section id="architecture" data-scroll-section>
+        <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Core Architecture</h2>
+        <FeaturesGrid data-scroll data-scroll-speed="2" data-scroll-fade>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Frontend Stack</h3>
             <p>Next.js 13+ with App Router, TypeScript, and Tailwind CSS</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>AI Agent System</h3>
             <p>Specialized AI agents for different aspects of development</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>State Management</h3>
             <p>Context-based state handling with real-time updates</p>
           </FeatureCard>
         </FeaturesGrid>
       </Section>
 
-      <Section id="laws">
-        <h2>The Five Core Laws</h2>
-        <FeaturesGrid>
-          <FeatureCard>
+      <Section id="laws" data-scroll-section>
+        <h2 data-scroll data-scroll-speed="2" data-scroll-blur>The Five Core Laws</h2>
+        <FeaturesGrid data-scroll data-scroll-speed="2" data-scroll-fade>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Revenue Generation</h3>
             <p>Automated monetization strategy implementation</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Design Excellence</h3>
             <p>Component-based architecture with modern UI/UX patterns</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>SEO Optimization</h3>
             <p>Automated meta-data and schema markup implementation</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>User Engagement</h3>
             <p>Interactive elements and content personalization</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Analytics Integration</h3>
             <p>Comprehensive data collection and monitoring</p>
           </FeatureCard>
         </FeaturesGrid>
       </Section>
 
-      <Section id="features">
-        <h2>Technical Features</h2>
-        <FeaturesGrid>
-          <FeatureCard>
+      <Section id="features" data-scroll-section>
+        <h2 data-scroll data-scroll-speed="2" data-scroll-blur>Technical Features</h2>
+        <FeaturesGrid data-scroll data-scroll-speed="2" data-scroll-fade>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Adjustable AI Autonomy</h3>
             <p>Fine-grained control over AI decision-making</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Development Interface</h3>
             <p>Live preview environment with real-time code generation</p>
           </FeatureCard>
-          <FeatureCard>
+          <FeatureCard data-scroll data-scroll-scale>
             <h3>Component System</h3>
             <p>Reusable UI components with theme-aware styling</p>
           </FeatureCard>

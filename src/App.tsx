@@ -15,7 +15,7 @@ const AppContainer = styled.div`
   padding-bottom: 4rem; // Space for footer
 `;
 
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <>
     <Navigation />
     <ParticlesBackground />
@@ -24,7 +24,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </>
 );
 
-const App: React.FC = () => {
+const App = (): JSX.Element => {
   return (
     <BrowserRouter>
       <AuthProvider>
