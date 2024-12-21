@@ -21,9 +21,67 @@ const Title = styled.h1`
 
 const Controls = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   margin-bottom: 2rem;
+`;
+
+const ControlRow = styled.div`
+  display: flex;
+  gap: 1rem;
   align-items: center;
+`;
+
+const FilterSection = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+`;
+
+const FilterLabel = styled.span`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+`;
+
+const LetterButton = styled.button<{ isActive?: boolean }>`
+  background: ${props => props.isActive ? 'rgba(208, 0, 255, 0.1)' : 'transparent'};
+  border: 1px solid ${props => props.isActive ? '#d000ff' : 'rgba(208, 0, 255, 0.3)'};
+  color: ${({ theme }) => theme.colors.textPrimary};
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 30px;
+  text-align: center;
+
+  &:hover {
+    background: rgba(208, 0, 255, 0.1);
+    border-color: #d000ff;
+  }
+`;
+
+const DateFilter = styled.select`
+  background: transparent;
+  border: 1px solid rgba(208, 0, 255, 0.3);
+  color: ${({ theme }) => theme.colors.textPrimary};
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #d000ff;
+  }
+
+  option {
+    background: #050C14;
+    color: ${({ theme }) => theme.colors.textPrimary};
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -120,6 +178,7 @@ const LoadingWrapper = styled.div`
 
 type SortType = 'date' | 'alpha';
 type SortDirection = 'asc' | 'desc';
+type DateFilter = 'all' | 'week' | 'month' | 'threeMonths' | 'sixMonths' | 'year';
 
 export const WaitlistPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -128,6 +187,10 @@ export const WaitlistPage: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [dateFilter, setDateFilter] = useState<DateFilter>('all');
+
+  const alphabet = '#ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
   useEffect(() => {
     loadWaitlistEntries();
@@ -195,16 +258,53 @@ export const WaitlistPage: React.FC = () => {
     }
   };
 
-  const sortEntries = (entries: any[]) => {
-    const sorted = [...entries];
+  const filterAndSortEntries = (entries: any[]) => {
+    let filtered = [...entries];
+
+    // Apply date filter
+    if (dateFilter !== 'all') {
+      const now = new Date();
+      const cutoff = new Date();
+      switch (dateFilter) {
+        case 'week':
+          cutoff.setDate(now.getDate() - 7);
+          break;
+        case 'month':
+          cutoff.setMonth(now.getMonth() - 1);
+          break;
+        case 'threeMonths':
+          cutoff.setMonth(now.getMonth() - 3);
+          break;
+        case 'sixMonths':
+          cutoff.setMonth(now.getMonth() - 6);
+          break;
+        case 'year':
+          cutoff.setFullYear(now.getFullYear() - 1);
+          break;
+      }
+      filtered = filtered.filter(entry => new Date(entry.createdAt) >= cutoff);
+    }
+
+    // Apply letter filter
+    if (selectedLetter) {
+      filtered = filtered.filter(entry => {
+        const firstChar = entry.email.charAt(0).toUpperCase();
+        if (selectedLetter === '#') {
+          return !isNaN(parseInt(firstChar));
+        }
+        return firstChar === selectedLetter;
+      });
+    }
+
+    // Sort filtered entries
     if (sortType === 'date') {
-      sorted.sort((a, b) => {
+      filtered.sort((a, b) => {
         const dateA = new Date(a.createdAt).getTime();
         const dateB = new Date(b.createdAt).getTime();
         return sortDirection === 'desc' ? dateB - dateA : dateA - dateB;
       });
     } else {
-      sorted.sort((a, b) => {
+      filtered.sort((a, b) => {
         const emailA = a.email.toLowerCase();
         const emailB = b.email.toLowerCase();
         return sortDirection === 'desc' 
@@ -212,7 +312,8 @@ export const WaitlistPage: React.FC = () => {
           : emailA.localeCompare(emailB);
       });
     }
-    return sorted;
+
+    return filtered;
   };
 
   const toggleSort = (type: SortType) => {
@@ -233,31 +334,65 @@ export const WaitlistPage: React.FC = () => {
     );
   }
 
-  const sortedEntries = sortEntries(entries);
+  const filteredAndSortedEntries = filterAndSortEntries(entries);
 
   return (
     <PageContainer>
       <Header>
         <Title>Waitlist Entries</Title>
         <Controls>
-          <SortButton 
-            isActive={sortType === 'date'}
-            onClick={() => toggleSort('date')}
-          >
-            Date {sortType === 'date' && (sortDirection === 'desc' ? '↓' : '↑')}
-          </SortButton>
-          <SortButton 
-            isActive={sortType === 'alpha'}
-            onClick={() => toggleSort('alpha')}
-          >
-            Alphabetical {sortType === 'alpha' && (sortDirection === 'desc' ? '↓' : '↑')}
-          </SortButton>
-          <DeleteButton 
-            onClick={handleDelete}
-            disabled={selectedEntries.length === 0 || isDeleting}
-          >
-            {isDeleting ? 'Deleting...' : `Delete Selected (${selectedEntries.length})`}
-          </DeleteButton>
+          <ControlRow>
+            <SortButton 
+              isActive={sortType === 'date'}
+              onClick={() => toggleSort('date')}
+            >
+              Date {sortType === 'date' && (sortDirection === 'desc' ? '↓' : '↑')}
+            </SortButton>
+            <SortButton 
+              isActive={sortType === 'alpha'}
+              onClick={() => toggleSort('alpha')}
+            >
+              Alphabetical {sortType === 'alpha' && (sortDirection === 'desc' ? '↓' : '↑')}
+            </SortButton>
+            <DeleteButton 
+              onClick={handleDelete}
+              disabled={selectedEntries.length === 0 || isDeleting}
+            >
+              {isDeleting ? 'Deleting...' : `Delete Selected (${selectedEntries.length})`}
+            </DeleteButton>
+          </ControlRow>
+
+          {sortType === 'alpha' && (
+            <FilterSection>
+              <FilterLabel>Filter by letter:</FilterLabel>
+              {alphabet.map(letter => (
+                <LetterButton
+                  key={letter}
+                  isActive={selectedLetter === letter}
+                  onClick={() => setSelectedLetter(selectedLetter === letter ? null : letter)}
+                >
+                  {letter}
+                </LetterButton>
+              ))}
+            </FilterSection>
+          )}
+
+          {sortType === 'date' && (
+            <FilterSection>
+              <FilterLabel>Filter by date:</FilterLabel>
+              <DateFilter
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value as DateFilter)}
+              >
+                <option value="all">All Time</option>
+                <option value="week">Last Week</option>
+                <option value="month">Last Month</option>
+                <option value="threeMonths">Last 3 Months</option>
+                <option value="sixMonths">Last 6 Months</option>
+                <option value="year">Last Year</option>
+              </DateFilter>
+            </FilterSection>
+          )}
         </Controls>
       </Header>
 
@@ -266,7 +401,7 @@ export const WaitlistPage: React.FC = () => {
           <tr>
             <th style={{ width: '40px' }}>
               <Checkbox
-                checked={selectedEntries.length === entries.length}
+                checked={selectedEntries.length === filteredAndSortedEntries.length}
                 onChange={handleSelectAll}
               />
             </th>
@@ -276,7 +411,7 @@ export const WaitlistPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedEntries.map((entry: any) => (
+          {filteredAndSortedEntries.map((entry: any) => (
             <tr key={entry.id}>
               <td>
                 <Checkbox
@@ -289,9 +424,9 @@ export const WaitlistPage: React.FC = () => {
               <td>{new Date(entry.createdAt).toLocaleDateString()}</td>
             </tr>
           ))}
-          {sortedEntries.length === 0 && (
+          {filteredAndSortedEntries.length === 0 && (
             <tr>
-              <td colSpan={4} style={{ textAlign: 'center' }}>No entries yet</td>
+              <td colSpan={4} style={{ textAlign: 'center' }}>No entries found</td>
             </tr>
           )}
         </tbody>
