@@ -26,11 +26,11 @@ const ErrorMessage = styled.div`
 
 const OverviewContainer = styled.main`
   min-height: 100vh;
-  background: rgba(5, 12, 20, 0.75);
   color: ${({ theme }) => theme.colors.textPrimary};
-  backdrop-filter: blur(8px);
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  background: transparent;
+  pointer-events: auto;
 `;
 
 const Section = styled.section`
@@ -42,18 +42,6 @@ const Section = styled.section`
   color: #f4f0ff;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(208, 0, 255, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-    animation: pulseGradient 3s ease-in-out infinite;
-  }
 
   h2 {
     font-size: clamp(2.25rem, 2rem + 0.25vw, 3rem);

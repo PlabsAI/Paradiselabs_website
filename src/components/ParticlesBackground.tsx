@@ -6,7 +6,7 @@ const Container = styled.div`
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: #050C14;
+  background: radial-gradient(ellipse at bottom, #110917 0%, #0B0C1E 100%);
 `;
 
 const StarsContainer = styled.div`

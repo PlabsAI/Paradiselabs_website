@@ -6,7 +6,8 @@ import { GlowDotsBackground } from '../components/GlowDotsBackground';
 const EdenContainer = styled.div`
   padding-top: 80px; // Space for navigation
   position: relative;
-  z-index: 1;
+  z-index: 0;
+  background: transparent;
 `;
 
 const Eden: React.FC = () => {

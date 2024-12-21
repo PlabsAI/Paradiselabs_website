@@ -30,13 +30,14 @@ const animStar = keyframes`
 // Styled components
 const Container = styled.div`
   height: 100%;
-  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  background: radial-gradient(ellipse at bottom, #1F102B 0%, #0B0C1E 100%);
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 0;
 `;
 
 const Stars1 = styled.div`
