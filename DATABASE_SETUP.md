@@ -26,20 +26,17 @@ Quick guide to set up the PostgreSQL database for the waitlist feature.
    # Run migrations to set up tables
    npx prisma migrate dev
 
-   # Seed the database with existing test entries
+   # This will seed the database with initial test entries (only needed once):
+   # - test1@example.com (developer)
+   # - test2@example.com (designer)
+   # - test3@example.com (business)
    npx prisma db seed
+
+   # After this initial setup, new waitlist entries will be saved automatically
+   # and persist in the database. You won't need to run the seed command again.
    ```
 
-4. If you get an error about missing seed command, add this to package.json:
-   ```json
-   {
-     "prisma": {
-       "seed": "node prisma/seed.js"
-     }
-   }
-   ```
-
-5. Start the servers:
+4. Start the servers:
    ```bash
    npm run dev
    ```
@@ -51,7 +48,16 @@ The waitlist entries should now be visible in the admin dashboard
 If you can't see the entries:
 1. Verify PostgreSQL is running (check Services in Task Manager)
 2. Confirm your DATABASE_URL is correct in .env
-3. Try resetting and reseeding the database:
+3. Try resetting the database (WARNING: this will clear all entries and re-run seeding):
    ```bash
    npx prisma migrate reset --force
-   npx prisma db seed
+   ```
+   Note: Only use this if you want to start fresh. It will remove all waitlist entries
+   and restore only the initial test data.
+
+## Note About TypeScript
+
+If you see TypeScript errors in VS Code:
+1. Open Command Palette (Ctrl+Shift+P)
+2. Type "TypeScript: Restart TS Server"
+3. Press Enter
