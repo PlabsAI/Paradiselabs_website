@@ -12,20 +12,28 @@ const FooterContainer = styled.footer`
 `;
 
 const FooterContent = styled.div`
+display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+          justify-content: center;
   gap: 0.5rem;
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.875rem;
 `;
 
 const Logo = styled.img`
-  height: 16px;
+height: 16px;
   width: auto;
   opacity: 0.4;
-  filter: brightness(1.2);
-  object-fit: contain;
+  -webkit-filter: brightness(1.2);
+          filter: brightness(1.2);
+  -o-object-fit: contain;
+     object-fit: contain;
   display: block;
   margin: 0;
 `;

@@ -36,9 +36,16 @@ const OverviewContainer = styled.main`
 const Section = styled.section`
   min-height: 100vh;
   padding: 6rem 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+          justify-content: center;
   color: #f4f0ff;
   position: relative;
   overflow: hidden;
@@ -47,6 +54,7 @@ const Section = styled.section`
     font-size: clamp(2.25rem, 2rem + 0.25vw, 3rem);
     margin-bottom: 2rem;
     font-weight: 800;
+    background-image: -o-linear-gradient(45deg, #fff, #d000ff, #9000ff);
     background-image: linear-gradient(45deg, #fff, #d000ff, #9000ff);
     -webkit-background-clip: text;
     background-clip: text;
@@ -70,6 +78,7 @@ const Section = styled.section`
 `;
 
 const FeaturesGrid = styled.div`
+  display: -ms-grid;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
@@ -79,62 +88,158 @@ const FeaturesGrid = styled.div`
 `;
 
 const FeatureCard = styled.div`
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
-  );
-  padding: 2rem;
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+   background: -o-linear-gradient(
+      315deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    padding: 2rem;
+    border-radius: 16px;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    -webkit-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.8s ease-out;
+    -o-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.8s ease-out;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.8s ease-out;
+    position: relative;
+    overflow: hidden;
+    background-size: 200% 200%;
+    background-position: 0% 0%;
 
-  &:hover {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow: 
-      0 25px 50px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(208, 0, 255, 0.2);
-    border-color: rgba(208, 0, 255, 0.4);
-  }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: -o-linear-gradient(45deg, transparent, rgba(208, 0, 255, 0.1), transparent);
+      background: linear-gradient(45deg, transparent, rgba(208, 0, 255, 0.1), transparent);
+      -webkit-transform: translateX(-100%);
+          -ms-transform: translateX(-100%);
+              transform: translateX(-100%);
+      -webkit-transition: -webkit-transform 0.6s ease;
+      transition: -webkit-transform 0.6s ease;
+      -o-transition: transform 0.6s ease;
+      transition: transform 0.6s ease;
+      transition: transform 0.6s ease, -webkit-transform 0.6s ease;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: -o-radial-gradient(var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                circle, 
+                rgba(208, 0, 255, 0.1) 0%, 
+                transparent 60%);
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(208, 0, 255, 0.1) 0%, 
+                transparent 60%);
+      opacity: 0;
+      -webkit-transition: opacity 0.3s ease;
+      -o-transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    &:hover {
+      -webkit-transform: translateY(-12px) scale(1.02);
+          -ms-transform: translateY(-12px) scale(1.02);
+              transform: translateY(-12px) scale(1.02);
+      -webkit-box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(208, 0, 255, 0.2);
+              box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(208, 0, 255, 0.2);
+      border-color: rgba(208, 0, 255, 0.4);
+      background-position: 100% 100%;
+
+      &::before {
+        -webkit-transform: translateX(100%);
+            -ms-transform: translateX(100%);
+                transform: translateX(100%);
+      }
+
+      &::after {
+        opacity: 1;
+      }
+    }
 
   h3 {
     font-size: clamp(1.5rem, 1.3rem + 0.25vw, 1.875rem);
     margin-bottom: 1.2rem;
+    background: -o-linear-gradient(45deg, #fff, #d000ff);
     background: linear-gradient(45deg, #fff, #d000ff);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
-  }
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: -webkit-gradient(linear, left top, right top, from(#d000ff), to(transparent));
+        background: -o-linear-gradient(left, #d000ff, transparent);
+        background: linear-gradient(90deg, #d000ff, transparent);
+        -webkit-transition: width 0.3s ease;
+        -o-transition: width 0.3s ease;
+        transition: width 0.3s ease;
+      }
+    }
+
+  &:hover h3::after {
+      width: 100%;
+    }
 
   p {
     font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
     text-align: left;
+    margin-top: 1rem;
+    color: hsl(0, 0%, 90%);
+    line-height: 1.625;
   }
 `;
 
 const WaitlistForm = styled.form`
-  max-width: 600px;
+ max-width: 600px;
   margin: 1rem auto;
   padding: 3.5rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 52px;
-  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+          backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 
+  -webkit-box-shadow: 
     0 25px 50px rgba(0, 0, 0, 0.4),
     0 0 40px rgba(208, 0, 255, 0.2);
-  transform: perspective(1000px) rotateX(0deg);
+          box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(208, 0, 255, 0.2);
+  -webkit-transform: perspective(1000px) rotateX(0deg);
+          transform: perspective(1000px) rotateX(0deg);
+  -webkit-transition: all 0.5s cubic-bezier(0.4, 0, 0.5, 1);
+  -o-transition: all 0.5s cubic-bezier(0.4, 0, 0.5, 1);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.5, 1);
   position: relative;
   z-index: 10;
 
   &:hover {
-    transform: perspective(1000px) rotateX(2deg) translateY(-8px);
-    box-shadow: 
+    -webkit-transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+            transform: perspective(1000px) rotateX(2deg) translateY(-8px);
+    -webkit-box-shadow: 
+      0 35px 70px rgba(0, 0, 0, 0.3),
+      0 0 50px rgba(208, 0, 255, 0.2);
+            box-shadow: 
       0 35px 70px rgba(0, 0, 0, 0.3),
       0 0 50px rgba(208, 0, 255, 0.2);
     border-color: rgba(208, 0, 255, 0.4);
@@ -149,6 +254,8 @@ const WaitlistForm = styled.form`
     background: rgba(255, 255, 255, 0.03);
     color: ${({ theme }) => theme.colors.textPrimary};
     font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1rem);
+    -webkit-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 11;
@@ -157,10 +264,15 @@ const WaitlistForm = styled.form`
       outline: none;
       border-color: #d000ff;
       background: rgba(255, 255, 255, 0.05);
-      box-shadow: 
+      -webkit-box-shadow: 
         0 0 20px rgba(208, 0, 255, 0.2),
         inset 0 2px 4px rgba(0, 0, 0, 0.1);
-      transform: translateY(-3px);
+              box-shadow: 
+        0 0 20px rgba(208, 0, 255, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      -webkit-transform: translateY(-3px);
+          -ms-transform: translateY(-3px);
+              transform: translateY(-3px);
     }
   }
 
@@ -168,6 +280,7 @@ const WaitlistForm = styled.form`
     width: 100%;
     padding: 1.4rem;
     margin-top: 2rem;
+    background: -o-linear-gradient(45deg, #d000ff, #9000ff);
     background: linear-gradient(45deg, #d000ff, #9000ff);
     background-size: 200% auto;
     border: none;
@@ -176,13 +289,20 @@ const WaitlistForm = styled.form`
     font-size: clamp(1.125rem, 1rem + 0.25vw, 1.25rem);
     font-weight: 600;
     cursor: pointer;
+    -webkit-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
     letter-spacing: 0.1em;
 
     &:hover {
-      transform: translateY(-3px);
-      box-shadow: 
+      -webkit-transform: translateY(-3px);
+          -ms-transform: translateY(-3px);
+              transform: translateY(-3px);
+      -webkit-box-shadow: 
+        0 20px 40px rgba(208, 0, 255, 0.4),
+        0 0 30px rgba(208, 0, 255, 0.3);
+              box-shadow: 
         0 20px 40px rgba(208, 0, 255, 0.4),
         0 0 30px rgba(208, 0, 255, 0.3);
       background-position: right center;

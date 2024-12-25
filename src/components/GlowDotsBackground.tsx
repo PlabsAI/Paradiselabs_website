@@ -20,16 +20,19 @@ const shadowsBig = generateBoxShadows(100);
 // Animations
 const animStar = keyframes`
   from {
-    transform: translateY(0px);
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
   }
   to {
-    transform: translateY(-2000px);
-  }
+    -webkit-transform: translateY(-2000px);
+            transform: translateY(-2000px);
+  }}
 `;
 
 // Styled components
 const Container = styled.div`
   height: 100%;
+  background: -o-radial-gradient(bottom, ellipse, #1F102B 0%, #0B0C1E 100%);
   background: radial-gradient(ellipse at bottom, #1F102B 0%, #0B0C1E 100%);
   overflow: hidden;
   position: fixed;
@@ -44,8 +47,10 @@ const Stars1 = styled.div`
   width: 1px;
   height: 1px;
   background: transparent;
-  box-shadow: ${shadowsSmall};
-  animation: ${animStar} 50s linear infinite;
+  -webkit-box-shadow: ${shadowsSmall};
+          box-shadow: ${shadowsSmall};
+  -webkit-animation: ${animStar} 50s linear infinite;
+          animation: ${animStar} 50s linear infinite;
 
   &:after {
     content: " ";
@@ -54,7 +59,8 @@ const Stars1 = styled.div`
     width: 1px;
     height: 1px;
     background: transparent;
-    box-shadow: ${shadowsSmall};
+    -webkit-box-shadow: ${shadowsSmall};
+            box-shadow: ${shadowsSmall};
   }
 `;
 
@@ -62,8 +68,10 @@ const Stars2 = styled.div`
   width: 2px;
   height: 2px;
   background: transparent;
-  box-shadow: ${shadowsMedium};
-  animation: ${animStar} 100s linear infinite;
+  -webkit-box-shadow: ${shadowsMedium};
+          box-shadow: ${shadowsMedium};
+  -webkit-animation: ${animStar} 100s linear infinite;
+          animation: ${animStar} 100s linear infinite;
 
   &:after {
     content: " ";
@@ -72,7 +80,8 @@ const Stars2 = styled.div`
     width: 2px;
     height: 2px;
     background: transparent;
-    box-shadow: ${shadowsMedium};
+    -webkit-box-shadow: ${shadowsMedium};
+            box-shadow: ${shadowsMedium};
   }
 `;
 
@@ -80,8 +89,10 @@ const Stars3 = styled.div`
   width: 3px;
   height: 3px;
   background: transparent;
-  box-shadow: ${shadowsBig};
-  animation: ${animStar} 150s linear infinite;
+  -webkit-box-shadow: ${shadowsBig};
+          box-shadow: ${shadowsBig};
+  -webkit-animation: ${animStar} 150s linear infinite;
+          animation: ${animStar} 150s linear infinite;
 
   &:after {
     content: " ";
@@ -90,28 +101,8 @@ const Stars3 = styled.div`
     width: 3px;
     height: 3px;
     background: transparent;
-    box-shadow: ${shadowsBig};
-  }
-`;
-
-const Title = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  color: #FFF;
-  text-align: center;
-  font-family: 'lato', sans-serif;
-  font-weight: 300;
-  font-size: 50px;
-  letter-spacing: 10px;
-  margin-top: -60px;
-  padding-left: 10px;
-
-  span {
-    background: -webkit-linear-gradient(white, #38495a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-box-shadow: ${shadowsBig};
+            box-shadow: ${shadowsBig};
   }
 `;
 

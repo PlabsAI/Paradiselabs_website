@@ -4,9 +4,15 @@ import styled from 'styled-components';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = styled.header`
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -21,10 +27,12 @@ const Title = styled.h1`
 const LogoutButton = styled.button`
   background: transparent;
   border: 1px solid rgba(208, 0, 255, 0.3);
-  color: ${({ theme }) => theme.colors.textPrimary};
+  color:${({ theme }) => theme.colors.textPrimary};
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 
   &:hover {
@@ -35,17 +43,24 @@ const LogoutButton = styled.button`
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: #050C14;
 `;
 
 const Sidebar = styled.aside`
-  width: 250px;
+width: 250px;
   background: rgba(255, 255, 255, 0.03);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   padding: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+          flex-direction: column;
 `;
 
 const NavSection = styled.div`
@@ -79,6 +94,8 @@ const NavLink = styled.button<{ isActive?: boolean }>`
   padding: 0.5rem;
   border-radius: 4px;
   cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 
   &:hover {
@@ -88,6 +105,8 @@ const NavLink = styled.button<{ isActive?: boolean }>`
 `;
 
 const MainContent = styled.main`
+-webkit-box-flex: 1;
+  -ms-flex: 1;
   flex: 1;
   padding: 2rem;
   overflow-y: auto;

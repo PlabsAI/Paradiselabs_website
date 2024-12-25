@@ -10,20 +10,29 @@ const Nav = styled.nav`
   padding: 1rem 2rem;
   z-index: 1000;
   background: rgba(5, 12, 20, 0.8);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
 const NavContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
 `;
 
 const NavList = styled.ul`
   list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   gap: 2rem;
   margin: 0;
@@ -35,10 +44,12 @@ const NavItem = styled.li`
 `;
 
 const NavLink = styled(Link)`
-  color: #fff;
+ color: #fff;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
+  -webkit-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
   transition: color 0.3s ease;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -49,8 +60,12 @@ const NavLink = styled(Link)`
 `;
 
 const LogoContainer = styled(Link)`
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
   gap: 1rem;
   text-decoration: none;
 `;
@@ -58,20 +73,24 @@ const LogoContainer = styled(Link)`
 const LogoImage = styled.img`
   height: 32px;
   width: auto;
-  filter: brightness(1.2); // Makes SVG slightly brighter
-  object-fit: contain;
+  -webkit-filter: brightness(1.2);
+          filter: brightness(1.2); 
+  -o-object-fit: contain; 
+     object-fit: contain;
   display: block;
 `;
 
 const LogoText = styled.span`
-  font-size: 1.5rem;
+ font-size: 1.5rem;
   font-weight: 700;
+  background: -o-linear-gradient(45deg, #fff, #d000ff, #9000ff);
   background: linear-gradient(45deg, #fff, #d000ff, #9000ff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
-  animation: gradientFlow 8s linear infinite;
+  -webkit-animation: gradientFlow 8s linear infinite;
+          animation: gradientFlow 8s linear infinite;
 `;
 
 const SubNav = styled.ul<{ $isOpen: boolean }>`
@@ -79,7 +98,8 @@ const SubNav = styled.ul<{ $isOpen: boolean }>`
   top: 100%;
   left: 0;
   background: rgba(5, 12, 20, 0.95);
-  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   padding: 0.5rem;
@@ -88,9 +108,14 @@ const SubNav = styled.ul<{ $isOpen: boolean }>`
   min-width: 200px;
   opacity: ${props => props.$isOpen ? 1 : 0};
   visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
-  transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  -webkit-transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  -ms-transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+          transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
 const SubNavItem = styled.li`
@@ -104,6 +129,8 @@ const SubNavLink = styled(Link)`
   display: block;
   padding: 0.5rem;
   border-radius: 4px;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 
   &:hover {

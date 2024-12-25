@@ -6,14 +6,17 @@ const Container = styled.div`
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  background: -o-radial-gradient(bottom, ellipse, #110917 0%, #0B0C1E 100%);
   background: radial-gradient(ellipse at bottom, #110917 0%, #0B0C1E 100%);
 `;
 
 const StarsContainer = styled.div`
   position: absolute;
   inset: 0;
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
   overflow: visible;
 
   div {
@@ -24,7 +27,8 @@ const StarsContainer = styled.div`
     border-radius: 50%;
     opacity: 0;
     will-change: transform, opacity;
-    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
   }
 `;
 
