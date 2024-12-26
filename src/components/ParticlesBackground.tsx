@@ -8,6 +8,7 @@ const Container = styled.div`
   pointer-events: none;
   background: -o-radial-gradient(bottom, ellipse, #110917 0%, #0B0C1E 100%);
   background: radial-gradient(ellipse at bottom, #110917 0%, #0B0C1E 100%);
+  overflow: hidden;
 `;
 
 const StarsContainer = styled.div`
@@ -17,7 +18,7 @@ const StarsContainer = styled.div`
           transform-style: preserve-3d;
   -webkit-perspective: 1000px;
           perspective: 1000px;
-  overflow: visible;
+  overflow: hidden;
 
   div {
     position: absolute;
