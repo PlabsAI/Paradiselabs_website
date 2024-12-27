@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BlackHole } from '../components/BlackHole';
-import Particles from '../components/CompanyParticlesReactImport';
+import Particles from '../components/Particles';
 import { useLocation } from 'react-router-dom';
 
 const Home: React.FC = () => {

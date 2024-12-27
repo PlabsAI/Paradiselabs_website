@@ -227,7 +227,7 @@ const Particles: React.FC = () => {
 
       await loadScript('https://code.jquery.com/jquery-3.6.0.min.js', 'jquery');
       await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js', 'pixi');
-      await loadScript('src/components/CompanyTitleParticles.js', 'particles');
+      await loadScript('../temp/particles.js', 'particles');
 
       setIsInitialized(true);
       isInitializingRef.current = false;
