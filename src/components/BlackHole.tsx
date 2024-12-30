@@ -15,6 +15,9 @@ const BlackHoleContainer = styled.div`
   -webkit-box-pack: center;
   -ms-flex-pack: center;
           justify-content: center;
+  -webkit-transform: translateY(50px);
+  -ms-transform: translateY(50px);
+          transform: translateY(50px); 
 `;
 
 export const BlackHole: React.FC = () => {

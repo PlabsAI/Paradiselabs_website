@@ -564,8 +564,8 @@ window.initializeNodes = function() {
         '#D9D9BD',                         // dot color
         1500,                              // width in pixels
         750,                               // height in pixels
-        0,                               // positionX
-        -100,                              // positionY
+        10,                               // positionX
+        -70,                              // positionY
         0,                               // canvasPadding
         70,                                // mouseRadius (in pixels)
         0                                  // startDelay (in milliseconds)
