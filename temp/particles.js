@@ -145,11 +145,11 @@ window.Nodes = {
             }
 
             // Event listeners
-            window.addEventListener('resize', () => {
-                this.siteWidth = width || window.innerWidth;
-                this.siteHeight = height || window.innerHeight;
+            window.addEventListener('resize', this.debounce(() => {
+                this.siteWidth = window.innerWidth;
+                this.siteHeight = window.innerHeight;
                 this.onWindowResize();
-            });
+            }, 250));
 
             this.renderer.view.addEventListener('mousedown', () => {
                 if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = true;
@@ -161,11 +161,12 @@ window.Nodes = {
 
             if (this.stage) {
                 this.stage.interactive = true;
+                this.stage.on('mousemove', this.onMouseMove.bind(this));
                 this.stage.on('touchmove', this.onTouchMove.bind(this));
             }
 
-            window.addEventListener("touchend", this.onTouchEnd);
-            window.addEventListener("mouseout", this.onTouchEnd);
+            window.addEventListener("touchend", this.onTouchEnd.bind(this));
+            window.addEventListener("mouseout", this.onMouseOut.bind(this));
 
             // Start loading the data and animate the starting blackhole effect
             setTimeout(() => {
@@ -242,6 +243,12 @@ window.Nodes = {
             return;
         }
 
+        this.bgContext = this.bgCanvas.getContext('2d', { willReadFrequently: true });
+        if (!this.bgContext) {
+            console.error('Failed to get background context');
+            return;
+        }
+
         let newWidth, newHeight;
 
         // Scale image if too large
@@ -257,13 +264,10 @@ window.Nodes = {
             newHeight = this.bgImage.height;
         }
 
-        // Draw to background canvas with padding offset
-        this.bgContext = this.bgCanvas.getContext('2d');
-        if (!this.bgContext) {
-            console.error('Failed to get background context');
-            return;
-        }
+        // Clear the background canvas before redrawing
+        this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
 
+        // Draw to background canvas with padding offset
         this.bgContext.drawImage(
             this.bgImage, 
             (this.siteWidth - newWidth) / 2 + this.canvasPadding, 
@@ -275,8 +279,8 @@ window.Nodes = {
         try {
             this.bgContextPixelData = this.bgContext.getImageData(0, 0, this.bgCanvas.width, this.bgCanvas.height);
             this.preparePoints();
-            this.draw();
             this.drawPixies();
+            this.draw();
         } catch (error) {
             console.error('Error processing image:', error);
         }
@@ -288,30 +292,27 @@ window.Nodes = {
             console.log("Skipping resize - initialization not complete");
             return;
         }
-    
+
+        // Update dimensions
+        this.siteWidth = window.innerWidth;
+        this.siteHeight = window.innerHeight;
+
+        // Clear the entire canvas
+        this.clearCanvas();
+
+        // Resize renderer
         this.renderer.resize(
             this.siteWidth + (this.canvasPadding * 2),
             this.siteHeight + (this.canvasPadding * 2)
         );
-    
+
         // Update canvas dimensions
         this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
         this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
-    
-        // Redraw background image and points
+
+        // Redraw background image and recalculate points
         this.drawImageToBackground();
-    
-        // Adjust positions for the new dimensions
-        if (this.stage && this.stage.children) {
-            this.stage.children.forEach((dot, index) => {
-                if (this.points[index]) {
-                    const originalPoint = this.points[index];
-                    dot.position.x = originalPoint.x;
-                    dot.position.y = originalPoint.y;
-                }
-            });
-        }
-    
+
         // Update startup mouse position if in startup phase
         if (this.isStartupPhase) {
             this.startupMousePos = {
@@ -319,6 +320,24 @@ window.Nodes = {
                 y: (this.siteHeight / 2) + this.canvasPadding
             };
         }
+    },
+
+    clearCanvas: function() {
+        // Clear the PIXI stage
+        while(this.stage.children[0]) {
+            this.stage.removeChild(this.stage.children[0]);
+        }
+
+        // Clear the background canvas
+        if (this.bgCanvas) {
+            this.bgContext = this.bgCanvas.getContext('2d', { willReadFrequently: true });
+            if (this.bgContext) {
+                this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
+            }
+        }
+
+        // Clear the renderer
+        this.renderer.clear();
     },
 
     preparePoints: function() {
@@ -349,10 +368,10 @@ window.Nodes = {
                 const color = `rgba(${colors[pixelPosition]},${colors[pixelPosition + 1]},${colors[pixelPosition + 2]},1)`;
                     
                 this.points.push({
-                    x: j,
-                    y: i,
-                    originalX: j,
-                    originalY: i,
+                    x: j + this.canvasPadding,
+                    y: i + this.canvasPadding,
+                    originalX: j + this.canvasPadding,
+                    originalY: i + this.canvasPadding,
                     color: color
                 });
             }
@@ -446,6 +465,11 @@ window.Nodes = {
     },
 
     drawPixies: function() {
+        // Clear existing sprites
+        while(this.stage.children[0]) {
+            this.stage.removeChild(this.stage.children[0]);
+        }
+
         for (let i = 0; i < this.points.length; i++) {
             const currentPoint = this.points[i];
             const dot = new PIXI.Sprite(this.texture);
@@ -459,12 +483,15 @@ window.Nodes = {
             
             this.stage.addChild(dot);
         }
+
+        // Force a render to update the stage
+        this.renderer.render(this.stage);
     },
 
-    onTouchEnd: function() {
-        if (!Nodes.mouseDisabled && !Nodes.isStartupPhase) {
-            Nodes.newmouse.global.x = -1000;
-            Nodes.newmouse.global.y = -1000;
+    onMouseMove: function(event) {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = event.data.global.x;
+            this.newmouse.global.y = event.data.global.y;
         }
     },
 
@@ -473,6 +500,44 @@ window.Nodes = {
             this.newmouse.global.x = event.data.global.x;
             this.newmouse.global.y = event.data.global.y;
         }
+    },
+
+    onTouchEnd: function() {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = -1000;
+            this.newmouse.global.y = -1000;
+        }
+    },
+
+    onMouseOut: function() {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = -1000;
+            this.newmouse.global.y = -1000;
+        }
+    },
+
+    updatePointPositions: function() {
+        if (this.stage && this.stage.children && this.points) {
+            this.stage.children.forEach((dot, index) => {
+                if (this.points[index]) {
+                    const point = this.points[index];
+                    dot.position.x = point.x;
+                    dot.position.y = point.y;
+                }
+            });
+        }
+    },
+
+    debounce: function(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     },
 };
 
@@ -496,14 +561,14 @@ window.initializeNodes = function() {
         1,                                 // particle density
         0.15,                              // particle width
         0.15,                              // particle height
-        '#fff',                        // dot color (white)
+        '#D9D9BD',                         // dot color
         1500,                              // width in pixels
-        750,                              // height in pixels
-        -85,                              // positionX
-        -220,                              // positionY
-        100,                              // canvasPadding
-        70,                               // mouseRadius (in pixels)
-        0                              // startDelay (in milliseconds)
+        750,                               // height in pixels
+        0,                               // positionX
+        -100,                              // positionY
+        0,                               // canvasPadding
+        70,                                // mouseRadius (in pixels)
+        0                                  // startDelay (in milliseconds)
     );
 };
 

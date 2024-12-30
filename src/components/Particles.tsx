@@ -32,19 +32,24 @@ declare global {
   }
 }
 
+// Add this declaration to resolve NodeJS namespace issues
+declare namespace NodeJS {
+  interface Timeout {}
+}
+
 const MAX_INITIALIZATION_ATTEMPTS = 3;
 const SCRIPT_TIMEOUT = 5000;
 const CLEANUP_TIMEOUT = 1000;
 
 const Particles: React.FC = () => {
   const location = useLocation();
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [scriptStatus, setScriptStatus] = useState<ScriptStatus>({
+  const [_isInitialized, setIsInitialized] = useState(false);
+  const [_scriptStatus, setScriptStatus] = useState<ScriptStatus>({
     jquery: false,
     pixi: false,
     particles: false,
   });
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const initializationAttemptsRef = useRef(0);
   const cleanupTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const initTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -101,8 +106,8 @@ const Particles: React.FC = () => {
         canvases.forEach(canvas => {
           try {
             const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-            if (gl) {
-              gl.getExtension('WEBGL_lose_context')?.loseContext();
+            if (gl && 'getExtension' in gl) {
+              (gl as WebGLRenderingContext).getExtension('WEBGL_lose_context')?.loseContext();
             }
             canvas.parentNode?.removeChild(canvas);
           } catch (e) {
@@ -124,23 +129,21 @@ const Particles: React.FC = () => {
 
         // Clean up global scope
         const globals = [
-            'PIXI',
-            'particleSystem',
-            'jQuery',
-            '$',
-            'pixiApplication',          
-            'initializeNodes', 
-            'ParticleNetwork',
-            'CanvasRenderer',
-            'ParticleSystem'
-          ];
+          'PIXI',
+          'particleSystem',
+          'jQuery',
+          '$',
+          'pixiApplication',          
+          'initializeNodes', 
+          'ParticleNetwork',
+          'CanvasRenderer',
+          'ParticleSystem'
+        ];
 
         globals.forEach(key => {
           try {
-            // @ts-ignore
-            if (window[key]) {
-              // @ts-ignore
-              delete window[key];
+            if (key in window) {
+              delete (window as any)[key];
             }
           } catch (e) {
             console.error(`Error cleaning up ${key}:`, e);
