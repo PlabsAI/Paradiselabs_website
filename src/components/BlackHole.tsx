@@ -9,6 +9,8 @@ const BlackHoleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  margin-bottom: -4rem; /* Offset the footer height */
 `;
 
 const CompanyTitle = styled.h1`

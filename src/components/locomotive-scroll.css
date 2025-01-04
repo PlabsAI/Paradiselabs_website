@@ -1,7 +1,12 @@
 /* Locomotive Scroll styles with dual browser support */
 html.has-scroll-smooth {
-    overflow: hidden;
     -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 html.has-scroll-dragging {
@@ -13,146 +18,136 @@ html.has-scroll-dragging {
 
 .has-scroll-smooth body {
     overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .has-scroll-smooth [data-scroll-container] {
     min-height: 100vh;
+    height: auto;
+    overflow-y: scroll;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     -webkit-perspective: 1000px;
-            perspective: 1000px;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    perspective: 1000px;
+    transform-style: preserve-3d;
     will-change: transform;
+}
+
+/* Show scrollbar */
+.has-scroll-smooth {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(208, 0, 255, 0.5) rgba(5, 12, 20, 0.2);
+}
+
+/* Webkit scrollbar styles */
+.has-scroll-smooth::-webkit-scrollbar {
+    width: 8px;
+}
+
+.has-scroll-smooth::-webkit-scrollbar-track {
+    background: rgba(5, 12, 20, 0.2);
+}
+
+.has-scroll-smooth::-webkit-scrollbar-thumb {
+    background-color: rgba(208, 0, 255, 0.5);
+    border-radius: 4px;
 }
 
 [data-scroll-section] {
     position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
     will-change: transform;
+    padding: 4rem 0;
+}
+
+[data-scroll-section]:last-child {
+    margin-bottom: 0;
 }
 
 /* Enhanced scroll animations */
 [data-scroll] {
-    -webkit-transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    -o-transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform, opacity;
-    -webkit-transform-origin: center center;
-        -ms-transform-origin: center center;
-            transform-origin: center center;
+    transform-origin: center center;
+    transition: opacity 1s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Speed variations with scale for Chrome */
+/* Speed variations with scale */
 [data-scroll-speed="1"] {
-    -ms-transform: translateY(var(--scroll-offset, 0)) scale(0.98);
-        transform: translateY(var(--scroll-offset, 0)) scale(0.98);
-    -webkit-transform: translateY(var(--scroll-offset, 0)) scale(0.98);
+    transform: translateY(var(--scroll-offset, 0)) scale(0.98);
     opacity: calc(1 - abs(var(--scroll-offset, 0)) / 1000);
 }
 
 [data-scroll-speed="2"] {
-    -ms-transform: translateY(calc(var(--scroll-offset, 0) * 1.5)) scale(0.96);
-        transform: translateY(calc(var(--scroll-offset, 0) * 1.5)) scale(0.96);
-    -webkit-transform: translateY(calc(var(--scroll-offset, 0) * 1.5)) scale(0.96);
+    transform: translateY(calc(var(--scroll-offset, 0) * 1.5)) scale(0.96);
     opacity: calc(1 - abs(var(--scroll-offset, 0)) / 800);
 }
 
 [data-scroll-speed="3"] {
-    -ms-transform: translateY(calc(var(--scroll-offset, 0) * 2)) scale(0.94);
-        transform: translateY(calc(var(--scroll-offset, 0) * 2)) scale(0.94);
-    -webkit-transform: translateY(calc(var(--scroll-offset, 0) * 2)) scale(0.94);
+    transform: translateY(calc(var(--scroll-offset, 0) * 2)) scale(0.94);
     opacity: calc(1 - abs(var(--scroll-offset, 0)) / 600);
 }
 
-/* Parallax effect using translateZ */
+/* Parallax effect */
 [data-scroll-parallax] {
-    -webkit-transition: -webkit-transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: -webkit-transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-    -o-transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 1s cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform;
     transform: translateZ(calc(var(--scroll-offset, 0) * -0.2px));
-    -webkit-transform: translateZ(calc(var(--scroll-offset, 0) * -0.2px));
+    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Fade effect */
 [data-scroll-fade] {
     opacity: 0;
-    -webkit-transition: opacity 1.2s ease-out, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: opacity 1.2s ease-out, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    -o-transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: translateY(30px);
     transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    -ms-transform: translateY(30px);
-        transform: translateY(30px);
-    -webkit-transform: translateY(30px);
 }
 
 [data-scroll-fade].is-inview {
     opacity: 1;
-    -ms-transform: translateY(0);
-        transform: translateY(0);
-    -webkit-transform: translateY(0);
+    transform: translateY(0);
 }
 
 /* Scale effect */
 [data-scroll-scale] {
-    -ms-transform: scale(0.95);
-        transform: scale(0.95);
-    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
     opacity: 0;
-    -webkit-transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    -o-transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: opacity 1s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 [data-scroll-scale].is-inview {
-    -ms-transform: scale(1);
-        transform: scale(1);
-    -webkit-transform: scale(1);
+    transform: scale(1);
     opacity: 1;
 }
 
 /* Rotation effect */
 [data-scroll-rotate] {
-    -ms-transform: rotate(-5deg);
-        transform: rotate(-5deg);
-    -webkit-transform: rotate(-5deg);
+    transform: rotate(-5deg);
     opacity: 0;
-    -webkit-transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    transition: opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-    -o-transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1s ease, -webkit-transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: opacity 1s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 [data-scroll-rotate].is-inview {
-    -ms-transform: rotate(0);
-        transform: rotate(0);
-    -webkit-transform: rotate(0);
+    transform: rotate(0);
     opacity: 1;
 }
 
 /* Blur effect */
 [data-scroll-blur] {
     filter: blur(10px);
-    -webkit-filter: blur(10px);
     opacity: 0;
-    transition: filter 1.2s ease-out, -webkit-filter 1.2s ease-out, opacity 1s ease;
+    transition: filter 1.2s ease-out, opacity 1s ease;
 }
 
 [data-scroll-blur].is-inview {
     filter: blur(0);
-    -webkit-filter: blur(0);
     opacity: 1;
-}
-
-/* Prevent horizontal scrollbar */
-.has-scroll-smooth body {
-    overflow-x: hidden;
 }

@@ -131,33 +131,68 @@ export const Navigation: React.FC = () => {
             <SubNav $isOpen={isEdenOpen}>
               <SubNavItem>
                 <SubNavLink to="/eden#overview" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Overview</SubNavLink>
-              </SubNavItem>
-              <SubNavItem>
-                <SubNavLink to="/eden#architecture" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Architecture</SubNavLink>
+                  e.preventDefault();
+                  const element = document.getElementById('overview');
+                  if (element) {
+                    const container = document.querySelector('[data-scroll-container]') as HTMLElement;
+                    const scroll = (container as any)?.__locomotive;
+                    if (scroll) {
+                      scroll.scrollTo(element, { duration: 1000, offset: -100 });
+                    }
+                  }
+                }}>Overview</SubNavLink>
               </SubNavItem>
               <SubNavItem>
                 <SubNavLink to="/eden#technical-overview" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('technical-overview')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Core</SubNavLink>
+                  e.preventDefault();
+                  const element = document.getElementById('technical-overview');
+                  if (element) {
+                    const container = document.querySelector('[data-scroll-container]') as HTMLElement;
+                    const scroll = (container as any)?.__locomotive;
+                    if (scroll) {
+                      scroll.scrollTo(element, { duration: 1000, offset: -100 });
+                    }
+                  }
+                }}>Technical Overview</SubNavLink>
+              </SubNavItem>
+              <SubNavItem>
+                <SubNavLink to="/eden#architecture" onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('architecture');
+                  if (element) {
+                    const container = document.querySelector('[data-scroll-container]') as HTMLElement;
+                    const scroll = (container as any)?.__locomotive;
+                    if (scroll) {
+                      scroll.scrollTo(element, { duration: 1000, offset: -100 });
+                    }
+                  }
+                }}>Architecture</SubNavLink>
               </SubNavItem>
               <SubNavItem>
                 <SubNavLink to="/eden#features" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Features</SubNavLink>
+                  e.preventDefault();
+                  const element = document.getElementById('features');
+                  if (element) {
+                    const container = document.querySelector('[data-scroll-container]') as HTMLElement;
+                    const scroll = (container as any)?.__locomotive;
+                    if (scroll) {
+                      scroll.scrollTo(element, { duration: 1000, offset: -100 });
+                    }
+                  }
+                }}>Features</SubNavLink>
               </SubNavItem>
               <SubNavItem>
                 <SubNavLink to="/eden#laws" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('laws')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Laws</SubNavLink>
+                  e.preventDefault();
+                  const element = document.getElementById('laws');
+                  if (element) {
+                    const container = document.querySelector('[data-scroll-container]') as HTMLElement;
+                    const scroll = (container as any)?.__locomotive;
+                    if (scroll) {
+                      scroll.scrollTo(element, { duration: 1000, offset: -100 });
+                    }
+                  }
+                }}>Laws</SubNavLink>
               </SubNavItem>
             </SubNav>
           </NavItem>

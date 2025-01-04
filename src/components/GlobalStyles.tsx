@@ -453,7 +453,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    overflow-x: hidden;
+    overflow: ${({ pathname }: { pathname: string }) => pathname === '/' ? 'hidden' : 'auto'};
     color: ${({ theme }: { theme: DefaultTheme }) => theme.colors.textPrimary};
     font-family: ${({ theme }: { theme: DefaultTheme }) => theme.fonts.primary};
     font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes.base};

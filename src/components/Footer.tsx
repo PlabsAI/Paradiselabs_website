@@ -4,11 +4,21 @@ import styled from 'styled-components';
 const FooterContainer = styled.footer`
   width: 100%;
   padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
+  position: relative;
+  z-index: 100;
   text-align: center;
+  margin-top: auto;
+  background: linear-gradient(to top, rgba(5, 12, 20, 0.95), rgba(5, 12, 20, 0));
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  
+  &[data-scroll-section] {
+    min-height: auto;
+    padding: 1rem;
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -34,13 +44,17 @@ const CompanyName = styled.span`
   color: inherit;
 `;
 
+const Copyright = styled.span`
+  color: inherit;
+`;
+
 export const Footer: React.FC = () => {
   return (
-    <FooterContainer>
+    <FooterContainer data-scroll-section>
       <FooterContent>
         <Logo src="/assets/images/logo.svg" alt="ParadiseLabs" />
         <CompanyName>ParadiseLabs</CompanyName>
-        <span>© 2024. All rights reserved.</span>
+        <Copyright>© 2024. All rights reserved.</Copyright>
       </FooterContent>
     </FooterContainer>
   );

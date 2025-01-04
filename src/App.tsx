@@ -14,7 +14,22 @@ import { AdminLayout } from './components/AdminLayout';
 
 const AppContainer = styled.div`
   min-height: 100vh;
-  padding-bottom: 4rem; // Space for footer
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 80px); /* Account for navigation */
+  
+  &[data-scroll-container] {
+    position: relative;
+    overflow: visible;
+  }
 `;
 
 const BackgroundSelector = () => {
@@ -25,8 +40,10 @@ const BackgroundSelector = () => {
 const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <>
     <Navigation />
-    <BackgroundSelector />
-    {children}
+    <ContentWrapper>
+      <BackgroundSelector />
+      {children}
+    </ContentWrapper>
     <Footer />
   </>
 );
