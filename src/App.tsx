@@ -14,7 +14,28 @@ import { AdminLayout } from './components/AdminLayout';
 
 const AppContainer = styled.div`
   min-height: 100vh;
+<<<<<<< Updated upstream
   padding-bottom: 4rem; // Space for footer
+=======
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Prevent horizontal scrollbar issues */
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full viewport height */
+  width: 100%;
+  
+  &[data-scroll-container] {
+    position: relative;
+    overflow: visible;
+  }
+>>>>>>> Stashed changes
 `;
 
 const BackgroundSelector = () => {
@@ -22,6 +43,7 @@ const BackgroundSelector = () => {
   return location.pathname === '/' ? <ParticlesBackground /> : <GlowDotsBackground />;
 };
 
+<<<<<<< Updated upstream
 const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element => (
   <>
     <Navigation />
@@ -30,6 +52,36 @@ const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element =>
     <Footer />
   </>
 );
+=======
+const MainLayout = React.memo(({ children }: { children: React.ReactNode }): JSX.Element => {
+  React.useEffect(() => {
+    console.group('🌟 MAIN LAYOUT LIFECYCLE 🌟');
+    console.warn('MOUNTED');
+    console.trace('Layout Mount Trace');
+    console.groupEnd();
+
+    return () => {
+      console.group('🌟 MAIN LAYOUT LIFECYCLE 🌟');
+      console.warn('UNMOUNTED');
+      console.trace('Layout Unmount Trace');
+      console.groupEnd();
+    };
+  }, []);
+
+  return (
+    <>
+      <Navigation />
+      <ContentWrapper>
+        <BackgroundSelector />
+        {children}
+        <Footer />
+      </ContentWrapper>
+    </>
+  );
+});
+
+MainLayout.displayName = 'MainLayout';
+>>>>>>> Stashed changes
 
 const App = (): JSX.Element => {
   return (

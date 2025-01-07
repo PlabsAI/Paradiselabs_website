@@ -21,6 +21,28 @@ const Container = styled.div`
   color: #fff;
   font-size: 1.5rem;
   text-align: center;
+<<<<<<< Updated upstream
+=======
+  transform-style: preserve-3d;
+  will-change: transform;
+  overflow: hidden;
+  padding-bottom: 80px; /* Explicit space for footer */
+
+  ${({ $path }) => $path === '/' ? `
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+  ` : `
+    min-height: 100vh;
+    justify-content: center;
+  `}
+
+  /* Ensure footer and other bottom elements can render */
+  & > *:last-child {
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+>>>>>>> Stashed changes
 `;
 
 export const PageContainer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {

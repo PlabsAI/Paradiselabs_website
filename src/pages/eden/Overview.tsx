@@ -321,8 +321,33 @@ const Overview: React.FC<{}> = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+<<<<<<< Updated upstream
     // Browser detection
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+=======
+    // Initialize locomotive scroll
+const locomotiveScroll = new LocomotiveScroll({
+  el: containerRef.current,
+  smooth: true,
+  lerp: 0.05,
+  multiplier: 0.7,
+  class: 'is-inview',
+  reloadOnContextChange: true,
+  smartphone: {
+    smooth: true,
+    multiplier: 0.7,
+    lerp: 0.05
+  },
+  tablet: {
+    smooth: true,
+    multiplier: 0.7,
+    lerp: 0.05
+  },
+  scrollFromAnywhere: true, // Allow scrolling from any element
+  resetNativeScroll: true, // Ensure native scroll behavior
+  gestureDirection: 'vertical' // Explicitly set vertical scrolling
+});
+>>>>>>> Stashed changes
 
     // Get scroll options based on browser
     const getScrollOptions = () => {
