@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 import { Home, GLUE, Projects, Blog, About } from './pages';
 import { Login, Dashboard, WaitlistPage } from './pages/admin';
 import { AuthProvider } from './contexts/AuthContext';
+import { ParticleProvider } from './contexts/ParticleContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AdminLayout } from './components/AdminLayout';
 
@@ -19,7 +20,11 @@ const AppContainer = styled.div`
 
 const BackgroundSelector = () => {
   const location = useLocation();
-  return location.pathname === '/' ? <ParticlesBackground /> : <GlowDotsBackground />;
+  
+  if (location.pathname === '/') {
+    return <ParticlesBackground />;
+  }
+  return <GlowDotsBackground />;
 };
 
 const MainLayout = ({ children }: { children: React.ReactNode }): JSX.Element => (
@@ -35,6 +40,7 @@ const App = (): JSX.Element => {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <ParticleProvider>
         <Routes>
           {/* Admin Routes */}
           <Route path="/admin">
@@ -116,6 +122,7 @@ const App = (): JSX.Element => {
             />
           </Route>
         </Routes>
+        </ParticleProvider>
       </AuthProvider>
     </BrowserRouter>
   );

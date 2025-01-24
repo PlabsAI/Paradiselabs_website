@@ -119,7 +119,7 @@ window.Nodes = {
         // Renderer position and initial opacity with fixed positioning
         this.renderer.view.style.position = 'fixed';
         this.renderer.view.style.left = '0';
-        this.renderer.view.style.top = '0';
+        this.renderer.view.style.top = '-20%'; // Move particles higher
         this.renderer.view.style.width = '100vw';
         this.renderer.view.style.height = '100vh';
         this.renderer.view.style.opacity = '1';
@@ -552,17 +552,9 @@ window.Nodes = {
 
 // Ensure proper cleanup before re-initialization
 window.initializeNodes = function() {
+    // Only initialize if not already initialized
     if (window.Nodes && window.Nodes.isInitialized) {
-        // Cleanup existing instance
-        if (window.Nodes.animation) {
-            cancelAnimationFrame(window.Nodes.animation);
-        }
-        if (window.Nodes.renderer) {
-            window.Nodes.renderer.destroy(true);
-        }
-        if (window.Nodes.stage) {
-            window.Nodes.stage.destroy(true);
-        }
+        return;
     }
 
     window.Nodes.init(
@@ -571,14 +563,19 @@ window.initializeNodes = function() {
         0.15,                              // particle width
         0.15,                              // particle height
         '#D9D9BD',                         // dot color
-        1500,                              // width in pixels
-        750,                               // height in pixels
-        10,                               // positionX
-        -70,                              // positionY
-        0,                               // canvasPadding
+        window.innerWidth,                 // width in pixels
+        window.innerHeight,                // height in pixels
+        0,                                 // positionX
+        0,                                 // positionY
+        0,                                 // canvasPadding
         70,                                // mouseRadius (in pixels)
         0                                  // startDelay (in milliseconds)
     );
+    
+    // Ensure renderer is visible
+    if (window.Nodes && window.Nodes.renderer && window.Nodes.renderer.view) {
+        window.Nodes.renderer.view.style.opacity = '1';
+    }
 };
 
 // Call initialization

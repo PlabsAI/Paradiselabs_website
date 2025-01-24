@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { useParticleContext } from '../contexts/ParticleContext';
 
 const ParticlesContainer = styled.div`
   position: fixed;
@@ -20,22 +21,23 @@ interface ScriptStatus {
 declare global {
   interface Window {
     PIXI: any;
-    particleSystem?: any;
+    particleSystem?: {
+      destroy: (removeView?: boolean, stageOptions?: any) => void;
+    };
     jQuery: any;
     $: any;
     pixiApplication?: any;
     isParticlesInitialized?: boolean;
     particlesCleanupInProgress?: boolean;
     particlesInitializationAttempts?: number;
+    particleSystemInitialized?: boolean;
     requestAnimationFrame: (callback: FrameRequestCallback) => number;
     cancelAnimationFrame: (handle: number) => void;
   }
 }
 
-// Add this declaration to resolve NodeJS namespace issues
-declare namespace NodeJS {
-  interface Timeout {}
-}
+// Use ReturnType<typeof setTimeout> for timeout references
+type Timeout = ReturnType<typeof setTimeout>;
 
 const MAX_INITIALIZATION_ATTEMPTS = 3;
 const SCRIPT_TIMEOUT = 5000;
@@ -43,7 +45,7 @@ const CLEANUP_TIMEOUT = 1000;
 
 const Particles: React.FC = () => {
   const location = useLocation();
-  const [_isInitialized, setIsInitialized] = useState(false);
+  const { isInitialized, setIsInitialized } = useParticleContext();
   const [_scriptStatus, setScriptStatus] = useState<ScriptStatus>({
     jquery: false,
     pixi: false,
@@ -51,8 +53,8 @@ const Particles: React.FC = () => {
   });
   const [_error, setError] = useState<string | null>(null);
   const initializationAttemptsRef = useRef(0);
-  const cleanupTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const initTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const cleanupTimeoutRef = useRef<Timeout | null>(null);
+  const initTimeoutRef = useRef<Timeout | null>(null);
   const isCleaningUpRef = useRef(false);
   const isInitializingRef = useRef(false);
   const animationFrameRef = useRef<number | null>(null);
@@ -253,7 +255,24 @@ const Particles: React.FC = () => {
 
     const init = async () => {
       if (location.pathname === '/' && mounted) {
-        await initializeParticles();
+        try {
+          // Only initialize if not already initialized
+          if (!window.particleSystemInitialized) {
+            await initializeParticles();
+            window.particleSystemInitialized = true;
+          }
+          
+          // Ensure container is visible after initialization
+          if (containerRef.current) {
+            containerRef.current.style.opacity = '1';
+          }
+        } catch (error) {
+          console.error('Particle initialization error:', error);
+          // Ensure container is visible even if initialization fails
+          if (containerRef.current) {
+            containerRef.current.style.opacity = '1';
+          }
+        }
       }
     };
 
@@ -261,11 +280,21 @@ const Particles: React.FC = () => {
 
     return () => {
       mounted = false;
+      // Clean up when unmounting
       cleanupScripts();
     };
   }, [location.pathname, initializeParticles, cleanupScripts]);
 
-  if (location.pathname !== '/') return null;
+  // Toggle visibility based on route
+  useEffect(() => {
+    if (location.pathname === '/' && !isInitialized) {
+      initializeParticles();
+    }
+  }, [location.pathname, isInitialized, initializeParticles]);
+
+  if (location.pathname !== '/') {
+    return null;
+  }
 
   return (
     <ParticlesContainer ref={containerRef} id="particles-container" />

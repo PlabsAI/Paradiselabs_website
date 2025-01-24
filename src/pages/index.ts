@@ -1,6 +1,5 @@
 import { PageContainer } from '../components/PageContainer';
 export { default as Home } from './Home';
-export { default as Eden } from './Eden';
 
 // Pages that use PageContainer
 export const GLUE = PageContainer;
