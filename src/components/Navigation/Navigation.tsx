@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -93,55 +93,7 @@ const LogoText = styled.span`
           animation: gradientFlow 8s linear infinite;
 `;
 
-const SubNav = styled.ul<{ $isOpen: boolean }>`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: rgba(5, 12, 20, 0.95);
-  -webkit-backdrop-filter: blur(12px);
-          backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  list-style: none;
-  min-width: 200px;
-  opacity: ${props => props.$isOpen ? 1 : 0};
-  visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
-  -webkit-transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
-  -ms-transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
-          transform: ${props => props.$isOpen ? 'translateY(0)' : 'translateY(-10px)'};
-  -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-`;
-
-const SubNavItem = styled.li`
-  padding: 0.5rem;
-`;
-
-const SubNavLink = styled(Link)`
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  display: block;
-  padding: 0.5rem;
-  border-radius: 4px;
-  -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(208, 0, 255, 0.1);
-    color: #d000ff;
-  }
-`;
-
 export const Navigation: React.FC = () => {
-  const [isEdenOpen, setIsEdenOpen] = useState(false);
-
   return (
     <Nav>
       <NavContainer>
@@ -150,44 +102,6 @@ export const Navigation: React.FC = () => {
           <LogoText>ParadiseLabs</LogoText>
         </LogoContainer>
         <NavList>
-          <NavItem 
-            onMouseEnter={() => setIsEdenOpen(true)}
-            onMouseLeave={() => setIsEdenOpen(false)}
-          >
-            <NavLink to="/eden">Eden</NavLink>
-            <SubNav $isOpen={isEdenOpen}>
-              <SubNavItem>
-                <SubNavLink to="/eden#overview" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Overview</SubNavLink>
-              </SubNavItem>
-              <SubNavItem>
-                <SubNavLink to="/eden#architecture" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Architecture</SubNavLink>
-              </SubNavItem>
-              <SubNavItem>
-                <SubNavLink to="/eden#technical-overview" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('technical-overview')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Core</SubNavLink>
-              </SubNavItem>
-              <SubNavItem>
-                <SubNavLink to="/eden#features" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Features</SubNavLink>
-              </SubNavItem>
-              <SubNavItem>
-                <SubNavLink to="/eden#laws" onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('laws')?.scrollIntoView({ behavior: 'smooth' });
-            }}>Laws</SubNavLink>
-              </SubNavItem>
-            </SubNav>
-          </NavItem>
           <NavItem>
             <NavLink to="/glue">GLUE</NavLink>
           </NavItem>

@@ -69,26 +69,32 @@ window.Nodes = {
     init: function(image, particleDensity, particleWidth, particleHeight, dotColor, width, height, positionX, positionY, canvasPadding, mouseRadius, startDelay) {
         // Prevent multiple initializations
         if (this.isInitialized) {
-            console.warn('Nodes already initialized');
+            // Update dimensions without reinitializing
+            this.siteWidth = width || window.innerWidth;
+            this.siteHeight = height || window.innerHeight;
+            this.positionX = positionX || 0;
+            this.positionY = positionY || 0;
+            this.onWindowResize();
             return;
         }
 
-        // Set dimensions and position
-        this.siteWidth = width || window.innerWidth;
-        this.siteHeight = height || window.innerHeight;
-        this.positionX = positionX || 0;
-        this.positionY = positionY || 0;
-        this.canvasPadding = canvasPadding || 0;
-        this.mouseRadius = mouseRadius || 100;
-        this.startDelay = startDelay || 0;
-        this.isAnimating = false;
-        this.mouseDisabled = true;
-        this.isStartupPhase = true;
+        // Set dimensions and position with fixed values
+        this.siteWidth = window.innerWidth;
+        this.siteHeight = window.innerHeight;
+        this.positionX = 0;
+        this.positionY = 0;
+        this.canvasPadding = 0;
+        this.mouseRadius = 100;
+        this.startDelay = 0;
+        this.isAnimating = true;
+        this.mouseDisabled = false;
+        this.isStartupPhase = false;
     
-        // Renderer setup with transparent background
+        // Renderer setup with fixed positioning
         const rendererOptions = {
             transparent: true,
-            backgroundAlpha: 0
+            backgroundAlpha: 0,
+            resolution: window.devicePixelRatio || 1
         };
     
         this.scaleX = parseFloat(particleWidth || 0.5);
@@ -110,12 +116,15 @@ window.Nodes = {
 
         this.manager = this.renderer.plugins.interaction;
     
-        // Renderer position and initial opacity
-        this.renderer.view.style.position = 'absolute';
-        this.renderer.view.style.left = `${this.positionX}px`;
-        this.renderer.view.style.top = `${this.positionY}px`;
-        this.renderer.view.style.opacity = '0';
-        this.renderer.view.style.transition = 'opacity 0.5s ease-in';
+        // Renderer position and initial opacity with fixed positioning
+        this.renderer.view.style.position = 'fixed';
+        this.renderer.view.style.left = '0';
+        this.renderer.view.style.top = '0';
+        this.renderer.view.style.width = '100vw';
+        this.renderer.view.style.height = '100vh';
+        this.renderer.view.style.opacity = '1';
+        this.renderer.view.style.pointerEvents = 'none';
+        this.renderer.view.style.zIndex = '1000';
     
         setTimeout(() => {
             document.body.appendChild(this.renderer.view);

@@ -6,7 +6,7 @@ import { ParticlesBackground } from './components/ParticlesBackground';
 import { GlowDotsBackground } from './components/GlowDotsBackground';
 import { useLocation } from 'react-router-dom';
 import { Footer } from './components/Footer';
-import { Home, Eden, GLUE, Projects, Blog, About } from './pages';
+import { Home, GLUE, Projects, Blog, About } from './pages';
 import { Login, Dashboard, WaitlistPage } from './pages/admin';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -70,16 +70,6 @@ const App = (): JSX.Element => {
                 <AppContainer>
                   <MainLayout>
                     <Home />
-                  </MainLayout>
-                </AppContainer>
-              }
-            />
-            <Route
-              path="eden/*"
-              element={
-                <AppContainer>
-                  <MainLayout>
-                    <Eden />
                   </MainLayout>
                 </AppContainer>
               }
