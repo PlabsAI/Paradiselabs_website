@@ -439,16 +439,19 @@ const GlobalStyles = createGlobalStyle`
     }
   }
 }
-  body {
+  html, body, #root {
     margin: 0;
     padding: 0;
     min-height: 100vh;
     background: #050C14;
+  }
+
+  body {
     overflow-x: hidden;
-    color: ${({ theme }) => theme.colors.textPrimary};
-    font-family: ${({ theme }) => theme.fonts.primary};
-    font-size: ${({ theme }) => theme.fontSizes.base};
-    line-height: ${({ theme }) => theme.lineHeights.normal};
+    color: ${({ theme }: { theme: DefaultTheme }) => theme.colors.textPrimary};
+    font-family: ${({ theme }: { theme: DefaultTheme }) => theme.fonts.primary};
+    font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes.base};
+    line-height: ${({ theme }: { theme: DefaultTheme }) => theme.lineHeights.normal};
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
   }
@@ -495,9 +498,9 @@ const GlobalStyles = createGlobalStyle`
 
   .logo-with-name-name {
     font-feature-settings: "ss01" on, "cv10" on, "calt" off, "liga" off;
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-    line-height: ${({ theme }) => theme.lineHeights.normal};
-    font-weight: ${({ theme }) => theme.fontWeights.medium};
+    font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes.sm};
+    line-height: ${({ theme }: { theme: DefaultTheme }) => theme.lineHeights.normal};
+    font-weight: ${({ theme }: { theme: DefaultTheme }) => theme.fontWeights.medium};
   }
 
   .header .container-lg {
@@ -539,8 +542,8 @@ const GlobalStyles = createGlobalStyle`
   .header-nav-link {
     color: hsla(0, 0%, 100%, 0.8);
     text-decoration: none;
-    font-size: ${({ theme }) => theme.fontSizes.xs};
-    font-weight: ${({ theme }) => theme.fontWeights.medium};
+    font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes.xs};
+    font-weight: ${({ theme }: { theme: DefaultTheme }) => theme.fontWeights.medium};
     transition: all 0.3s ease;
     position: relative;
 
@@ -551,7 +554,7 @@ const GlobalStyles = createGlobalStyle`
       left: 0;
       width: 0;
       height: 2px;
-      background: ${({ theme }) => theme.colors.logoAnimation};
+      background: ${({ theme }: { theme: DefaultTheme }) => theme.colors.logoAnimation};
       transition: width 0.3s ease;
     }
 
@@ -575,15 +578,15 @@ const GlobalStyles = createGlobalStyle`
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border-radius: 8px;
-    color: ${({ theme }) => theme.colors.textPrimary};
+    color: ${({ theme }: { theme: DefaultTheme }) => theme.colors.textPrimary};
     display: block;
     padding: 8px 16px;
     position: relative;
     width: max-content;
     font-feature-settings: "ss01" on, "cv10" on, "calt" off, "liga" off;
-    font-size: ${({ theme }) => theme.fontSizes.xs};
-    line-height: ${({ theme }) => theme.lineHeights.tight};
-    font-weight: ${({ theme }) => theme.fontWeights.medium};
+    font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes.xs};
+    line-height: ${({ theme }: { theme: DefaultTheme }) => theme.lineHeights.tight};
+    font-weight: ${({ theme }: { theme: DefaultTheme }) => theme.fontWeights.medium};
     text-decoration: none;
 
     &:before,
@@ -643,10 +646,10 @@ const GlobalStyles = createGlobalStyle`
     }
 
     h2 {
-      font-size: ${({ theme }) => theme.fontSizes['3xl']};
+      font-size: ${({ theme }: { theme: DefaultTheme }) => theme.fontSizes['3xl']};
       margin-bottom: 2rem;
-      font-weight: ${({ theme }) => theme.fontWeights.extrabold};
-      background-image: linear-gradient(45deg, #fff, ${({ theme }) => theme.colors.neonPrimary}, ${({ theme }) => theme.colors.neonSecondary});
+      font-weight: ${({ theme }: { theme: DefaultTheme }) => theme.fontWeights.extrabold};
+      background-image: linear-gradient(45deg, #fff, ${({ theme }: { theme: DefaultTheme }) => theme.colors.neonPrimary}, ${({ theme }: { theme: DefaultTheme }) => theme.colors.neonSecondary});
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;

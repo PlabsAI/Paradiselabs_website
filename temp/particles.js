@@ -1,4 +1,17 @@
-const Nodes = {
+// Clean up existing instance if present
+if (window.Nodes) {
+    if (window.Nodes.animation) {
+        cancelAnimationFrame(window.Nodes.animation);
+    }
+    if (window.Nodes.renderer) {
+        window.Nodes.renderer.destroy(true);
+    }
+    if (window.Nodes.stage) {
+        window.Nodes.stage.destroy(true);
+    }
+}
+
+window.Nodes = {
     // Original settings
     density: 6,
     drawDistance: 1,
@@ -17,6 +30,7 @@ const Nodes = {
     startDelay: 0,        // Delay before animation starts in milliseconds
     isAnimating: false,   // Flag to track if animation should be running
     isStartupPhase: true, // New flag to track initial animation phase
+    isInitialized: false, // Track initialization state
 
     points: [],
     mouse: {
@@ -51,128 +65,173 @@ const Nodes = {
     currentNum: 0,
     loadAttempts: 0,
     maxLoadAttempts: 3,
-  
+
     init: function(image, particleDensity, particleWidth, particleHeight, dotColor, width, height, positionX, positionY, canvasPadding, mouseRadius, startDelay) {
-		// Set dimensions and position
-		this.siteWidth = width || window.innerWidth;
-		this.siteHeight = height || window.innerHeight;
-		this.positionX = positionX || 0;
-		this.positionY = positionY || 0;
-		this.canvasPadding = canvasPadding || 0;
-		this.mouseRadius = mouseRadius || 100;
-		this.startDelay = startDelay || 0;
-		this.isAnimating = false;
-		this.mouseDisabled = true;
-		this.isStartupPhase = true;
-	
-		// Renderer setup with transparent background
-		const rendererOptions = {
-			transparent: true,
-			backgroundAlpha: 0
-		};
-	
-		this.scaleX = parseFloat(particleWidth || 0.5);
-		this.scaleY = parseFloat(particleHeight || 0.5);
-		this.density = this.siteWidth > 480 ? parseInt(particleDensity || 2) : 7;
-	
-		if (!this.isLoaded) {
-			this.renderer = PIXI.autoDetectRenderer(
-				this.siteWidth + (this.canvasPadding * 2), 
-				this.siteHeight + (this.canvasPadding * 2), 
-				rendererOptions
-			);
-		}
-	
-		this.manager = this.renderer.plugins.interaction;
-	
-		// Renderer position and initial opacity
-		this.renderer.view.style.position = 'absolute';
-		this.renderer.view.style.left = `${this.positionX}px`;
-		this.renderer.view.style.top = `${this.positionY}px`;
-		this.renderer.view.style.opacity = '0';
-		this.renderer.view.style.transition = 'opacity 0.5s ease-in';
-	
-		// Start animation after delay
-		setTimeout(() => {
-			document.body.appendChild(this.renderer.view);
-			setTimeout(() => {
-				this.renderer.view.style.opacity = '1';
-			}, 50);
-	
-			// Custom dot texture
-			const canvas = document.createElement('canvas');
-			canvas.width = 10;
-			canvas.height = 10;
-			const ctx = canvas.getContext('2d');
-			ctx.beginPath();
-			ctx.arc(5, 5, 5, 0, Math.PI * 2);
-			ctx.fillStyle = dotColor || '#000000';
-			ctx.fill();
-			this.texture = PIXI.Texture.from(canvas);
-	
-			this.newmouse = this.manager.mouse;
-			this.newmouse.global.x = -1000;
-			this.newmouse.global.y = -1000;
-	
-			// Event listeners
-			window.addEventListener('resize', () => {
-				this.siteWidth = width || window.innerWidth;
-				this.siteHeight = height || window.innerHeight;
-				this.onWindowResize();
-			});
-	
-			this.renderer.view.addEventListener('mousedown', () => {
-				if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = true;
-			});
-			
-			this.renderer.view.addEventListener('mouseup', () => {
-				if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = false;
-			});
-	
-			this.stage.interactive = true;
-			this.stage.on('touchmove', this.onTouchMove.bind(this));
-	
-			window.addEventListener("touchend", this.onTouchEnd);
-			window.addEventListener("mouseout", this.onTouchEnd);
-	
-			// Start loading the data and animate the starting blackhole effect
-			setTimeout(() => {
-				this.loadData(image || 'https://i.imgur.com/gFVigiC.png');
-				
-				// Set startup mouse position
-				this.startupMousePos = {
-					x: (this.siteWidth / 2) + this.canvasPadding,
-					y: (this.siteHeight / 2) + this.canvasPadding
-				};
-				
-				// Trigger initial animation
-				this.isAnimating = true;
-				this.blackhole = true;
-				this.reactionSensitivity = -500;
-	
-				// Schedule the end of initial animation
-				setTimeout(() => {
-					this.isStartupPhase = false;
-					this.blackhole = false;
-					this.reactionSensitivity = 6;
-					this.newmouse.global.x = -1000;
-					this.newmouse.global.y = -1000;
-					
-					// Enable mouse interactions after initial animation
-					setTimeout(() => {
-						this.mouseDisabled = false;
-					}, 500);
-				}, 1000);
-			}, this.startDelay);
-		}, 0);
-	},
-	
+        // Prevent multiple initializations
+        if (this.isInitialized) {
+            // Update dimensions without reinitializing
+            this.siteWidth = width || window.innerWidth;
+            this.siteHeight = height || window.innerHeight;
+            this.positionX = positionX || 0;
+            this.positionY = positionY || 0;
+            this.onWindowResize();
+            return;
+        }
+
+        // Set dimensions and position with fixed values
+        this.siteWidth = window.innerWidth;
+        this.siteHeight = window.innerHeight;
+        this.positionX = 0;
+        this.positionY = 0;
+        this.canvasPadding = 0;
+        this.mouseRadius = 100;
+        this.startDelay = 0;
+        this.isAnimating = true;
+        this.mouseDisabled = false;
+        this.isStartupPhase = false;
+    
+        // Renderer setup with fixed positioning
+        const rendererOptions = {
+            transparent: true,
+            backgroundAlpha: 0,
+            resolution: window.devicePixelRatio || 1
+        };
+    
+        this.scaleX = parseFloat(particleWidth || 0.5);
+        this.scaleY = parseFloat(particleHeight || 0.5);
+        this.density = this.siteWidth > 480 ? parseInt(particleDensity || 2) : 7;
+    
+        if (!this.isLoaded) {
+            this.renderer = PIXI.autoDetectRenderer(
+                this.siteWidth + (this.canvasPadding * 2), 
+                this.siteHeight + (this.canvasPadding * 2), 
+                rendererOptions
+            );
+        }
+    
+        if (!this.renderer) {
+            console.error('Failed to initialize renderer');
+            return;
+        }
+
+        this.manager = this.renderer.plugins.interaction;
+    
+        // Renderer position and initial opacity with fixed positioning
+        this.renderer.view.style.position = 'fixed';
+        this.renderer.view.style.left = '0';
+        this.renderer.view.style.top = '-20%'; // Move particles higher
+        this.renderer.view.style.width = '100vw';
+        this.renderer.view.style.height = '100vh';
+        this.renderer.view.style.opacity = '1';
+        this.renderer.view.style.pointerEvents = 'none';
+        this.renderer.view.style.zIndex = '1000';
+    
+        setTimeout(() => {
+            document.body.appendChild(this.renderer.view);
+            setTimeout(() => {
+                this.renderer.view.style.opacity = '1';
+            }, 50);
+
+            // Custom dot texture
+            const canvas = document.createElement('canvas');
+            canvas.width = 10;
+            canvas.height = 10;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.error('Failed to get canvas context');
+                return;
+            }
+            ctx.beginPath();
+            ctx.arc(5, 5, 5, 0, Math.PI * 2);
+            ctx.fillStyle = dotColor || '#000000';
+            ctx.fill();
+            this.texture = PIXI.Texture.from(canvas);
+
+            this.newmouse = this.manager.mouse;
+            if (this.newmouse) {
+                this.newmouse.global.x = -1000;
+                this.newmouse.global.y = -1000;
+            }
+
+            // Event listeners
+            window.addEventListener('resize', this.debounce(() => {
+                this.siteWidth = window.innerWidth;
+                this.siteHeight = window.innerHeight;
+                this.onWindowResize();
+            }, 250));
+
+            this.renderer.view.addEventListener('mousedown', () => {
+                if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = true;
+            });
+            
+            this.renderer.view.addEventListener('mouseup', () => {
+                if (this.isAnimating && !this.mouseDisabled && !this.isStartupPhase) this.blackhole = false;
+            });
+
+            if (this.stage) {
+                this.stage.interactive = true;
+                this.stage.on('mousemove', this.onMouseMove.bind(this));
+                this.stage.on('touchmove', this.onTouchMove.bind(this));
+            }
+
+            window.addEventListener("touchend", this.onTouchEnd.bind(this));
+            window.addEventListener("mouseout", this.onMouseOut.bind(this));
+
+            // Start loading the data and animate the starting blackhole effect
+            setTimeout(() => {
+                this.loadData(image || 'https://i.imgur.com/gFVigiC.png');
+                
+                // Set startup mouse position
+                this.startupMousePos = {
+                    x: (this.siteWidth / 2) + this.canvasPadding,
+                    y: (this.siteHeight / 2) + this.canvasPadding
+                };
+                
+                // Trigger initial animation
+                this.isAnimating = true;
+                this.blackhole = true;
+                this.reactionSensitivity = -500;
+
+                // Schedule the end of initial animation
+                setTimeout(() => {
+                    this.isStartupPhase = false;
+                    this.blackhole = false;
+                    this.reactionSensitivity = 6;
+                    if (this.newmouse) {
+                        this.newmouse.global.x = -1000;
+                        this.newmouse.global.y = -1000;
+                    }
+                    
+                    // Enable mouse interactions after initial animation
+                    setTimeout(() => {
+                        this.mouseDisabled = false;
+                    }, 500);
+                }, 1000);
+            }, this.startDelay);
+        }, 0);
+
+        // Mark as initialized
+        this.isInitialized = true;
+    },
+
     loadData: function(data) {
+        if (!data) {
+            console.error('No image data provided');
+            return;
+        }
+
         this.bgImage = new Image();
         this.bgImage.crossOrigin = "anonymous";
         this.bgImage.src = data;
 
         this.bgImage.onload = () => {
+            this.bgCanvas = document.createElement('canvas');
+            if (!this.bgCanvas) {
+                console.error('Failed to create background canvas');
+                return;
+            }
+            this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
+            this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
             this.drawImageToBackground();
         };
 
@@ -188,9 +247,16 @@ const Nodes = {
     },
 
     drawImageToBackground: function() {
-        this.bgCanvas = document.createElement('canvas');
-        this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
-        this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
+        if (!this.bgImage || !this.bgCanvas) {
+            console.error('Background image or canvas not initialized');
+            return;
+        }
+
+        this.bgContext = this.bgCanvas.getContext('2d', { willReadFrequently: true });
+        if (!this.bgContext) {
+            console.error('Failed to get background context');
+            return;
+        }
 
         let newWidth, newHeight;
 
@@ -207,8 +273,10 @@ const Nodes = {
             newHeight = this.bgImage.height;
         }
 
+        // Clear the background canvas before redrawing
+        this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
+
         // Draw to background canvas with padding offset
-        this.bgContext = this.bgCanvas.getContext('2d');
         this.bgContext.drawImage(
             this.bgImage, 
             (this.siteWidth - newWidth) / 2 + this.canvasPadding, 
@@ -220,14 +288,73 @@ const Nodes = {
         try {
             this.bgContextPixelData = this.bgContext.getImageData(0, 0, this.bgCanvas.width, this.bgCanvas.height);
             this.preparePoints();
-            this.draw();
             this.drawPixies();
+            this.draw();
         } catch (error) {
             console.error('Error processing image:', error);
         }
     },
 
+    onWindowResize: function() {
+        // Only proceed if initialization is complete
+        if (!this.bgCanvas || !this.bgImage || !this.renderer) {
+            console.log("Skipping resize - initialization not complete");
+            return;
+        }
+
+        // Update dimensions
+        this.siteWidth = window.innerWidth;
+        this.siteHeight = window.innerHeight;
+
+        // Clear the entire canvas
+        this.clearCanvas();
+
+        // Resize renderer
+        this.renderer.resize(
+            this.siteWidth + (this.canvasPadding * 2),
+            this.siteHeight + (this.canvasPadding * 2)
+        );
+
+        // Update canvas dimensions
+        this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
+        this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
+
+        // Redraw background image and recalculate points
+        this.drawImageToBackground();
+
+        // Update startup mouse position if in startup phase
+        if (this.isStartupPhase) {
+            this.startupMousePos = {
+                x: (this.siteWidth / 2) + this.canvasPadding,
+                y: (this.siteHeight / 2) + this.canvasPadding
+            };
+        }
+    },
+
+    clearCanvas: function() {
+        // Clear the PIXI stage
+        while(this.stage.children[0]) {
+            this.stage.removeChild(this.stage.children[0]);
+        }
+
+        // Clear the background canvas
+        if (this.bgCanvas) {
+            this.bgContext = this.bgCanvas.getContext('2d', { willReadFrequently: true });
+            if (this.bgContext) {
+                this.bgContext.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
+            }
+        }
+
+        // Clear the renderer
+        this.renderer.clear();
+    },
+
     preparePoints: function() {
+        if (!this.bgContextPixelData) {
+            console.error('Pixel data not available');
+            return;
+        }
+
         this.points = [];
         const colors = this.bgContextPixelData.data;
     
@@ -235,19 +362,25 @@ const Nodes = {
             for (let j = 0; j < this.siteWidth; j += this.density) {
                 const pixelPosition = (j + i * this.bgContextPixelData.width) * 4;
     
+                // Skip if pixel position is out of bounds
+                if (pixelPosition >= colors.length) continue;
+
                 // Skip white pixels
                 const threshold = 10;
-                if (Math.abs(colors[pixelPosition] - 255) < threshold && Math.abs(colors[pixelPosition + 1] - 255) < threshold && Math.abs(colors[pixelPosition + 2] - 255) < threshold || colors[pixelPosition + 3] === 0) {
+                if (Math.abs(colors[pixelPosition] - 255) < threshold && 
+                    Math.abs(colors[pixelPosition + 1] - 255) < threshold && 
+                    Math.abs(colors[pixelPosition + 2] - 255) < threshold || 
+                    colors[pixelPosition + 3] === 0) {
                     continue;
                 }
     
                 const color = `rgba(${colors[pixelPosition]},${colors[pixelPosition + 1]},${colors[pixelPosition + 2]},1)`;
                     
                 this.points.push({
-                    x: j,
-                    y: i,
-                    originalX: j,
-                    originalY: i,
+                    x: j + this.canvasPadding,
+                    y: i + this.canvasPadding,
+                    originalX: j + this.canvasPadding,
+                    originalY: i + this.canvasPadding,
                     color: color
                 });
             }
@@ -255,13 +388,14 @@ const Nodes = {
     },
     
     updatePoints: function() {
-        if (!this.isAnimating) {
+        // Early return if animation is not running
+        if (!this.isAnimating || !this.stage || !this.stage.children) {
             return;
         }
 
         // Use startup position during startup phase
-        const mouseX = this.isStartupPhase ? this.startupMousePos.x : this.newmouse.global.x;
-        const mouseY = this.isStartupPhase ? this.startupMousePos.y : this.newmouse.global.y;
+        const mouseX = this.isStartupPhase ? this.startupMousePos.x : (this.newmouse ? this.newmouse.global.x : -1000);
+        const mouseY = this.isStartupPhase ? this.startupMousePos.y : (this.newmouse ? this.newmouse.global.y : -1000);
 
         if (this.blackhole) {
             this.reactionSensitivity = this.isStartupPhase ? -500 : -10;
@@ -269,9 +403,23 @@ const Nodes = {
             this.reactionSensitivity = this.isNear() ? 6 : 0;
         }
 
+        // Safety check for points array
+        if (!this.points || this.points.length === 0) {
+            return;
+        }
+
         for (let i = 0; i < this.stage.children.length; i++) {
+            // Safety check for array bounds
+            if (!this.points[i] || !this.stage.children[i]) {
+                continue;
+            }
+
             const originalPoint = this.points[i];
             const currentPoint = this.stage.children[i];
+
+            if (!currentPoint.position) {
+                continue;
+            }
 
             // Calculate distance from mouse to point
             const dx = currentPoint.position.x - mouseX;
@@ -314,12 +462,23 @@ const Nodes = {
     },
 
     draw: function() {
+        // Only continue animation if we're properly initialized
+        if (!this.stage || !this.renderer) {
+            console.warn('Draw called before proper initialization');
+            return;
+        }
+
         this.animation = requestAnimationFrame(() => this.draw());
         this.updatePoints();
         this.drawPoints();
     },
 
     drawPixies: function() {
+        // Clear existing sprites
+        while(this.stage.children[0]) {
+            this.stage.removeChild(this.stage.children[0]);
+        }
+
         for (let i = 0; i < this.points.length; i++) {
             const currentPoint = this.points[i];
             const dot = new PIXI.Sprite(this.texture);
@@ -333,12 +492,15 @@ const Nodes = {
             
             this.stage.addChild(dot);
         }
+
+        // Force a render to update the stage
+        this.renderer.render(this.stage);
     },
 
-    onTouchEnd: function() {
-        if (!Nodes.mouseDisabled && !Nodes.isStartupPhase) {
-            Nodes.newmouse.global.x = -1000;
-            Nodes.newmouse.global.y = -1000;
+    onMouseMove: function(event) {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = event.data.global.x;
+            this.newmouse.global.y = event.data.global.y;
         }
     },
 
@@ -349,50 +511,72 @@ const Nodes = {
         }
     },
 
-    onWindowResize: function() {
-        this.renderer.resize(
-            this.siteWidth + (this.canvasPadding * 2),
-            this.siteHeight + (this.canvasPadding * 2)
-        );
-
-        // Update canvas dimensions
-        this.bgCanvas.width = this.siteWidth + (this.canvasPadding * 2);
-        this.bgCanvas.height = this.siteHeight + (this.canvasPadding * 2);
-
-        // Redraw background image and points
-        this.drawImageToBackground();
-
-        // Adjust positions for the new dimensions
-        this.stage.children.forEach((dot, index) => {
-            const originalPoint = this.points[index];
-            dot.position.x = originalPoint.x;
-            dot.position.y = originalPoint.y;
-        });
-
-        // Update startup mouse position if in startup phase
-        if (this.isStartupPhase) {
-            this.startupMousePos = {
-                x: (this.siteWidth / 2) + this.canvasPadding,
-                y: (this.siteHeight / 2) + this.canvasPadding
-            };
+    onTouchEnd: function() {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = -1000;
+            this.newmouse.global.y = -1000;
         }
+    },
 
-        console.log("Window resized, renderer and points updated.");
+    onMouseOut: function() {
+        if (!this.mouseDisabled && !this.isStartupPhase) {
+            this.newmouse.global.x = -1000;
+            this.newmouse.global.y = -1000;
+        }
+    },
+
+    updatePointPositions: function() {
+        if (this.stage && this.stage.children && this.points) {
+            this.stage.children.forEach((dot, index) => {
+                if (this.points[index]) {
+                    const point = this.points[index];
+                    dot.position.x = point.x;
+                    dot.position.y = point.y;
+                }
+            });
+        }
+    },
+
+    debounce: function(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    },
+};
+
+// Ensure proper cleanup before re-initialization
+window.initializeNodes = function() {
+    // Only initialize if not already initialized
+    if (window.Nodes && window.Nodes.isInitialized) {
+        return;
+    }
+
+    window.Nodes.init(
+        'https://i.imgur.com/gFVigiC.png', // image URL
+        1,                                 // particle density
+        0.15,                              // particle width
+        0.15,                              // particle height
+        '#D9D9BD',                         // dot color
+        window.innerWidth,                 // width in pixels
+        window.innerHeight,                // height in pixels
+        0,                                 // positionX
+        0,                                 // positionY
+        0,                                 // canvasPadding
+        70,                                // mouseRadius (in pixels)
+        0                                  // startDelay (in milliseconds)
+    );
+    
+    // Ensure renderer is visible
+    if (window.Nodes && window.Nodes.renderer && window.Nodes.renderer.view) {
+        window.Nodes.renderer.view.style.opacity = '1';
     }
 };
 
-// Initialize with default values
-Nodes.init(
-    'https://i.imgur.com/gFVigiC.png', // image URL
-    1,                                 // particle density
-    0.3,                              // particle width
-    0.3,                              // particle height
-    '#452A45',                        // dot color (white)
-    1500,                              // width in pixels
-    750,                              // height in pixels
-    0,                              // positionX
-    0,                              // positionY
-    100,                              // canvasPadding
-    70,                               // mouseRadius (in pixels)
-    3900                              // startDelay (in milliseconds)
-);
+// Call initialization
+window.initializeNodes();

@@ -11,7 +11,7 @@ import {
   TechDetails,
 } from './WorkflowStyles';
 
-const Workflow: React.FC = () => {
+const Workflow = () => {
   return (
     <>
       <GlobalWorkflowStyles />
