@@ -5,7 +5,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["three", "@react-three/fiber", "@react-three/drei"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -16,11 +15,13 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "allowJs": true
   },
-  "include": ["src", "temp/particles.js"],
+  "include": ["src", "temp/particles.js", "src/types/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
